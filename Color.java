@@ -15,7 +15,8 @@ public enum Color {
      */
     BLEU,
     ROUGE,
-    VERT;
+    VERT,
+    RAINBOW;
 
     private static final List<Color> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
     private static final int SIZE = VALUES.size();
