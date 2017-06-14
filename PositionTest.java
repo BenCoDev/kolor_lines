@@ -10,7 +10,6 @@ public class PositionTest {
     /**
      * src: https://www.mkyong.com/unittest/junit-4-tutorial-2-expected-exception-test/
      */
-
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -47,6 +46,49 @@ public class PositionTest {
     @Test
     public void setMaxLength() throws Exception {
 // TODO
+    }
+
+    @Test
+    public void getNextPosition_Basic() throws Exception {
+        Position.setMaxLength(3);
+        Position.setMaxWidth(3);
+        Position curPosition = new Position(1, 1);
+
+        assertEquals(curPosition.getNextPosition(Board.Direction.N).getAbs(), curPosition.getAbs());
+        assertEquals(curPosition.getNextPosition(Board.Direction.N).getOrd(), curPosition.getOrd() - 1);
+
+        assertEquals(curPosition.getNextPosition(Board.Direction.NE).getAbs(), curPosition.getAbs() + 1);
+        assertEquals(curPosition.getNextPosition(Board.Direction.NE).getOrd(), curPosition.getOrd() - 1);
+
+        assertEquals(curPosition.getNextPosition(Board.Direction.E).getAbs(), curPosition.getAbs() + 1);
+        assertEquals(curPosition.getNextPosition(Board.Direction.E).getOrd(), curPosition.getOrd());
+
+        assertEquals(curPosition.getNextPosition(Board.Direction.SE).getAbs(), curPosition.getAbs() + 1);
+        assertEquals(curPosition.getNextPosition(Board.Direction.SE).getOrd(), curPosition.getOrd() + 1);
+
+        assertEquals(curPosition.getNextPosition(Board.Direction.S).getAbs(), curPosition.getAbs());
+        assertEquals(curPosition.getNextPosition(Board.Direction.S).getOrd(), curPosition.getOrd() + 1);
+
+        assertEquals(curPosition.getNextPosition(Board.Direction.SW).getAbs(), curPosition.getAbs() - 1);
+        assertEquals(curPosition.getNextPosition(Board.Direction.SW).getOrd(), curPosition.getOrd() + 1);
+
+        assertEquals(curPosition.getNextPosition(Board.Direction.W).getAbs(), curPosition.getAbs() - 1);
+        assertEquals(curPosition.getNextPosition(Board.Direction.W).getOrd(), curPosition.getOrd());
+
+        assertEquals(curPosition.getNextPosition(Board.Direction.NW).getAbs(), curPosition.getAbs() - 1);
+        assertEquals(curPosition.getNextPosition(Board.Direction.NW).getOrd(), curPosition.getOrd() - 1);
+    }
+
+    @Test
+    public void getNextPosition_InvalidOrdinate_ExceptionThrown() throws Exception {
+        thrown.expect(Exception.class);
+        thrown.expectMessage(containsString("Ordinate"));
+
+        Position.setMaxLength(3);
+        Position.setMaxWidth(3);
+        Position curPosition = new Position(1,0);
+
+        curPosition.getNextPosition(Board.Direction.N);
     }
 
 }
