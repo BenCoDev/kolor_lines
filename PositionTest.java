@@ -44,13 +44,13 @@ public class PositionTest {
     }
 
     @Test
-    public void setMaxLength() throws Exception {
+    public void setMaxHeight() throws Exception {
 // TODO
     }
 
     @Test
     public void getNextPosition_Basic() throws Exception {
-        Position.setMaxLength(3);
+        Position.setMaxHeight(3);
         Position.setMaxWidth(3);
         Position curPosition = new Position(1, 1);
 
@@ -84,11 +84,19 @@ public class PositionTest {
         thrown.expect(Exception.class);
         thrown.expectMessage(containsString("Ordinate"));
 
-        Position.setMaxLength(3);
+        Position.setMaxHeight(3);
         Position.setMaxWidth(3);
         Position curPosition = new Position(1,0);
 
         curPosition.getNextPosition(Board.Direction.N);
     }
 
+    @Test
+    public void randomPosition_BasicCase() throws Exception {
+        Position.setMaxHeight(3);
+        Position.setMaxWidth(3);
+        Position position = Position.randomPosition();
+
+        assertNotNull(position);
+    }
 }
