@@ -16,7 +16,7 @@ public class Position {
         this.ord = ord;
 
         // Only validates if maxLength and maxWidth have been set
-        if (Position.maxWidth != 0 || Position.maxLength != 0){
+        if (Position.maxWidth != 0 || Position.maxHeight != 0){
             this.validate();
         }
 
@@ -34,11 +34,11 @@ public class Position {
             throw new Exception(String.format("Abscise not permitted: should be upper than: %s", minWidth));
         }
 
-        if (this.ord >= Position.maxLength){
-            throw new Exception(String.format("Ordinate not permitted: should be lower than: %s", maxLength));
+        if (this.ord >= Position.maxHeight){
+            throw new Exception(String.format("Ordinate not permitted: should be lower than: %s", maxHeight));
         }
         else if (this.ord < 0){
-            throw new Exception(String.format("Ordinate not permitted: should be upper than: %s", minLength));
+            throw new Exception(String.format("Ordinate not permitted: should be upper than: %s", minHeight));
         }
     }
 
@@ -46,8 +46,8 @@ public class Position {
         Position.maxWidth = maxWidth;
     }
 
-    public static void setMaxLength(int maxLength) {
-        Position.maxLength = maxLength;
+    public static void setMaxHeight(int maxHeight) {
+        Position.maxHeight = maxHeight;
     }
 
     public int getAbs() {
@@ -59,7 +59,7 @@ public class Position {
     }
 
     /**
-     * TODO
+     * TODOthis.squares[rowIndex][colIndex].getPosition().getAbs()
      * @param direction
      * @return
      * @throws Exception
@@ -87,10 +87,21 @@ public class Position {
         return null;
     }
 
-    private static int maxWidth;
-    private static int maxLength;
-    private static int minLength = 0;
+    public static Position randomPosition() throws Exception {
+//        TODO: distribute over open positions
+
+        int abs = (int) (Math.random() * Position.maxWidth);  // If not set: will be 0
+        int ord = (int) (Math.random() * Position.maxHeight);  // If not set: will be 0
+
+        return new Position(abs, ord);
+    }
+
     private static int minWidth = 0;
+    private static int minHeight = 0;
+
+    private static int maxWidth;  // Will be set at Board instantiation
+    private static int maxHeight; // Will be set at Board instantiation
+
     private int abs;
     private int ord;
 }
