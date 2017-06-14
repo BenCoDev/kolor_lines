@@ -62,7 +62,7 @@ public class Board {
      *
      * Direction is optional
      */
-    public LinkedList<Square>[] fetchAlignments(Position pos, LinkedList<Square>[] alignmentsByDirection){
+    private LinkedList<Square>[] fetchAlignments(Position pos, LinkedList<Square>[] alignmentsByDirection){
         //  Means it is the first square
         //  If no directions
         //  List neighbours
@@ -91,7 +91,7 @@ public class Board {
         return alignmentsByDirection;
     }
 
-    public LinkedList<Square>[] fetchAlignments(Position pos, LinkedList<Square>[] alignmentsByDirection, Direction direction){
+    private LinkedList<Square>[] fetchAlignments(Position pos, LinkedList<Square>[] alignmentsByDirection, Direction direction){
 
         // TODO: Describe alignmensByDirection
         // Same structure with same 8 slots
@@ -115,6 +115,30 @@ public class Board {
         }
 
         return alignmentsByDirection;
+    }
+
+    public LinkedList getMinLengthAlignments(Position pos, int minimumLength){
+        LinkedList<Square>[] alignmentsByDirection = new LinkedList[8];
+        alignmentsByDirection = this.fetchAlignments(pos, alignmentsByDirection);
+
+        LinkedList<Square>[] mergedDirectionAlignments = Board.mergeDirectionAlignments(this.getSquare(pos), alignmentsByDirection);
+
+        LinkedList minimumLengthAlignments = new LinkedList();
+
+        for (LinkedList<Square> mergedDirectionAlignment : mergedDirectionAlignments) {
+            if (mergedDirectionAlignment != null){
+                if (Board.isAlignmentValid(mergedDirectionAlignment, minimumLength)) {
+                    minimumLengthAlignments.add(mergedDirectionAlignment);
+                }
+            }
+
+        }
+
+        return minimumLengthAlignments;
+    }
+
+    private static boolean isAlignmentValid(LinkedList<Square> alignment, int minimumLength) {
+        return (alignment.size() >= minimumLength);
     }
 
     /**
