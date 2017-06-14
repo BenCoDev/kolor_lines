@@ -89,7 +89,6 @@ public class Position {
 
     public static Position randomPosition() throws Exception {
 //        TODO: distribute over open positions
-
         int abs = (int) (Math.random() * Position.maxWidth);  // If not set: will be 0
         int ord = (int) (Math.random() * Position.maxHeight);  // If not set: will be 0
 
