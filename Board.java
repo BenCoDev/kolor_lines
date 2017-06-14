@@ -10,7 +10,7 @@ public class Board {
 
     public Board(int size){
         Position.setMaxWidth(size);
-        Position.setMaxLength(size);
+        Position.setMaxHeight(size);
 
         this.size = size;
         this.squares = new Square[size][size];
@@ -40,15 +40,22 @@ public class Board {
     }
 
     public Square getSquare(Position pos){
-        return this.squares[pos.getAbs()][pos.getOrd()];
+        return this.squares[pos.getOrd()][pos.getAbs()];
     }
 
     public void setSquare(Position pos){
-        this.squares[pos.getAbs()][pos.getOrd()] = new Square(pos);
+//        TODO: add tests
+        this.squares[pos.getOrd()][pos.getAbs()] = new Square(pos);
     }
 
     public void setSquare(Position pos, Color color){
-        this.squares[pos.getAbs()][pos.getOrd()] = new Square(pos, color);
+//        TODO: add tests
+        this.squares[pos.getOrd()][pos.getAbs()] = new Square(pos, color);
+    }
+
+    public void unsetSquare(Position pos){
+//        TODO: add tests
+        this.squares[pos.getOrd()][pos.getAbs()] = null;
     }
 
     /**
@@ -179,12 +186,14 @@ public class Board {
         }
         formattedTable += "\n";
 
-
+        // Print row by row
         for (int rowIndex=0; rowIndex < this.squares.length; rowIndex++){
+
             for (int colIndex=0; colIndex < this.squares[rowIndex].length; colIndex++){
                 if (colIndex == 0){
-                    formattedTable += String.format("%10s", colIndex);
+                    formattedTable += String.format("%10s", rowIndex);
                 }
+
                 if (Square.class.isInstance(this.squares[rowIndex][colIndex])){
                     formattedTable += String.format("%10s", this.squares[rowIndex][colIndex].getColor());
                 }
