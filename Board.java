@@ -1,5 +1,4 @@
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Represents the Board for Kolor Lines games
@@ -108,7 +107,7 @@ public class Board {
 
         if (nextSquare != null) {
             if (curSquare.getColor() == nextSquare.getColor() ||
-                    (nextSquare.getColor() == Color.RAINBOW || curSquare.getColor() == Color.RAINBOW)) {
+                    (nextSquare.getColor() == Color.RAINBOW || curSquare.getColor() == Color.RAINBOW)) {  // FIXME: problem on ROUGE RAINBOW BLEU
                 alignmentsByDirection[direction.ordinal()].add(nextSquare);
             }
 
@@ -124,10 +123,12 @@ public class Board {
      * 1: WE
      * 2: SWNE
      * 3: SN
+     *
+     * Also add the current square
      * @param alignmentsByDirection
      * @return
      */
-    public static LinkedList<Square>[] mergeDirectionAligments(LinkedList<Square>[] alignmentsByDirection){
+    private static LinkedList<Square>[] mergeDirectionAlignments(Square curSquare, LinkedList<Square>[] alignmentsByDirection){
         LinkedList<Square>[] mergedAlignmentsByDirection = new LinkedList[4];
 
         // Make more sense to decrement
@@ -144,6 +145,14 @@ public class Board {
                     mergedAlignmentsByDirection[outputArrayIndex] = new LinkedList<Square>();
                     mergedAlignmentsByDirection[outputArrayIndex].addAll(alignmentsByDirection[i]);
                 }
+            }
+
+            try {
+                mergedAlignmentsByDirection[outputArrayIndex].add(curSquare);  // Add the current Square
+            }
+            catch (java.lang.NullPointerException e){
+                mergedAlignmentsByDirection[outputArrayIndex] = new LinkedList<Square>();
+                mergedAlignmentsByDirection[outputArrayIndex].add(curSquare);
             }
 
             if (alignmentsByDirection[i - mergedAlignmentsByDirection.length] != null){
