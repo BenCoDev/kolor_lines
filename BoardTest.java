@@ -29,6 +29,26 @@ public class BoardTest {
     }
 
     @Test
+    public void isFull_FullCase() throws Exception {
+        Board b = new Board(1);
+        Position position = new Position(0, 0);
+
+        b.setSquare(position);
+
+        assertTrue(b.isFull());
+    }
+
+    @Test
+    public void isFull_NotFullCase() throws Exception {
+        Board b = new Board(3);
+        Position position = new Position(1, 1);
+
+        b.setSquare(position);
+
+        assertFalse(b.isFull());
+    }
+
+    @Test
     public void display_EmptyBoard() throws Exception {
         Board b = new Board(1);
         b.display();

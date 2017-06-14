@@ -16,6 +16,29 @@ public class Board {
         this.squares = new Square[size][size];
     }
 
+    /**
+     * TODO
+     * @return
+     */
+    public boolean isFull(){
+        for (int i = 0; i < this.squares.length; i++)
+
+            for (int j = 0; j < this.squares[i].length; j++) {
+                Square curSquare;
+                try {
+                    curSquare = this.getSquare(new Position(i, j));
+                }
+                catch (Exception e) {
+                    curSquare = null;
+                }
+
+                if (curSquare == null){
+                    return false;
+                }
+            }
+        return true;
+    }
+
     public Square getSquare(Position pos){
         return this.squares[pos.getAbs()][pos.getOrd()];
     }
@@ -179,5 +202,4 @@ public class Board {
     private int size;
     private Square[][] squares;
     public enum Direction { N, NE, E, SE, S, SW, W, NW };
-    private static int MIN_ALIGNMENT_LENGTH = 5;
 }
