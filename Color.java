@@ -1,7 +1,4 @@
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Color enum represents different colors which can be use in the game by a Square
@@ -30,6 +27,7 @@ public enum Color {
     public static Color randomColor()  {
         return VALUES.get(RANDOM.nextInt(SIZE));
     }
+
 }
 
 
