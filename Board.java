@@ -165,6 +165,7 @@ public class Board {
      * @param pos - Position - Position of the original point from where alignments are computed
      * @return LinkedList - List of lists of aligned squares by direction
      *                      Given in the order of the Direction enum
+     *                      Min size of 1 since it includes the curSquare
      */
     protected LinkedList<Square>[] fetchAlignments(Position pos){
         LinkedList<Square>[] alignmentsByDirection = new LinkedList[Direction.values().length];
@@ -195,7 +196,7 @@ public class Board {
     }
 
     /**
-     * Fetch alignments given a position, an existing array of alignments by directions, and a given direction
+     * Extend alignments given a position, an existing array of alignments by directions, and a given direction
      *
      * Square in the alignments are added in the order relative to the direction
      *
@@ -232,7 +233,7 @@ public class Board {
      * by merging opposite directions 2 by 2
      *
      * Note: Case V V Rb B B, with Rb being the given Square ==> Rb will only count for leftSide
-     * Controled by shouldMergeRightSide boolean
+     * Controlled by shouldMergeRightSide boolean
      *
      * Also add the current square
      * @param alignmentsByDirection: LinkedList[8] - Alignments surrounding a Square by direction
@@ -260,7 +261,7 @@ public class Board {
                 Color leftColor = null;
                 Color rightColor = null;
 
-                if (leftSideList != null && leftSideList.size() > 0){
+                if (leftSideList.size() > 0){
                     // Starts with first element of the LinkedList
                     leftColor = fetchStandardColor(leftSideList.listIterator(0));
                 }
@@ -291,13 +292,13 @@ public class Board {
 
     /**
      * TODO
-     * @param curSquare
+     * @param curSquares
      * @param nextSquare
      * @return
      */
     protected static boolean isColorValid(LinkedList<Square> curSquares, Square nextSquare){
         if (curSquares.size() == 0){
-            // base case where has been going up while color is rainbow
+            // base case where has been going up while color was rainbow
             return true;
         }
 
