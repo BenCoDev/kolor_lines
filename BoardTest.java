@@ -262,7 +262,5 @@ public class BoardTest {
         Position position2 = new Position(0, 1);
         LinkedList alignments2 = board.getAlignments(position2, 3);
         assertTrue(alignments2.size() == 0);
-        System.out.print("asdf");
     }
-
 }
