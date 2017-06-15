@@ -65,7 +65,7 @@ public class Board {
      */
     public LinkedList getAlignments(Position pos, int minimumLength){
         LinkedList<Square>[] alignmentsByDirection = this.fetchAlignments(pos);
-        LinkedList<Square>[] mergedDirectionAlignments = Board.mergeAlignments(this.getSquare(pos), alignmentsByDirection);
+        LinkedList<Square>[] mergedDirectionAlignments = Board.mergeAlignments(alignmentsByDirection);
         LinkedList<LinkedList<Square>> minimumLengthAlignments = new LinkedList<LinkedList<Square>>();
 
         for (LinkedList<Square> mergedDirectionAlignment : mergedDirectionAlignments) {
@@ -115,7 +115,9 @@ public class Board {
     }
 
     public void setSquare(Position pos){
-//        TODO: add tests
+        // FIXME: is it more addSquare to board and should take square object?
+        // If not (because composition: be sure that no other place instantiate Square)
+        // TODO: add tests
         this.squares[pos.getOrd()][pos.getAbs()] = new Square(pos);
     }
 
@@ -156,7 +158,9 @@ public class Board {
     }
 
     /**
-     * Fetch alignments given a position
+     * Fetch alignments given a position by listing all the neighbours of a given position
+     * includes curSquare and will extend alignments for each direction
+     *
      *
      * @param pos - Position - Position of the original point from where alignments are computed
      * @return LinkedList - List of lists of aligned squares by direction
@@ -171,19 +175,19 @@ public class Board {
 
         for (int i = 0; i < neighbours.length; i++){
 
-            if (neighbours[i] != null &&
-                    (neighbours[i].getColor() == curSquare.getColor() ||
-                            (neighbours[i].getColor() == Color.RAINBOW || curSquare.getColor() == Color.RAINBOW))){
+            // Init with curSquare
+            alignmentsByDirection[i] = new LinkedList<Square>();
+            alignmentsByDirection[i].add(curSquare);
 
-                try {
+            if (neighbours[i] != null) {
+
+                if (isColorValid(alignmentsByDirection[i], neighbours[i])){
+
                     alignmentsByDirection[i].add(neighbours[i]);
-                }
-                catch (java.lang.NullPointerException e){
-                    alignmentsByDirection[i] = new LinkedList<Square>();
-                    alignmentsByDirection[i].add(neighbours[i]);
+
+                    extendAlignments(neighbours[i].getPosition(), alignmentsByDirection, Board.Direction.values()[i]);
                 }
 
-                fetchAlignments(neighbours[i].getPosition(), alignmentsByDirection, Board.Direction.values()[i]);
             }
         }
 
@@ -193,14 +197,15 @@ public class Board {
     /**
      * Fetch alignments given a position, an existing array of alignments by directions, and a given direction
      *
+     * Square in the alignments are added in the order relative to the direction
+     *
      * @param pos - Position - Position of the original point from where alignments are computed
      * @param alignmentsByDirection - Array of LinkedList of Squares - Array of alignments by directions -
      *                              will be extended in place
      * @param direction - Direction
      * @return alignmentsByDirection
      */
-    protected LinkedList<Square>[] fetchAlignments(Position pos, LinkedList<Square>[] alignmentsByDirection, Direction direction){
-        Square curSquare = getSquare(pos);
+    protected LinkedList<Square>[] extendAlignments(Position pos, LinkedList<Square>[] alignmentsByDirection, Direction direction){
         Square nextSquare;
 
         try {
@@ -212,74 +217,117 @@ public class Board {
         }
 
         if (nextSquare != null) {
-            // FIXME: problem on ROUGE RAINBOW BLEU: Check curSquare
-            // If curSquare is rainbow go to previous until not rainbow
-            // TODO: cover with tests
-
-            if (curSquare.getColor() == nextSquare.getColor() ||
-                    (nextSquare.getColor() == Color.RAINBOW || curSquare.getColor() == Color.RAINBOW)) {
+            if (isColorValid(alignmentsByDirection[direction.ordinal()], nextSquare)){
                 alignmentsByDirection[direction.ordinal()].add(nextSquare);
             }
 
-            fetchAlignments(nextSquare.getPosition(), alignmentsByDirection, direction);
+            extendAlignments(nextSquare.getPosition(), alignmentsByDirection, direction);
         }
 
         return alignmentsByDirection;
     }
 
     /**
-     * mergedAlignmentsByDirection
-     * 0: NWSE
-     * 1: WE
-     * 2: SWNE
-     * 3: SN
+     * Merge alignments from a given Square
+     * by merging opposite directions 2 by 2
+     *
+     * Note: Case V V Rb B B, with Rb being the given Square ==> Rb will only count for leftSide
+     * Controled by shouldMergeRightSide boolean
      *
      * Also add the current square
-     * @param alignmentsByDirection
-     * @return
+     * @param alignmentsByDirection: LinkedList[8] - Alignments surrounding a Square by direction
+     * @return LinkedList[4] - { alignments on NWSE, alignments on WE, alignments on SWNE, alignments on SN }
      */
-    protected static LinkedList<Square>[] mergeAlignments(Square curSquare, LinkedList<Square>[] alignmentsByDirection){
+    protected static LinkedList<Square>[] mergeAlignments(LinkedList<Square>[] alignmentsByDirection){
         LinkedList<Square>[] mergedAlignmentsByDirection = new LinkedList[4];
 
         // Make more sense to decrement
         // i from 7 to 4 included
         int outputArrayIndex;
+
         for (int i = alignmentsByDirection.length - 1; i >= mergedAlignmentsByDirection.length; i--){
             outputArrayIndex = -(i - (alignmentsByDirection.length - 1));
+            LinkedList<Square> leftSideList = alignmentsByDirection[i];
+            Collections.reverse(leftSideList); // Will reverse in place to get a left to right square alignment
+            LinkedList<Square> rightSideList = alignmentsByDirection[i - mergedAlignmentsByDirection.length];
+            boolean shouldMergeRightSide = true;
 
-            if (alignmentsByDirection[i] != null){
-                try {
-                    mergedAlignmentsByDirection[outputArrayIndex].addAll(alignmentsByDirection[i]);
+            mergedAlignmentsByDirection[outputArrayIndex] = new LinkedList<Square>(leftSideList);
+
+            // Case V V Rb B B ==> Rb will only count for leftSide
+            // Check the last of left (original square since list has been reversed)
+            if (leftSideList.getLast().getColor() == Color.RAINBOW){
+                Color leftColor = null;
+                Color rightColor = null;
+
+                if (leftSideList != null && leftSideList.size() > 0){
+                    // Starts with first element of the LinkedList
+                    leftColor = fetchStandardColor(leftSideList.listIterator(0));
                 }
-                catch (java.lang.NullPointerException e){
-                    mergedAlignmentsByDirection[outputArrayIndex] = new LinkedList<Square>();
-                    mergedAlignmentsByDirection[outputArrayIndex].addAll(alignmentsByDirection[i]);
+
+                if (rightSideList != null && rightSideList.size() > 0){
+                    // Starts with first element of the LinkedList
+                    rightColor = fetchStandardColor(rightSideList.listIterator(0));
+                }
+
+                if (rightColor != null && leftColor != null && rightColor != leftColor){
+                    shouldMergeRightSide = false;
                 }
             }
 
-            try {
-                mergedAlignmentsByDirection[outputArrayIndex].add(curSquare);  // Add the current Square
-            }
-            catch (java.lang.NullPointerException e){
-                mergedAlignmentsByDirection[outputArrayIndex] = new LinkedList<Square>();
-                mergedAlignmentsByDirection[outputArrayIndex].add(curSquare);
+            if (shouldMergeRightSide){
+                // Remove first of the list to avoid duplicates when merging
+                // Won't raise error since every alignmentsByDirection has at least one element
+                mergedAlignmentsByDirection[outputArrayIndex].addAll(rightSideList.subList(1, rightSideList.size()));
             }
 
-            if (alignmentsByDirection[i - mergedAlignmentsByDirection.length] != null){
-                try {
-                    mergedAlignmentsByDirection[outputArrayIndex].addAll(alignmentsByDirection[i - mergedAlignmentsByDirection.length]);
-                }
-                catch (java.lang.NullPointerException e){
-                    mergedAlignmentsByDirection[outputArrayIndex] = new LinkedList<Square>();
-                    mergedAlignmentsByDirection[outputArrayIndex].addAll(alignmentsByDirection[i - mergedAlignmentsByDirection.length]);
-                }
-            }
         }
         return mergedAlignmentsByDirection;
     }
 
     private static boolean isAlignmentValid(LinkedList<Square> alignment, int minimumLength) {
         return (alignment.size() >= minimumLength);
+    }
+
+    /**
+     * TODO
+     * @param curSquare
+     * @param nextSquare
+     * @return
+     */
+    protected static boolean isColorValid(LinkedList<Square> curSquares, Square nextSquare){
+        if (curSquares.size() == 0){
+            // base case where has been going up while color is rainbow
+            return true;
+        }
+
+        Square curSquare = curSquares.getLast();
+
+        switch (curSquare.getColor()) {
+            case RAINBOW:
+                return isColorValid(new LinkedList<Square>(curSquares.subList(0, curSquares.size() - 1)), nextSquare);
+            default:
+                return nextSquare.getColor() == Color.RAINBOW || curSquare.getColor() == nextSquare.getColor();
+        }
+
+    }
+
+    /**
+     * Fetch a standard color (not equal to RAINBOW) given a linked list of Square
+     * @param curSquare - ListIterator<Square> - current square
+     * @return Color - standard color, otherwise returns None
+     */
+    protected static Color fetchStandardColor(ListIterator<Square> curSquare){
+        if (curSquare.hasNext()) {
+            Color curColor = curSquare.next().getColor();
+            if (curColor != Color.RAINBOW) {
+                return curColor;
+            }
+            else {
+                return fetchStandardColor(curSquare);
+            }
+        }
+        return null;
     }
 
     private int size;
