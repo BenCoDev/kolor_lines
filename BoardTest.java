@@ -75,9 +75,13 @@ public class BoardTest {
     @Test
     public void listNeighbours() throws Exception {
 //        TODO: refine
+
+
         Board b = new Board(2);
         Position originalPosition = new Position(0, 0);
         b.setSquare(originalPosition);
+
+
 
         Position position = new Position(1, 0);
         b.listNeighbours(position);
@@ -90,9 +94,7 @@ public class BoardTest {
         Position originalPosition = new Position(1, 1);
         b.setSquare(originalPosition);
 
-        LinkedList<Square>[] alignmentsByDirection = new LinkedList[8];
-
-        assertArrayEquals(b.fetchAlignments(originalPosition, alignmentsByDirection), new LinkedList[8]);
+        assertArrayEquals(b.fetchAlignments(originalPosition), new LinkedList[8]);
     }
 
     @Test
@@ -118,7 +120,6 @@ public class BoardTest {
         Square squareSW = b.getSquare(SWPosition);
 
 
-        LinkedList<Square>[] alignmentsByDirection = new LinkedList[8];
         LinkedList<Square>[] expectedArray = new LinkedList[8];
 
         expectedArray[Board.Direction.valueOf("NE").ordinal()] = new LinkedList<Square>();
@@ -126,7 +127,7 @@ public class BoardTest {
         expectedArray[Board.Direction.valueOf("SW").ordinal()] = new LinkedList<Square>();
         expectedArray[Board.Direction.valueOf("SW").ordinal()].add(squareSW);
 
-        assertArrayEquals(expectedArray, b.fetchAlignments(originalPosition, alignmentsByDirection));
+        assertArrayEquals(expectedArray, b.fetchAlignments(originalPosition));
     }
 
     @Test
@@ -146,18 +147,18 @@ public class BoardTest {
         b.setSquare(nextNextPosition, Color.BLEU);
         Square nextNextSquare = b.getSquare(nextNextPosition);
 
-        LinkedList<Square>[] alignmentsByDirection = new LinkedList[8];
         LinkedList<Square>[] expectedArray = new LinkedList[8];
 
         expectedArray[Board.Direction.valueOf("SE").ordinal()] = new LinkedList<Square>();
         expectedArray[Board.Direction.valueOf("SE").ordinal()].add(nextSquare);
         expectedArray[Board.Direction.valueOf("SE").ordinal()].add(nextNextSquare);
 
-        assertArrayEquals(expectedArray, b.fetchAlignments(originalPosition, alignmentsByDirection));
+        assertArrayEquals(expectedArray, b.fetchAlignments(originalPosition));
     }
 
     @Test
-    public void mergeDirectionAligments() throws Exception {
+    public void mergeDirectionAlignments() throws Exception {
+        Square curSquare = new Square(new Position(1, 1));
         Square WSquare = new Square(new Position(0, 1));
         Square ESquare = new Square(new Position(2, 1));
 
@@ -170,12 +171,21 @@ public class BoardTest {
 
 
         LinkedList<Square>[] expectedArray = new LinkedList[4];
+        expectedArray[0] = new LinkedList<Square>();
+        expectedArray[0].add(curSquare);
+
         expectedArray[1] = new LinkedList<Square>();
         expectedArray[1].add(WSquare);
+        expectedArray[1].add(curSquare);
         expectedArray[1].add(ESquare);
 
-        assertArrayEquals(expectedArray, Board.mergeDirectionAligments(alignmentsByDirection));
+        expectedArray[2] = new LinkedList<Square>();
+        expectedArray[2].add(curSquare);
 
+        expectedArray[3] = new LinkedList<Square>();
+        expectedArray[3].add(curSquare);
+
+        assertArrayEquals(expectedArray, Board.mergeAlignments(curSquare, alignmentsByDirection));
     }
 
 }
