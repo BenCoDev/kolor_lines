@@ -123,7 +123,7 @@ public class Board {
      *         Given in the order defined by the Direction enum
      *         null if empty
      */
-    private Square[] listNeighbours(Position pos){
+    protected Square[] listNeighbours(Position pos){
         Square[] neighbours = new Square[Board.Direction.values().length];
 
         // Get N, NE, E, SE , S, SW, W, NW and append in this order; null if empty
@@ -148,7 +148,7 @@ public class Board {
      * @return LinkedList - List of lists of aligned squares by direction
      *                      Given in the order of the Direction enum
      */
-    private LinkedList<Square>[] fetchAlignments(Position pos){
+    protected LinkedList<Square>[] fetchAlignments(Position pos){
         LinkedList<Square>[] alignmentsByDirection = new LinkedList[Direction.values().length];
         Square curSquare = getSquare(pos);
         Square[] neighbours;
@@ -185,7 +185,7 @@ public class Board {
      * @param direction - Direction
      * @return alignmentsByDirection
      */
-    private LinkedList<Square>[] fetchAlignments(Position pos, LinkedList<Square>[] alignmentsByDirection, Direction direction){
+    protected LinkedList<Square>[] fetchAlignments(Position pos, LinkedList<Square>[] alignmentsByDirection, Direction direction){
         Square curSquare = getSquare(pos);
         Square nextSquare;
 
@@ -224,7 +224,7 @@ public class Board {
      * @param alignmentsByDirection
      * @return
      */
-    private static LinkedList<Square>[] mergeAlignments(Square curSquare, LinkedList<Square>[] alignmentsByDirection){
+    protected static LinkedList<Square>[] mergeAlignments(Square curSquare, LinkedList<Square>[] alignmentsByDirection){
         LinkedList<Square>[] mergedAlignmentsByDirection = new LinkedList[4];
 
         // Make more sense to decrement
