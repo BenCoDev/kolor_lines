@@ -1,4 +1,6 @@
 import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.Collections;
 
 /**
  * Represents the Board for Kolor Lines games
@@ -7,12 +9,24 @@ import java.util.LinkedList;
  */
 public class Board {
 
-    public Board(int size){
+    public Board(int size) throws Exception {
+        if (size <= 0){
+            throw new Exception("Not possible");
+        }
+
         Position.setMaxWidth(size);
         Position.setMaxHeight(size);
 
         this.size = size;
-        this.squares = new Square[size][size];
+        this.squares = new Square[size][size];  // composition
+    }
+
+    public void load(String[] serializedBoard) throws Exception {
+        for (int i = 0; i < (this.size * this.size); i++) {
+            if (serializedBoard[i] != null) {
+                this.setSquare(new Position(i % this.size, i / this.size), Color.valueOf(serializedBoard[i]));
+            }
+        }
     }
 
     /**
