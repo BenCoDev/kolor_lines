@@ -148,8 +148,7 @@ public class Board {
             try {
                 neighbours[i] = this.getSquare(pos.getNextPosition(curDirection));
             }
-            catch (Exception e) {
-                System.out.println("No more squares on this direction");
+            catch (Exception e) {  // Fixme enhance readibility of the exception
                 neighbours[i] = null;
             }
         }
@@ -212,8 +211,7 @@ public class Board {
         try {
             nextSquare = getSquare(pos.getNextPosition(direction));
         }
-        catch (Exception e) {
-            System.out.println("No more squares on this direction");
+        catch (Exception e) {  // Fixme enhance readibility of the exception
             nextSquare = null;
         }
 
