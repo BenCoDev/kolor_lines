@@ -116,12 +116,23 @@ public class Board {
     }
 
     public void display(){
+        final int COL_WIDTH = 10;
+        final String SEPARATOR = "#";
+
         String formattedTable = "";
 
-        formattedTable += String.format("%10s", "/");
-        for (int colIndex=0; colIndex < this.squares[0].length; colIndex++){
-            formattedTable += String.format("%10s", colIndex);
+        for (int i=0; i < (this.size + 1) * COL_WIDTH; i++){
+            formattedTable += SEPARATOR;
         }
+
+        formattedTable += "\n";
+
+        formattedTable += String.format("%10s", "/");
+
+        for (int colIndex=0; colIndex < this.squares[0].length; colIndex++){
+            formattedTable += String.format("%" + COL_WIDTH + "s", colIndex);
+        }
+
         formattedTable += "\n";
 
         // Print row by row
@@ -129,21 +140,25 @@ public class Board {
 
             for (int colIndex=0; colIndex < this.squares[rowIndex].length; colIndex++){
                 if (colIndex == 0){
-                    formattedTable += String.format("%10s", rowIndex);
+                    formattedTable += String.format("%" + COL_WIDTH + "s", rowIndex);
                 }
 
                 if (Square.class.isInstance(this.squares[rowIndex][colIndex])){
-                    formattedTable += String.format("%10s", this.squares[rowIndex][colIndex].getColor());
+                    formattedTable += String.format("%" + COL_WIDTH + "s", this.squares[rowIndex][colIndex].getColor());
                 }
                 else {
-                    formattedTable += String.format("%10s", " ");
+                    formattedTable += String.format("%" + COL_WIDTH + "s", " ");
                 }
 
             }
             formattedTable += "\n";
         }
 
-        System.out.print(formattedTable);
+        for (int i=0; i < (this.size + 1) * COL_WIDTH; i++){
+            formattedTable += SEPARATOR;
+        }
+
+        System.out.println(formattedTable);
     }
 
     public Square getSquare(Position pos){
