@@ -1,5 +1,12 @@
 public class SystemUser extends User {
 
+    /**
+     * Should be ok to play one position at a time given that
+     * if one position creates a valid aligned
+     * then it keeps true for all new position introduces
+     * @return
+     * @throws Exception
+     */
     public Position[] play() throws Exception {
         int i = 0;
         Position[] lastPositions = new Position[CONSECUTIVE_MOVES];
