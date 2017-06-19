@@ -181,12 +181,7 @@ public class Board {
 
             if (neighbours[i] != null) {
 
-                if (isColorValid(alignmentsByDirection[i], neighbours[i])){
-
-                    alignmentsByDirection[i].add(neighbours[i]);
-
-                    extendAlignments(neighbours[i].getPosition(), alignmentsByDirection, Board.Direction.values()[i]);
-                }
+                extendAlignments(pos, alignmentsByDirection, Board.Direction.values()[i]);
 
             }
         }
@@ -218,9 +213,9 @@ public class Board {
         if (nextSquare != null) {
             if (isColorValid(alignmentsByDirection[direction.ordinal()], nextSquare)){
                 alignmentsByDirection[direction.ordinal()].add(nextSquare);
-            }
 
-            extendAlignments(nextSquare.getPosition(), alignmentsByDirection, direction);
+                extendAlignments(nextSquare.getPosition(), alignmentsByDirection, direction);
+            }
         }
 
         return alignmentsByDirection;
