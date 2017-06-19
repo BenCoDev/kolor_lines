@@ -5,6 +5,9 @@
  * and a color if the square is filled (i.e. if there is a pawn of the corresponding color at the position)
  */
 public class Square {
+    // TODO: check if can be set as abstract see if initialized other place than Board
+    // TODO: should enable square to have no colors
+
 
     /**
      * Instantiates a Square given a position
@@ -35,10 +38,6 @@ public class Square {
 
     public Position getPosition() {
         return position;
-    }
-
-    public void unsetColor() {
-        this.color = null;
     }
 
     private Position position;
