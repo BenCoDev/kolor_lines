@@ -31,6 +31,10 @@ public class KolorLines {
 
             } while (board.isEmpty());  // If board is empty, continue playing
 
+            if  (board.isFull()) {
+                break;
+            }
+
             // User plays
             System.out.println("User is playing");
 
