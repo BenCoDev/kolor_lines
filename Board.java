@@ -9,15 +9,13 @@ import java.util.Collections;
  */
 public class Board {
 
-    public Board(int size) throws Exception {
-        if (size <= 0){
-            throw new Exception("Not possible");
-        }
-
+    public Board(int size) throws BoardException {
         Position.setMaxWidth(size);
         Position.setMaxHeight(size);
 
         this.size = size;
+        this.validate();  // valid after setting size
+
         this.squares = new Square[size][size];
         // composition
         // Lazy, instance square if nothing
@@ -26,11 +24,29 @@ public class Board {
 
     }
 
+    private void validate() throws BoardException {
+        if (this.size <= 0){
+            throw new BoardException("Size should be at least 1");
+        }
+    }
+
     public void load(String[] serializedBoard) throws Exception {
         for (int i = 0; i < (this.size * this.size); i++) {
             if (serializedBoard[i] != null) {
                 this.setSquare(new Position(i % this.size, i / this.size), Color.valueOf(serializedBoard[i]));
             }
+        }
+    }
+
+    public static Board prompt(){
+        int size = Utils.promptInt("Board size");
+
+        try {
+            return new Board(size);
+
+        } catch (BoardException e){
+            System.out.println(e.getMessage());
+            return Board.prompt();
         }
     }
 
