@@ -18,7 +18,12 @@ public class Board {
         Position.setMaxHeight(size);
 
         this.size = size;
-        this.squares = new Square[size][size];  // composition
+        this.squares = new Square[size][size];
+        // composition
+        // Lazy, instance square if nothing
+        // means that a square can be
+        // colored, or null ==> a square here must be colored
+
     }
 
     public void load(String[] serializedBoard) throws Exception {
@@ -144,6 +149,39 @@ public class Board {
     public void unsetSquare(Position pos){
 //        TODO: add tests
         this.squares[pos.getOrd()][pos.getAbs()] = null;
+    }
+
+    /**
+     * @return
+     */
+    public Square promptSquare(){
+
+        Position pos = Position.prompt("Original");
+
+        if (this.getSquare(pos) != null){
+            return this.getSquare(pos);
+        }
+
+        System.out.println("You can't prompt for an empty square on this board");
+
+        return promptSquare();
+    }
+
+    /**
+        Explain why here
+        Why not on user ?
+     */
+    public Position promptPosition(){
+        Position pos = Position.prompt("Target");
+
+        if (this.getSquare(pos) == null){
+            return pos;
+        }
+
+        System.out.println("You can't prompt for a filled position on this board");
+
+        return promptPosition();
+
     }
 
     /**
@@ -340,6 +378,6 @@ public class Board {
     }
 
     private int size;
-    private Square[][] squares;
+    private Square[][] squares;  // TODO: describe
     public enum Direction { N, NE, E, SE, S, SW, W, NW };
 }
