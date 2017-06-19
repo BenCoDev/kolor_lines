@@ -53,6 +53,21 @@ public class Board {
     }
 
     /**
+     * TODO
+     * @return
+     */
+    public boolean isEmpty(){
+        for (int i = 0; i < this.squares.length; i++) {
+            for (int j = 0; j < this.squares[i].length; j++) {
+                if (Square.class.isInstance(this.squares[i][j])) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * Get Alignments bigger than given minimumLength which includes given position
      *
      * Will first compute all the alignments from given position according 8 directions
