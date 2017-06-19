@@ -2,9 +2,9 @@ import java.util.LinkedList;
 
 public class KolorLines {
     public static void main(String[] args) throws Exception {
-        // Prompt to get Board size
 
-        Board board = new Board(3);
+        // Prompt to get Board size
+        Board board = Board.prompt();
 
         SystemUser systemUser = new SystemUser();
         HumanUser humanUser = new HumanUser();
@@ -75,7 +75,7 @@ public class KolorLines {
             for (LinkedList<Square> alignment : alignments) {  // For each alignment, check not already as alignment of a position
 
                 if (!validAlignments.contains(alignment)) {
-                    validAlignments.add(alignment);  // FIXME: test not already in DUPLICATES
+                    validAlignments.add(alignment);
                 }
             }
 
