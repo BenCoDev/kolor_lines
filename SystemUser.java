@@ -7,7 +7,7 @@ public class SystemUser extends User {
      * @return
      * @throws Exception
      */
-    public Position[] play() throws Exception {
+    public Position[] play() throws PositionException {
         int i = 0;
         Position[] lastPositions = new Position[CONSECUTIVE_MOVES];
 
