@@ -11,7 +11,7 @@ public class Position {
      * @param abs   int     Abscise of the position
      * @param ord   int     Ordinate of the position
      */
-    Position(int abs, int ord) throws Exception {
+    Position(int abs, int ord) throws PositionException {
         this.abs = abs;
         this.ord = ord;
 
@@ -23,28 +23,28 @@ public class Position {
 
     /**
      * TODO
-     * @throws Exception
+     * @throws PositionException
      */
-    private void validate()  throws Exception {
+    private void validate() throws PositionException {
         Position.validateAbs(this.abs);
         Position.validateOrd(this.ord);
     }
 
-    public static void validateAbs(int abs) throws Exception {
+    public static void validateAbs(int abs) throws PositionException {
         if (abs >= Position.maxWidth){
-            throw new Exception(String.format("Abscise not permitted: should be lower than: %s", maxWidth));
+            throw new PositionException(String.format("Abscise not permitted: should be lower than: %s", maxWidth));
         }
         else if (abs < 0){
-            throw new Exception(String.format("Abscise not permitted: should be upper than: %s", minWidth));
+            throw new PositionException(String.format("Abscise not permitted: should be upper than: %s", minWidth));
         }
     }
 
-    public static void validateOrd(int ord) throws Exception {
+    public static void validateOrd(int ord) throws PositionException {
         if (ord >= Position.maxHeight){
-            throw new Exception(String.format("Ordinate not permitted: should be lower than: %s", maxHeight));
+            throw new PositionException(String.format("Ordinate not permitted: should be lower than: %s", maxHeight));
         }
         else if (ord < 0){
-            throw new Exception(String.format("Ordinate not permitted: should be upper than: %s", minHeight));
+            throw new PositionException(String.format("Ordinate not permitted: should be upper than: %s", minHeight));
         }
     }
 
@@ -70,7 +70,7 @@ public class Position {
      * @return
      * @throws Exception
      */
-    public Position getNextPosition(Board.Direction direction) throws Exception{
+    public Position getNextPosition(Board.Direction direction) throws PositionException{
         switch (direction) {
             case N:
                 return new Position(this.abs, this.ord - 1);
@@ -93,7 +93,7 @@ public class Position {
         return null;
     }
 
-    public static Position randomPosition() throws Exception {
+    public static Position randomPosition() throws PositionException {
 //        TODO: distribute over open positions
         int abs = (int) (Math.random() * Position.maxWidth);  // If not set: will be 0
         int ord = (int) (Math.random() * Position.maxHeight);  // If not set: will be 0
@@ -109,21 +109,21 @@ public class Position {
             Position.validateAbs(abs);
             return abs;
 
-        } catch (Exception e){
+        } catch (PositionException e){
             return promptCoord(coordName);
         }
     }
 
     // Only call here
     public static Position prompt(String positionName){
-        System.out.println("Enter " + positionName);
+        System.out.println("Position: " + positionName);
 
         int abs = promptCoord("Abscisse");
         int ord = promptCoord("Ordinate");
 
         try {
             return new Position(abs, ord);
-        } catch (Exception e){  // TODO: refine exception
+        } catch (PositionException e){  // TODO: refine exception
             System.out.println(e.getMessage());
             return prompt(positionName);
         }
