@@ -19,7 +19,6 @@ public class Position {
         if (Position.maxWidth != 0 || Position.maxHeight != 0){
             this.validate();
         }
-
     }
 
     /**
@@ -27,17 +26,24 @@ public class Position {
      * @throws Exception
      */
     private void validate()  throws Exception {
-        if (this.abs >= Position.maxWidth){
+        Position.validateAbs(this.abs);
+        Position.validateOrd(this.ord);
+    }
+
+    public static void validateAbs(int abs) throws Exception {
+        if (abs >= Position.maxWidth){
             throw new Exception(String.format("Abscise not permitted: should be lower than: %s", maxWidth));
         }
-        else if (this.abs < 0){
+        else if (abs < 0){
             throw new Exception(String.format("Abscise not permitted: should be upper than: %s", minWidth));
         }
+    }
 
-        if (this.ord >= Position.maxHeight){
+    public static void validateOrd(int ord) throws Exception {
+        if (ord >= Position.maxHeight){
             throw new Exception(String.format("Ordinate not permitted: should be lower than: %s", maxHeight));
         }
-        else if (this.ord < 0){
+        else if (ord < 0){
             throw new Exception(String.format("Ordinate not permitted: should be upper than: %s", minHeight));
         }
     }
@@ -93,6 +99,34 @@ public class Position {
         int ord = (int) (Math.random() * Position.maxHeight);  // If not set: will be 0
 
         return new Position(abs, ord);
+    }
+
+    public static int promptCoord(String coordName){
+
+        int abs = Utils.promptInt(coordName);
+
+        try {
+            Position.validateAbs(abs);
+            return abs;
+
+        } catch (Exception e){
+            return promptCoord(coordName);
+        }
+    }
+
+    // Only call here
+    public static Position prompt(String positionName){
+        System.out.println("Enter " + positionName);
+
+        int abs = promptCoord("Abscisse");
+        int ord = promptCoord("Ordinate");
+
+        try {
+            return new Position(abs, ord);
+        } catch (Exception e){  // TODO: refine exception
+            System.out.println(e.getMessage());
+            return prompt(positionName);
+        }
     }
 
     private static int minWidth = 0;
