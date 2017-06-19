@@ -263,4 +263,34 @@ public class BoardTest {
         LinkedList alignments2 = board.getAlignments(position2, 3);
         assertTrue(alignments2.size() == 0);
     }
+
+    @Test
+    public void getAlignments_RandomAlignment_ReturnAlignments() throws Exception {
+        int SIZE = 10;
+        Board board = new Board(SIZE);
+
+        String[] boardSerialized = {
+                null, "ROUGE", null, null, null, null, "VERT", null, null, "VERT",
+                "BLEU", "ROUGE", null, null, null, "RAINBOW", "ROUGE", null, "BLEU", "RAINBOW",
+                "BLEU", null, null, "VERT", null, null, null, "VERT", null, "ROUGE",
+                null, "VERT", null, "ROUGE", "ROUGE", null, null, null, "ROUGE", null,
+                "BLEU", null, "RAINBOW", null, "VERT", null, "ROUGE", "BLEU", "ROUGE", "VERT",
+                null, null, "VERT", null, null, null, "ROUGE", null, "VERT", "VERT",
+                "BLEU", "RAINBOW", "BLEU", "VERT", null, null, null, "ROUGE", "VERT", "VERT",
+                "BLEU", "ROUGE", "VERT", null, null, null, "ROUGE", null, "VERT", "VERT",
+                "ROUGE", null, "RAINBOW", "BLEU", "RAINBOW", "VERT", null, "ROUGE", null, "BLEU",
+                "RAINBOW", null, null, "ROUGE", "VERT", null, "ROUGE", "RAINBOW", null, "VERT",
+        };
+
+        board.load(boardSerialized);
+
+        Position position1 = new Position(8, 5);
+        LinkedList alignments1 = board.getAlignments(position1, 3);
+        assertTrue(alignments1.size() == 1);
+
+        Position position2 = new Position(2, 8);
+        LinkedList alignments2 = board.getAlignments(position2, 3);
+        assertTrue(alignments2.size() == 2);
+    }
+
 }
