@@ -1,6 +1,3 @@
-import javafx.geometry.Pos;
-import sun.jvm.hotspot.debugger.linux.LinuxDebugger;
-
 import java.util.LinkedList;
 
 public class KolorLines {
@@ -38,4 +35,39 @@ public class KolorLines {
         // Games end
         // Display score
     }
+
+    /**
+     * Check if positions triggered a valid alignments
+     *
+     *
+     * Includes business logic here
+     *
+     * @param board
+     * @param positions
+     * @return validAlignments
+     */
+    protected static LinkedList<LinkedList<Square>> processPositions(Board board, Position[] positions){
+        LinkedList<LinkedList<Square>> validAlignments = new LinkedList();
+
+        // Iterate over positions
+        for (Position position : positions) {
+
+
+            // For each position, get valid alignments as a list of lists
+            LinkedList<LinkedList<Square>> alignments = board.getAlignments(position, MIN_CONSECUTIVE_ALIGNMENT);  // FIXME: CHECK can it be null
+
+            for (LinkedList<Square> alignment : alignments) {  // For each alignment, check not already as alignment of a position
+
+                if (!validAlignments.contains(alignment)) {
+                    validAlignments.add(alignment);  // FIXME: test not already in DUPLICATES
+                }
+            }
+
+
+        }
+
+        return validAlignments;
+    }
+
+    private static int MIN_CONSECUTIVE_ALIGNMENT = 3;
 }
