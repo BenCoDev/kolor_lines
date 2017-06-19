@@ -12,28 +12,40 @@ public class KolorLines {
         systemUser.setBoard(board);
         humanUser.setBoard(board);
 
-        // Games start
-        // Automatic play from the computer
-        while (!board.isFull()){
-            systemUser.play();  // use lastPosition
+        board.display();
+
+        while (!board.isFull()) {  // Start of a turn
+
+            // System plays
+            do {
+
+                System.out.println("System is playing");
+
+                Position[] lastSystemPositions = systemUser.play();
+
+                board.display();
+
+                LinkedList<LinkedList<Square>> validSystemAlignments = processPositions(board, lastSystemPositions);
+
+                processValidAlignments(board, validSystemAlignments, humanUser);
+
+            } while (board.isEmpty());  // If board is empty, continue playing
+
+            // User plays
+            System.out.println("User is playing");
+
+            Position[] lastUserPositions = humanUser.play();
+            LinkedList<LinkedList<Square>> validUserAlignments = processPositions(board, lastUserPositions);
+
             board.display();
 
-            Position lastPosition = humanUser.play();
-            board.display();
+            processValidAlignments(board, validUserAlignments, humanUser);
 
-            // Should remove if valid
-            // Should increment score
-
-
-            // Maybe hide/ internalize in getValidAlignments
-            LinkedList validAlignments = board.getMinLengthAlignments(lastPosition, 3);  // FIXME: refactor
-            System.out.println(validAlignments);
-            // TODO Should remove if valid
-            // TODO Should increment score
+            System.out.println("End of turn");
         }
 
-        // Games end
         // Display score
+        System.out.println(humanUser.getScore());
     }
 
     /**
@@ -67,6 +79,30 @@ public class KolorLines {
         }
 
         return validAlignments;
+    }
+
+    /**
+     *  Wrapper over refactored code
+     * @param board
+     * @param validAlignments
+     * @param humanUser
+     */
+    protected static void processValidAlignments(Board board, LinkedList<LinkedList<Square>> validAlignments, HumanUser humanUser){
+
+        for (LinkedList<Square> validAlignment : validAlignments) {
+            for (Square validAlignmentSquare : validAlignment) {
+                board.unsetSquare(validAlignmentSquare.getPosition());
+            }
+        }
+
+        if (validAlignments.size() > 0) {
+
+            double addedValue = HumanUser.computeValue(validAlignments);
+            humanUser.updateScore(addedValue);
+
+            board.display();
+            System.out.println("Score is " + (int) humanUser.getScore());
+        }
     }
 
     private static int MIN_CONSECUTIVE_ALIGNMENT = 3;
