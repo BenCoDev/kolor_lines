@@ -68,18 +68,19 @@ public class KolorLines {
         // Iterate over positions
         for (Position position : positions) {
 
+            if (position != null){  // Can be null (System positions for example)
 
-            // For each position, get valid alignments as a list of lists
-            LinkedList<LinkedList<Square>> alignments = board.getAlignments(position, MIN_CONSECUTIVE_ALIGNMENT);  // FIXME: CHECK can it be null
+                // For each position, get valid alignments as a list of lists
+                LinkedList<LinkedList<Square>> alignments = board.getAlignments(position, MIN_CONSECUTIVE_ALIGNMENT);  // FIXME: CHECK can it be null
 
-            for (LinkedList<Square> alignment : alignments) {  // For each alignment, check not already as alignment of a position
+                for (LinkedList<Square> alignment : alignments) {  // For each alignment, check not already as alignment of a position
 
-                if (!validAlignments.contains(alignment)) {
-                    validAlignments.add(alignment);
+                    if (!validAlignments.contains(alignment)) {
+                        validAlignments.add(alignment);
+                    }
                 }
+
             }
-
-
         }
 
         return validAlignments;
@@ -105,6 +106,7 @@ public class KolorLines {
             humanUser.updateScore(addedValue);
 
             board.display();
+            System.out.println("Youhou! You just got " + (int) addedValue + " points");
             System.out.println("Score is " + (int) humanUser.getScore());
         }
     }
