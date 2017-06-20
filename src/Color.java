@@ -1,7 +1,9 @@
+package src;
+
 import java.util.*;
 
 /**
- * Color enum represents different colors which can be use in the game by a Square
+ * src.Color enum represents different colors which can be use in the game by a src.Square
  *
  * Following list can be extended with other colors
  *
@@ -20,7 +22,7 @@ public enum Color {
     private static final Random RANDOM = new Random();
 
     /**
-     * Returns a random Color object with value from the enum.
+     * Returns a random src.Color object with value from the enum.
      *
      * @return  the color randomly created
      */

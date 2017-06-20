@@ -1,4 +1,4 @@
-package PACKAGE_NAME;
+package src;
 
 /**
  * Created by benoitcotte on 19/06/2017.

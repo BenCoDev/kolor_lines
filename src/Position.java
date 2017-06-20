@@ -1,12 +1,14 @@
+package src;
+
 public class Position {
     /**
-     * a Position object represents the coordinates in a cartesian plane.
+     * a src.Position object represents the coordinates in a cartesian plane.
      *
-     * The origin Position(0, 0) of the plane is the top left corner.
+     * The origin src.Position(0, 0) of the plane is the top left corner.
      *
      * Validate data according maxLength and maxWidth if have been set
-     * If normal flow, should be set at the Board instantiation (Aggregation)
-     * Otherwise, enable to instantiate a Position free of any context.
+     * If normal flow, should be set at the src.Board instantiation (Aggregation)
+     * Otherwise, enable to instantiate a src.Position free of any context.
      *
      * @param abs   int     Abscise of the position
      * @param ord   int     Ordinate of the position
@@ -116,7 +118,7 @@ public class Position {
 
     // Only call here
     public static Position prompt(String positionName){
-        System.out.println("Position: " + positionName);
+        System.out.println("src.Position: " + positionName);
 
         int abs = promptCoord("Abscisse");
         int ord = promptCoord("Ordinate");
@@ -132,8 +134,8 @@ public class Position {
     private static int minWidth = 0;
     private static int minHeight = 0;
 
-    private static int maxWidth;  // Will be set at Board instantiation
-    private static int maxHeight; // Will be set at Board instantiation
+    private static int maxWidth;  // Will be set at src.Board instantiation
+    private static int maxHeight; // Will be set at src.Board instantiation
 
     private int abs;
     private int ord;

@@ -1,3 +1,5 @@
+package src;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -7,10 +9,10 @@ public class SquareTest {
     @Test
     public void getColor() throws Exception {
         Square square = new Square(new Position(1, 1));
-        assertNotNull("Color should be set randomly", square.getColor());
+        assertNotNull("src.Color should be set randomly", square.getColor());
 
         Square squareBlue = new Square(new Position(1, 1), Color.BLEU);
-        assertEquals("Color should be set to BLEU", squareBlue.getColor(), Color.BLEU);
+        assertEquals("src.Color should be set to BLEU", squareBlue.getColor(), Color.BLEU);
     }
 
     @Test

@@ -1,11 +1,13 @@
+package src;
+
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Collections;
 
 /**
- * Represents the Board for Kolor Lines games
+ * Represents the src.Board for Kolor Lines games
  *
- * The Board is composed of squares and has a defined size
+ * The src.Board is composed of squares and has a defined size
  */
 public class Board {
 
@@ -39,7 +41,7 @@ public class Board {
     }
 
     public static Board prompt(){
-        int size = Utils.promptInt("Board size");
+        int size = Utils.promptInt("src.Board size");
 
         try {
             return new Board(size);
@@ -95,7 +97,7 @@ public class Board {
      * Will then merge found alignments according 4 directions and including the square at given position
      * Finally check length
      *
-     * @param pos - Position - Position of the original point from where alignments are computed
+     * @param pos - src.Position - src.Position of the original point from where alignments are computed
      * @param minimumLength - int - Minimum length needed for an alignment to be returned
      * @return LinkedList - List of Lists of the squares in returned alignments
      */
@@ -167,7 +169,7 @@ public class Board {
 
     public void setSquare(Position pos){
         // FIXME: is it more addSquare to board and should take square object?
-        // If not (because composition: be sure that no other place instantiate Square)
+        // If not (because composition: be sure that no other place instantiate src.Square)
         // TODO: add tests
         this.squares[pos.getOrd()][pos.getAbs()] = new Square(pos);
     }
@@ -218,8 +220,8 @@ public class Board {
     /**
      * List the squares surrounding a position
      *
-     * @param pos - Position - Position at which we want to list the neighbours
-     * @return - Square[] - List of squares for every direction listed
+     * @param pos - src.Position - src.Position at which we want to list the neighbours
+     * @return - src.Square[] - List of squares for every direction listed
      *         Given in the order defined by the Direction enum
      *         null if empty
      */
@@ -245,7 +247,7 @@ public class Board {
      * includes curSquare and will extend alignments for each direction
      *
      *
-     * @param pos - Position - Position of the original point from where alignments are computed
+     * @param pos - src.Position - src.Position of the original point from where alignments are computed
      * @return LinkedList - List of lists of aligned squares by direction
      *                      Given in the order of the Direction enum
      *                      Min size of 1 since it includes the curSquare
@@ -276,9 +278,9 @@ public class Board {
     /**
      * Extend alignments given a position, an existing array of alignments by directions, and a given direction
      *
-     * Square in the alignments are added in the order relative to the direction
+     * src.Square in the alignments are added in the order relative to the direction
      *
-     * @param pos - Position - Position of the original point from where alignments are computed
+     * @param pos - src.Position - src.Position of the original point from where alignments are computed
      * @param alignmentsByDirection - Array of LinkedList of Squares - Array of alignments by directions -
      *                              will be extended in place
      * @param direction - Direction
@@ -306,14 +308,14 @@ public class Board {
     }
 
     /**
-     * Merge alignments from a given Square
+     * Merge alignments from a given src.Square
      * by merging opposite directions 2 by 2
      *
-     * Note: Case V V Rb B B, with Rb being the given Square ==> Rb will only count for leftSide
+     * Note: Case V V Rb B B, with Rb being the given src.Square ==> Rb will only count for leftSide
      * Controlled by shouldMergeRightSide boolean
      *
      * Also add the current square
-     * @param alignmentsByDirection: LinkedList[8] - Alignments surrounding a Square by direction
+     * @param alignmentsByDirection: LinkedList[8] - Alignments surrounding a src.Square by direction
      * @return LinkedList[4] - { alignments on NWSE, alignments on WE, alignments on SWNE, alignments on SN }
      */
     protected static LinkedList<Square>[] mergeAlignments(LinkedList<Square>[] alignmentsByDirection){
@@ -391,9 +393,9 @@ public class Board {
     }
 
     /**
-     * Fetch a standard color (not equal to RAINBOW) given a linked list of Square
-     * @param curSquare - ListIterator<Square> - current square
-     * @return Color - standard color, otherwise returns None
+     * Fetch a standard color (not equal to RAINBOW) given a linked list of src.Square
+     * @param curSquare - ListIterator<src.Square> - current square
+     * @return src.Color - standard color, otherwise returns None
      */
     protected static Color fetchStandardColor(ListIterator<Square> curSquare){
         if (curSquare.hasNext()) {

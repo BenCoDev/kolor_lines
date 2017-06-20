@@ -1,8 +1,10 @@
+package src;
+
 import java.util.LinkedList;
 
 abstract public class User {
 
-//    public User() {
+//    public src.User() {
 //    }
 
     // Play

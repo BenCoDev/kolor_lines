@@ -1,3 +1,5 @@
+package src;
+
 public class PositionException extends Exception {
 
     /**
