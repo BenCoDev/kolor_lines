@@ -1,21 +1,21 @@
-package src;
+package src.model;
 
 /**
- * Represents a square of the src.Board (composition)
+ * Represents a square of the src.model.Board (composition)
  *
- * a src.Square object has a position on the src.Board
+ * a src.model.Square object has a position on the src.model.Board
  * and a color if the square is filled (i.e. if there is a pawn of the corresponding color at the position)
  */
 public class Square {
-    // TODO: check if can be set as abstract see if initialized other place than src.Board
+    // TODO: check if can be set as abstract see if initialized other place than src.model.Board
     // TODO: should enable square to have no colors
 
 
     /**
-     * Instantiates a src.Square given a position
+     * Instantiates a src.model.Square given a position
      * Will set a random color for this square
      *
-     * @param pos   src.Position    src.Position of the src.Square
+     * @param pos   src.model.Position    src.model.Position of the src.model.Square
      */
     public Square(Position pos){
         this.position = pos;
@@ -23,11 +23,11 @@ public class Square {
     }
 
     /**
-     * Instantiates a src.Square given a position and a color
+     * Instantiates a src.model.Square given a position and a color
      * Will set a random color for this square
      *
-     * @param pos   src.Position    src.Position of the src.Square
-     * @param color   src.Color     src.Color of the src.Square
+     * @param pos   src.model.Position    src.model.Position of the src.model.Square
+     * @param color   src.model.Color     src.model.Color of the src.model.Square
      */
     public Square(Position pos, Color color) {
         this.position = pos;

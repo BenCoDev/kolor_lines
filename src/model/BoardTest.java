@@ -1,4 +1,4 @@
-package src;
+package src.model;
 
 import org.junit.After;
 import org.junit.Before;

@@ -1,11 +1,13 @@
-package src;
+package src.controller;
+
+import src.model.*;
 
 import java.util.LinkedList;
 
 public class KolorLines {
     public static void main(String[] args) throws Exception {
 
-        // Prompt to get src.Board size
+        // Prompt to get src.model.Board size
         Board board = Board.prompt();
 
         SystemUser systemUser = new SystemUser();
@@ -37,8 +39,8 @@ public class KolorLines {
                 break;
             }
 
-            // src.User plays
-            System.out.println("src.User is playing");
+            // src.model.User plays
+            System.out.println("src.model.User is playing");
 
             Position[] lastUserPositions = humanUser.play();
             LinkedList<LinkedList<Square>> validUserAlignments = processPositions(board, lastUserPositions);

@@ -1,10 +1,10 @@
-package src;
+package src.model;
 
 public class HumanUser extends User {
 
     public Position[] play() {
         // Turn for the Human user
-        // Aggregation ?? src.User has a board, or a board has a src.User ==> more src.User has a board
+        // Aggregation ?? src.model.User has a board, or a board has a src.model.User ==> more src.model.User has a board
         Position[] lastPositions = new Position[1];
 
         Square originalSquare = this.getBoard().promptSquare();

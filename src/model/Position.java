@@ -1,19 +1,21 @@
-package src;
+package src.model;
+
+import src.controller.Utils;
 
 public class Position {
     /**
-     * a src.Position object represents the coordinates in a cartesian plane.
+     * a src.model.Position object represents the coordinates in a cartesian plane.
      *
-     * The origin src.Position(0, 0) of the plane is the top left corner.
+     * The origin src.model.Position(0, 0) of the plane is the top left corner.
      *
      * Validate data according maxLength and maxWidth if have been set
-     * If normal flow, should be set at the src.Board instantiation (Aggregation)
-     * Otherwise, enable to instantiate a src.Position free of any context.
+     * If normal flow, should be set at the src.model.Board instantiation (Aggregation)
+     * Otherwise, enable to instantiate a src.model.Position free of any context.
      *
      * @param abs   int     Abscise of the position
      * @param ord   int     Ordinate of the position
      */
-    Position(int abs, int ord) throws PositionException {
+    public Position(int abs, int ord) throws PositionException {
         this.abs = abs;
         this.ord = ord;
 
@@ -118,7 +120,7 @@ public class Position {
 
     // Only call here
     public static Position prompt(String positionName){
-        System.out.println("src.Position: " + positionName);
+        System.out.println("src.model.Position: " + positionName);
 
         int abs = promptCoord("Abscisse");
         int ord = promptCoord("Ordinate");
@@ -134,8 +136,8 @@ public class Position {
     private static int minWidth = 0;
     private static int minHeight = 0;
 
-    private static int maxWidth;  // Will be set at src.Board instantiation
-    private static int maxHeight; // Will be set at src.Board instantiation
+    private static int maxWidth;  // Will be set at src.model.Board instantiation
+    private static int maxHeight; // Will be set at src.model.Board instantiation
 
     private int abs;
     private int ord;

@@ -1,4 +1,4 @@
-package src;
+package src.model;
 
 import org.junit.Test;
 
