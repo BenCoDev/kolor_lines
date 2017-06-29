@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.LinkedList;
@@ -28,7 +29,7 @@ public class BoardTest {
 
     @Test
     public void isFull_FullCase() throws Exception {
-        Board b = new Board(1);
+        Board b = new Board(new Dimension(1, 1));
         Position position = new Position(0, 0);
 
         b.setSquare(position);
@@ -38,7 +39,7 @@ public class BoardTest {
 
     @Test
     public void isFull_NotFullCase() throws Exception {
-        Board b = new Board(3);
+        Board b = new Board(new Dimension(3, 3));
         Position position = new Position(1, 1);
 
         b.setSquare(position);
@@ -48,7 +49,7 @@ public class BoardTest {
 
     @Test
     public void display_EmptyBoard() throws Exception {
-        Board b = new Board(1);
+        Board b = new Board(new Dimension(1, 1));
         b.display();
         assertEquals("Should have displayed empty board", outContent.toString(),
                 "         /         0\n" +
@@ -58,7 +59,7 @@ public class BoardTest {
 
     @Test
     public void display_FilledBoard() throws Exception {
-        Board b = new Board(1);
+        Board b = new Board(new Dimension(1, 1));
         Position position = new Position(0, 0);
 
         b.setSquare(position);
@@ -74,7 +75,7 @@ public class BoardTest {
     public void listNeighbours() throws Exception {
 //        TODO: refine
 
-        Board b = new Board(2);
+        Board b = new Board(new Dimension(2, 2));
         Position originalPosition = new Position(0, 0);
         b.setSquare(originalPosition);
 
@@ -85,7 +86,7 @@ public class BoardTest {
 
     @Test
     public void fetchAlignments_BasicCase() throws Exception {
-        Board b = new Board(2);
+        Board b = new Board(new Dimension(2, 2));
         Position originalPosition = new Position(1, 1);
         b.setSquare(originalPosition);
 
@@ -100,7 +101,7 @@ public class BoardTest {
 
     @Test
     public void fetchAlignments_WithNeighbours() throws Exception {
-        Board b = new Board(3);
+        Board b = new Board(new Dimension(3, 3));
 
         Position originalPosition = new Position(1, 1);
         b.setSquare(originalPosition, Color.BLEU);
@@ -135,7 +136,7 @@ public class BoardTest {
 
     @Test
     public void fetchAlignments_MultipleSquareAlignments() throws Exception {
-        Board b = new Board(3);
+        Board b = new Board(new Dimension(3, 3));
 
         Position originalPosition = new Position(0, 0);
         b.setSquare(originalPosition, Color.BLEU);
@@ -197,7 +198,7 @@ public class BoardTest {
 
     @Test
     public void isColorValid() throws Exception {
-        Board b = new Board(3);  // to avoid conflict with previous test cases with inferior value
+        Board b = new Board(new Dimension(3, 3));  // to avoid conflict with previous test cases with inferior value
 
         LinkedList<Square> curSquares = new LinkedList<Square>();
         curSquares.add(new Square(new Position(0, 0), Color.BLEU));
@@ -226,7 +227,7 @@ public class BoardTest {
     @Test
     public void getAlignments_AlignmentWithRainbow_ReturnsAlignment() throws Exception {
         int SIZE = 3;
-        Board board = new Board(SIZE);
+        Board board = new Board(new Dimension(SIZE, SIZE));
 
         String[] boardSerialized = {
                 "BLEU", "ROUGE", "RAINBOW",
@@ -245,7 +246,7 @@ public class BoardTest {
     @Test
     public void getAlignments_AlignmentWithRainbow_ReturnsNoAlignment() throws Exception {
         int SIZE = 3;
-        Board board = new Board(SIZE);
+        Board board = new Board(new Dimension(SIZE, SIZE));
 
         String[] boardSerialized = {
                 null, "BLEU", null,
@@ -269,7 +270,7 @@ public class BoardTest {
     @Test
     public void getAlignments_RandomAlignment_ReturnAlignments() throws Exception {
         int SIZE = 10;
-        Board board = new Board(SIZE);
+        Board board = new Board(new Dimension(SIZE, SIZE));
 
         String[] boardSerialized = {
                 null, "ROUGE", null, null, null, null, "VERT", null, null, "VERT",
