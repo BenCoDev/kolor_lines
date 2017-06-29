@@ -8,10 +8,11 @@ public class HumanUser extends User {
         Position[] lastPositions = new Position[1];
 
         Square originalSquare = this.getBoard().promptSquare();
+        Color originalColor = originalSquare.getColor();
         this.getBoard().unsetSquare(originalSquare.getPosition());
 
         Position targetPosition = this.getBoard().promptPosition();
-        this.getBoard().setSquare(targetPosition, originalSquare.getColor());
+        this.getBoard().setSquare(targetPosition, originalColor);
 
         lastPositions[0] = targetPosition;
 
