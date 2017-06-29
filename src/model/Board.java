@@ -2,6 +2,7 @@ package src.model;
 
 import src.controller.Utils;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Collections;
@@ -15,40 +16,54 @@ import static src.model.Color.RAINBOW;
  */
 public class Board {
 
-    public Board(int size) throws BoardException {
-        Position.setMaxWidth(size);
-        Position.setMaxHeight(size);
+    public Board(Dimension size) throws BoardException {
+        Position.setMaxWidth(size.width);
+        Position.setMaxHeight(size.height);
 
         this.size = size;
         this.validate();  // valid after setting size
 
-        this.squares = new Square[size][size];
+        this.squares = new Square[size.width][size.height];
         // composition
         // Lazy, instance square if nothing
         // means that a square can be
         // colored, or null ==> a square here must be colored
+        // This is being currently modified !
+        // Keep this decision though
+        for (int x = 0; x < this.size.getWidth(); x++) {
+            for (int y = 0; y < this.size.getHeight(); y++) {
+
+                try {
+                    Position pos = new Position(x, y);
+                    this.setSquare(pos, null);
+                } catch (PositionException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
 
     }
 
     private void validate() throws BoardException {
-        if (this.size <= 0){
+        if (this.size.width <= 0){
             throw new BoardException("Size should be at least 1");
         }
     }
 
     public void load(String[] serializedBoard) throws Exception {
-        for (int i = 0; i < (this.size * this.size); i++) {
+        for (int i = 0; i < (this.size.width * this.size.width); i++) {
             if (serializedBoard[i] != null) {
-                this.setSquare(new Position(i % this.size, i / this.size), Color.valueOf(serializedBoard[i]));
+                this.setSquare(new Position(i % this.size.width, i / this.size.width), Color.valueOf(serializedBoard[i]));
             }
         }
     }
 
     public static Board prompt(){
-        int size = Utils.promptInt("src.model.Board size");
+        int size = Utils.promptInt("Board size (in number of squares)");
 
         try {
-            return new Board(size);
+            return new Board(new Dimension(size, size));
 
         } catch (BoardException e){
             System.out.println(e.getMessage());
@@ -65,16 +80,18 @@ public class Board {
 
             for (int j = 0; j < this.squares[i].length; j++) {
                 Square curSquare;
+
                 try {
-                    curSquare = this.getSquare(new Position(i, j));
+                    Position position = new Position(i, j);
+                    curSquare = this.getSquare(position);
+                    if (curSquare.getColor() == null){
+                        return false;
+                    }
                 }
-                catch (Exception e) {
-                    curSquare = null;
+                catch (Exception e){
+                    System.out.print("CLEAN ME"); // TODO: clean me
                 }
 
-                if (curSquare == null){
-                    return false;
-                }
             }
         return true;
     }
@@ -127,7 +144,7 @@ public class Board {
 
         String formattedTable = "";
 
-        for (int i=0; i < (this.size + 1) * COL_WIDTH; i++){
+        for (int i=0; i < (this.size.width + 1) * COL_WIDTH; i++){
             formattedTable += SEPARATOR;
         }
 
@@ -149,7 +166,7 @@ public class Board {
                     formattedTable += String.format("%" + COL_WIDTH + "s", rowIndex);
                 }
 
-                if (Square.class.isInstance(this.squares[rowIndex][colIndex])){
+                if (this.squares[rowIndex][colIndex].getColor() != null){
                     formattedTable += String.format("%" + COL_WIDTH + "s", this.squares[rowIndex][colIndex].getColor());
                 }
                 else {
@@ -160,7 +177,7 @@ public class Board {
             formattedTable += "\n";
         }
 
-        for (int i=0; i < (this.size + 1) * COL_WIDTH; i++){
+        for (int i=0; i < (this.size.width + 1) * COL_WIDTH; i++){
             formattedTable += SEPARATOR;
         }
 
@@ -175,7 +192,7 @@ public class Board {
         // FIXME: is it more addSquare to board and should take square object?
         // If not (because composition: be sure that no other place instantiate src.model.Square)
         // TODO: add tests
-        this.squares[pos.getOrd()][pos.getAbs()] = new Square(pos);
+        this.squares[pos.getOrd()][pos.getAbs()] = new Square(pos, Color.randomColor());
     }
 
     public void setSquare(Position pos, Color color){
@@ -185,7 +202,7 @@ public class Board {
 
     public void unsetSquare(Position pos){
 //        TODO: add tests
-        this.squares[pos.getOrd()][pos.getAbs()] = null;
+        this.squares[pos.getOrd()][pos.getAbs()].setColor(null);
     }
 
     /**
@@ -195,7 +212,7 @@ public class Board {
 
         Position pos = Position.prompt("Original");
 
-        if (this.getSquare(pos) != null){
+        if (this.getSquare(pos).getColor() != null){
             return this.getSquare(pos);
         }
 
@@ -211,7 +228,7 @@ public class Board {
     public Position promptPosition(){
         Position pos = Position.prompt("Target");
 
-        if (this.getSquare(pos) == null){
+        if (this.getSquare(pos).getColor() == null){
             return pos;
         }
 
@@ -270,9 +287,9 @@ public class Board {
             alignmentsByDirection[i].add(curSquare);
 
             if (neighbours[i] != null) {
-
-                extendAlignments(pos, alignmentsByDirection, Board.Direction.values()[i]);
-
+                if (neighbours[i].getColor() != null){
+                    extendAlignments(pos, alignmentsByDirection, Board.Direction.values()[i]);
+                }
             }
         }
 
@@ -380,12 +397,17 @@ public class Board {
      * @return
      */
     protected static boolean isColorValid(LinkedList<Square> curSquares, Square nextSquare){
+
         if (curSquares.size() == 0){
             // base case where has been going up while color was rainbow
             return true;
         }
 
         Square curSquare = curSquares.getLast();
+
+        if (curSquare.getColor() == null){
+            return false;
+        }
 
         switch (curSquare.getColor()) {
             case RAINBOW:
@@ -414,7 +436,11 @@ public class Board {
         return null;
     }
 
-    private int size;
+    public Dimension getSize() {
+        return size;
+    }
+
+    private Dimension size;
     private Square[][] squares;  // TODO: describe
     public enum Direction { N, NE, E, SE, S, SW, W, NW };
 }

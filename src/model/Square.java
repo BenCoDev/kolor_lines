@@ -19,7 +19,6 @@ public class Square {
      */
     public Square(Position pos){
         this.position = pos;
-        this.color = Color.randomColor();
     }
 
     /**
@@ -36,6 +35,10 @@ public class Square {
 
     public Color getColor() {
         return this.color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public Position getPosition() {
