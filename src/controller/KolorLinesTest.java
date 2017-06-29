@@ -5,6 +5,7 @@ import src.model.Board;
 import src.model.Position;
 import src.model.Square;
 
+import java.awt.*;
 import java.util.LinkedList;
 
 import static org.junit.Assert.*;
@@ -14,7 +15,7 @@ public class KolorLinesTest {
     @Test
     public void processPosition() throws Exception {
         int SIZE = 3;
-        Board board = new Board(SIZE);
+        Board board = new Board(new Dimension(SIZE, SIZE));
 
         // System placed 3 squares valid for alignment
         String[] boardSerialized = {

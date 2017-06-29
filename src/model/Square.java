@@ -1,5 +1,7 @@
 package src.model;
 
+import java.awt.*;
+
 /**
  * Represents a square of the src.model.Board (composition)
  *
@@ -44,6 +46,37 @@ public class Square {
     public Position getPosition() {
         return position;
     }
+
+    /**
+     * Explain why not in view (bc not a JPanel)
+     * @param g
+     */
+    public void draw(Graphics g){
+
+        if (this.color == null) {
+            g.setColor(java.awt.Color.RED);
+            g.fillRect(
+                    this.position.getAbs() * WIDTH + GUTTER,
+                    this.position.getOrd() * WIDTH + GUTTER,
+                    WIDTH - GUTTER,
+                    WIDTH - GUTTER);
+        }
+        else {
+            g.setColor(java.awt.Color.BLACK);
+            g.fillRect(this.position.getAbs(), this.position.getOrd(), WIDTH, WIDTH);
+        }
+    }
+
+    public static int getWidth() {
+        return WIDTH;
+    }
+
+    public static int getGutter() {
+        return GUTTER;
+    }
+
+    private static int WIDTH = 100;
+    private static int GUTTER = 5;
 
     private Position position;
     private Color color;
