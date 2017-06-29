@@ -53,6 +53,10 @@ public class KolorLinesFrame {
         return sidePanel;
     }
 
+    public void repaintBoardPanel() {
+        this.boardPanel.repaint();
+    }
+
     public void exitProcedure(){
         this.frame.dispose();
         System.exit(0);

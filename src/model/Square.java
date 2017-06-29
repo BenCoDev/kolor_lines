@@ -54,7 +54,7 @@ public class Square {
     public void draw(Graphics g){
 
         if (this.color == null) {
-            g.setColor(java.awt.Color.RED);
+            g.setColor(java.awt.Color.LIGHT_GRAY);
             g.fillRect(
                     this.position.getAbs() * WIDTH + GUTTER,
                     this.position.getOrd() * WIDTH + GUTTER,
@@ -62,8 +62,12 @@ public class Square {
                     WIDTH - GUTTER);
         }
         else {
-            g.setColor(java.awt.Color.BLACK);
-            g.fillRect(this.position.getAbs(), this.position.getOrd(), WIDTH, WIDTH);
+            g.setColor(this.getColor().getAwtColor());
+            g.fillRect(
+                    this.position.getAbs() * WIDTH + GUTTER,
+                    this.position.getOrd() * WIDTH + GUTTER,
+                    WIDTH - GUTTER,
+                    WIDTH - GUTTER);
         }
     }
 

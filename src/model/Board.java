@@ -30,6 +30,11 @@ public class Board {
         // colored, or null ==> a square here must be colored
         // This is being currently modified !
         // Keep this decision though
+        this.initSquares();
+
+    }
+
+    public void initSquares() {
         for (int x = 0; x < this.size.getWidth(); x++) {
             for (int y = 0; y < this.size.getHeight(); y++) {
 
@@ -42,7 +47,6 @@ public class Board {
 
             }
         }
-
     }
 
     private void validate() throws BoardException {

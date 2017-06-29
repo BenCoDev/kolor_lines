@@ -40,30 +40,6 @@ public class ScorePanel {
 
         int gridy = 0;
 
-        JLabel highScoreLabel = new JLabel("High Score:");
-        addComponent(panel, highScoreLabel, 0, gridy, 1, 1,
-                regularInsets, GridBagConstraints.LINE_START,
-                GridBagConstraints.HORIZONTAL);
-
-        highScoreField = new JTextField(6);
-        highScoreField.setEditable(false);
-        highScoreField.setHorizontalAlignment(JTextField.RIGHT);
-        addComponent(panel, highScoreField, 1, gridy++, 1, 1,
-                regularInsets, GridBagConstraints.LINE_START,
-                GridBagConstraints.HORIZONTAL);
-
-        JLabel highCellLabel = new JLabel("High Cell:");
-        addComponent(panel, highCellLabel, 0, gridy, 1, 1,
-                spaceInsets, GridBagConstraints.LINE_START,
-                GridBagConstraints.HORIZONTAL);
-
-        highCellField = new JTextField(6);
-        highCellField.setEditable(false);
-        highCellField.setHorizontalAlignment(JTextField.RIGHT);
-        addComponent(panel, highCellField, 1, gridy++, 1, 1,
-                spaceInsets, GridBagConstraints.LINE_START,
-                GridBagConstraints.HORIZONTAL);
-
         JLabel currentScoreLabel = new JLabel("Current Score:");
         addComponent(panel, currentScoreLabel, 0, gridy, 1, 1,
                 regularInsets, GridBagConstraints.LINE_START,
@@ -73,18 +49,6 @@ public class ScorePanel {
         currentScoreField.setEditable(false);
         currentScoreField.setHorizontalAlignment(JTextField.RIGHT);
         addComponent(panel, currentScoreField, 1, gridy++, 1, 1,
-                regularInsets, GridBagConstraints.LINE_START,
-                GridBagConstraints.HORIZONTAL);
-
-        JLabel currentCellLabel = new JLabel("Current High Cell:");
-        addComponent(panel, currentCellLabel, 0, gridy, 1, 1,
-                regularInsets, GridBagConstraints.LINE_START,
-                GridBagConstraints.HORIZONTAL);
-
-        currentCellField = new JTextField(6);
-        currentCellField.setEditable(false);
-        currentCellField.setHorizontalAlignment(JTextField.RIGHT);
-        addComponent(panel, currentCellField, 1, gridy++, 1, 1,
                 regularInsets, GridBagConstraints.LINE_START,
                 GridBagConstraints.HORIZONTAL);
     }

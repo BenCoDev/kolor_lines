@@ -1,5 +1,6 @@
 package src.view;
 
+import src.controller.ControlController;
 import src.model.Board;
 
 import java.awt.Component;
@@ -29,8 +30,8 @@ public class ControlPanel {
     }
 
     private void createPartControl() {
-//        StartGameActionListener listener =
-//                new StartGameActionListener(frame, model);
+        ControlController listener =
+                new ControlController(frame, board);
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
@@ -38,7 +39,7 @@ public class ControlPanel {
         int gridy = 0;
 
         JButton startGameButton = new JButton("Start Game");
-//        startGameButton.addActionListener(listener);
+        startGameButton.addActionListener(listener);
         addComponent(panel, startGameButton, 0, gridy++, 1, 1,
                 regularInsets, GridBagConstraints.LINE_START,
                 GridBagConstraints.HORIZONTAL);

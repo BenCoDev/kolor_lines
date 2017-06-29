@@ -104,21 +104,21 @@ public class BoardTest {
         Board b = new Board(new Dimension(3, 3));
 
         Position originalPosition = new Position(1, 1);
-        b.setSquare(originalPosition, Color.BLEU);
+        b.setSquare(originalPosition, Color.BLUE);
 
         // Add NE with same color
         Position NEPosition = new Position(2, 0);
-        b.setSquare(NEPosition, Color.BLEU);
+        b.setSquare(NEPosition, Color.BLUE);
         Square squareNE = b.getSquare(NEPosition);
 
         // Add E with different color
         Position EPosition = new Position(2, 1);
-        b.setSquare(EPosition, Color.VERT);
+        b.setSquare(EPosition, Color.GREEN);
         Square squareE = b.getSquare(EPosition);
 
         // Add SW with same color
         Position SWPosition = new Position(0, 2);
-        b.setSquare(SWPosition, Color.BLEU);
+        b.setSquare(SWPosition, Color.BLUE);
         Square squareSW = b.getSquare(SWPosition);
 
 
@@ -139,16 +139,16 @@ public class BoardTest {
         Board b = new Board(new Dimension(3, 3));
 
         Position originalPosition = new Position(0, 0);
-        b.setSquare(originalPosition, Color.BLEU);
+        b.setSquare(originalPosition, Color.BLUE);
 
         // Add nextPosition with same color
         Position nextPosition = new Position(1, 1);
-        b.setSquare(nextPosition, Color.BLEU);
+        b.setSquare(nextPosition, Color.BLUE);
         Square nextSquare = b.getSquare(nextPosition);
 
         // Add nextNextPosition with same color
         Position nextNextPosition = new Position(2, 2);
-        b.setSquare(nextNextPosition, Color.BLEU);
+        b.setSquare(nextNextPosition, Color.BLUE);
         Square nextNextSquare = b.getSquare(nextNextPosition);
 
         LinkedList<Square>[] expectedArray = new LinkedList[8];
@@ -201,27 +201,27 @@ public class BoardTest {
         Board b = new Board(new Dimension(3, 3));  // to avoid conflict with previous test cases with inferior value
 
         LinkedList<Square> curSquares = new LinkedList<Square>();
-        curSquares.add(new Square(new Position(0, 0), Color.BLEU));
+        curSquares.add(new Square(new Position(0, 0), Color.BLUE));
 
-        assertTrue(Board.isColorValid(curSquares, new Square(new Position(1, 1), Color.BLEU)));
+        assertTrue(Board.isColorValid(curSquares, new Square(new Position(1, 1), Color.BLUE)));
         assertTrue(Board.isColorValid(curSquares, new Square(new Position(1, 1), Color.RAINBOW)));
-        assertFalse(Board.isColorValid(curSquares, new Square(new Position(1, 1), Color.ROUGE)));
+        assertFalse(Board.isColorValid(curSquares, new Square(new Position(1, 1), Color.RED)));
 
         curSquares.add(new Square(new Position(0, 0), Color.RAINBOW));
-        assertTrue(Board.isColorValid(curSquares, new Square(new Position(1, 1), Color.BLEU)));
+        assertTrue(Board.isColorValid(curSquares, new Square(new Position(1, 1), Color.BLUE)));
         assertTrue(Board.isColorValid(curSquares, new Square(new Position(1, 1), Color.RAINBOW)));
-        assertFalse(Board.isColorValid(curSquares, new Square(new Position(1, 1), Color.ROUGE)));
+        assertFalse(Board.isColorValid(curSquares, new Square(new Position(1, 1), Color.RED)));
 
         LinkedList<Square> curSquaresStartingRainbow = new LinkedList<Square>();
         curSquaresStartingRainbow.add(new Square(new Position(0, 0), Color.RAINBOW));
-        assertTrue(Board.isColorValid(curSquaresStartingRainbow, new Square(new Position(1, 1), Color.BLEU)));
+        assertTrue(Board.isColorValid(curSquaresStartingRainbow, new Square(new Position(1, 1), Color.BLUE)));
         assertTrue(Board.isColorValid(curSquaresStartingRainbow, new Square(new Position(1, 1), Color.RAINBOW)));
-        assertTrue(Board.isColorValid(curSquaresStartingRainbow, new Square(new Position(1, 1), Color.ROUGE)));
+        assertTrue(Board.isColorValid(curSquaresStartingRainbow, new Square(new Position(1, 1), Color.RED)));
 
-        curSquaresStartingRainbow.add(new Square(new Position(0, 0), Color.BLEU));
-        assertTrue(Board.isColorValid(curSquaresStartingRainbow, new Square(new Position(1, 1), Color.BLEU)));
+        curSquaresStartingRainbow.add(new Square(new Position(0, 0), Color.BLUE));
+        assertTrue(Board.isColorValid(curSquaresStartingRainbow, new Square(new Position(1, 1), Color.BLUE)));
         assertTrue(Board.isColorValid(curSquaresStartingRainbow, new Square(new Position(1, 1), Color.RAINBOW)));
-        assertFalse(Board.isColorValid(curSquaresStartingRainbow, new Square(new Position(1, 1), Color.ROUGE)));
+        assertFalse(Board.isColorValid(curSquaresStartingRainbow, new Square(new Position(1, 1), Color.RED)));
     }
 
     @Test
@@ -230,9 +230,9 @@ public class BoardTest {
         Board board = new Board(new Dimension(SIZE, SIZE));
 
         String[] boardSerialized = {
-                "BLEU", "ROUGE", "RAINBOW",
-                "ROUGE", "BLEU", "BLEU",
-                "BLEU", "ROUGE", "VERT"
+                "BLUE", "RED", "RAINBOW",
+                "RED", "BLUE", "BLUE",
+                "BLUE", "RED", "GREEN"
         };
 
         board.load(boardSerialized);
@@ -249,9 +249,9 @@ public class BoardTest {
         Board board = new Board(new Dimension(SIZE, SIZE));
 
         String[] boardSerialized = {
-                null, "BLEU", null,
-                "ROUGE", "RAINBOW", "VERT",
-                "VERT", null, "BLEU"
+                null, "BLUE", null,
+                "RED", "RAINBOW", "GREEN",
+                "GREEN", null, "BLUE"
         };
 
         board.load(boardSerialized);
@@ -273,16 +273,16 @@ public class BoardTest {
         Board board = new Board(new Dimension(SIZE, SIZE));
 
         String[] boardSerialized = {
-                null, "ROUGE", null, null, null, null, "VERT", null, null, "VERT",
-                "BLEU", "ROUGE", null, null, null, "RAINBOW", "ROUGE", null, "BLEU", "RAINBOW",
-                "BLEU", null, null, "VERT", null, null, null, "VERT", null, "ROUGE",
-                null, "VERT", null, "ROUGE", "ROUGE", null, null, null, "ROUGE", null,
-                "BLEU", null, "RAINBOW", null, "VERT", null, "ROUGE", "BLEU", "ROUGE", "VERT",
-                null, null, "VERT", null, null, null, "ROUGE", null, "VERT", "VERT",
-                "BLEU", "RAINBOW", "BLEU", "VERT", null, null, null, "ROUGE", "VERT", "VERT",
-                "BLEU", "ROUGE", "VERT", null, null, null, "ROUGE", null, "VERT", "VERT",
-                "ROUGE", null, "RAINBOW", "BLEU", "RAINBOW", "VERT", null, "ROUGE", null, "BLEU",
-                "RAINBOW", null, null, "ROUGE", "VERT", null, "ROUGE", "RAINBOW", null, "VERT",
+                null, "RED", null, null, null, null, "GREEN", null, null, "GREEN",
+                "BLUE", "RED", null, null, null, "RAINBOW", "RED", null, "BLUE", "RAINBOW",
+                "BLUE", null, null, "GREEN", null, null, null, "GREEN", null, "RED",
+                null, "GREEN", null, "RED", "RED", null, null, null, "RED", null,
+                "BLUE", null, "RAINBOW", null, "GREEN", null, "RED", "BLUE", "RED", "GREEN",
+                null, null, "GREEN", null, null, null, "RED", null, "GREEN", "GREEN",
+                "BLUE", "RAINBOW", "BLUE", "GREEN", null, null, null, "RED", "GREEN", "GREEN",
+                "BLUE", "RED", "GREEN", null, null, null, "RED", null, "GREEN", "GREEN",
+                "RED", null, "RAINBOW", "BLUE", "RAINBOW", "GREEN", null, "RED", null, "BLUE",
+                "RAINBOW", null, null, "RED", "GREEN", null, "RED", "RAINBOW", null, "GREEN",
         };
 
         board.load(boardSerialized);

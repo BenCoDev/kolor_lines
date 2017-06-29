@@ -12,9 +12,9 @@ import java.util.*;
  *
  */
 public enum Color {
-    BLEU,
-    ROUGE,
-    VERT,
+    BLUE,
+    RED,
+    GREEN,
     RAINBOW;
 
     private static final List<Color> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
@@ -28,6 +28,19 @@ public enum Color {
      */
     public static Color randomColor()  {
         return VALUES.get(RANDOM.nextInt(SIZE));
+    }
+    public java.awt.Color getAwtColor() {
+        return map.get(this);
+    }
+
+    private static final Map<Color, java.awt.Color> map;
+    static {
+        Map<Color, java.awt.Color> initMap = new HashMap<Color, java.awt.Color>();
+        initMap.put(Color.BLUE, java.awt.Color.BLUE);
+        initMap.put(Color.RED, java.awt.Color.RED);
+        initMap.put(Color.GREEN, java.awt.Color.GREEN);
+        initMap.put(Color.RAINBOW, java.awt.Color.CYAN);
+        map = Collections.unmodifiableMap(initMap);
     }
 
 }
