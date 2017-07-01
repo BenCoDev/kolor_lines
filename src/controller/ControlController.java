@@ -22,7 +22,8 @@ public class ControlController implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        board.initSquares();
+        board.resetSquares();
+        frame.repaintBoardPanel();
 
         SystemUser systemUser = new SystemUser();
         HumanUser humanUser = new HumanUser();
@@ -32,13 +33,13 @@ public class ControlController implements ActionListener{
 
         try {
             Position[] lastSystemPositions = systemUser.play();
+            frame.updateBoardPanel(lastSystemPositions);
         }
         catch (Exception e){
             // should not happen
         }
 
 
-        frame.repaintBoardPanel();
 //        frame.updateScorePanel();
     }
 }

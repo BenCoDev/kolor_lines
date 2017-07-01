@@ -40,6 +40,7 @@ public enum Color {
         initMap.put(Color.RED, java.awt.Color.RED);
         initMap.put(Color.GREEN, java.awt.Color.GREEN);
         initMap.put(Color.RAINBOW, java.awt.Color.CYAN);
+        initMap.put(null, java.awt.Color.DARK_GRAY);
         map = Collections.unmodifiableMap(initMap);
     }
 

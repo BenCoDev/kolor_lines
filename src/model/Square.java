@@ -1,7 +1,5 @@
 package src.model;
 
-import java.awt.*;
-
 /**
  * Represents a square of the src.model.Board (composition)
  *
@@ -9,10 +7,6 @@ import java.awt.*;
  * and a color if the square is filled (i.e. if there is a pawn of the corresponding color at the position)
  */
 public class Square {
-    // TODO: check if can be set as abstract see if initialized other place than src.model.Board
-    // TODO: should enable square to have no colors
-
-
     /**
      * Instantiates a src.model.Square given a position
      * Will set a random color for this square
@@ -39,48 +33,21 @@ public class Square {
         return this.color;
     }
 
+    public void setColor(){
+        this.color = Color.randomColor();
+    }
+
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public void unsetColor(){
+        this.color = null;
     }
 
     public Position getPosition() {
         return position;
     }
-
-    /**
-     * Explain why not in view (bc not a JPanel)
-     * @param g
-     */
-    public void draw(Graphics g){
-
-        if (this.color == null) {
-            g.setColor(java.awt.Color.LIGHT_GRAY);
-            g.fillRect(
-                    this.position.getAbs() * WIDTH + GUTTER,
-                    this.position.getOrd() * WIDTH + GUTTER,
-                    WIDTH - GUTTER,
-                    WIDTH - GUTTER);
-        }
-        else {
-            g.setColor(this.getColor().getAwtColor());
-            g.fillRect(
-                    this.position.getAbs() * WIDTH + GUTTER,
-                    this.position.getOrd() * WIDTH + GUTTER,
-                    WIDTH - GUTTER,
-                    WIDTH - GUTTER);
-        }
-    }
-
-    public static int getWidth() {
-        return WIDTH;
-    }
-
-    public static int getGutter() {
-        return GUTTER;
-    }
-
-    private static int WIDTH = 100;
-    private static int GUTTER = 5;
 
     private Position position;
     private Color color;

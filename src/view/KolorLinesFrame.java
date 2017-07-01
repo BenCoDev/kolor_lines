@@ -2,9 +2,9 @@ package src.view;
 
 import src.model.Board;
 import src.model.HumanUser;
+import src.model.Position;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -55,6 +55,10 @@ public class KolorLinesFrame {
 
     public void repaintBoardPanel() {
         this.boardPanel.repaint();
+    }
+
+    public void updateBoardPanel(Position[] positions){
+        this.boardPanel.update(positions);
     }
 
     public void exitProcedure(){

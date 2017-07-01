@@ -37,10 +37,23 @@ public class Board {
     public void initSquares() {
         for (int x = 0; x < this.size.getWidth(); x++) {
             for (int y = 0; y < this.size.getHeight(); y++) {
-
                 try {
                     Position pos = new Position(x, y);
                     this.setSquare(pos, null);
+                } catch (PositionException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
+    public void resetSquares() {
+        for (int x = 0; x < this.size.getWidth(); x++) {
+            for (int y = 0; y < this.size.getHeight(); y++) {
+                try {
+                    Position pos = new Position(x, y);
+                    this.getSquare(pos).unsetColor();
                 } catch (PositionException e) {
                     e.printStackTrace();
                 }

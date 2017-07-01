@@ -17,9 +17,10 @@ public class SystemUser extends User {
 
             Position position = Position.randomPosition();
 
-            if (this.getBoard().getSquare(position).getColor() == null){
-                this.getBoard().setSquare(position);
+            Square selectedSquare = this.getBoard().getSquare(position);
 
+            if (selectedSquare.getColor() == null){
+                selectedSquare.setColor();
                 lastPositions[i] = position;
                 i += 1;
             }
