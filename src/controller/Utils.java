@@ -2,9 +2,6 @@ package src.controller;
 
 import java.util.Scanner;
 
-/**
- * Created by benoitcotte on 19/06/2017.
- */
 public class Utils {
     public static int promptInt(String valueName){
         System.out.println("Enter " + valueName);

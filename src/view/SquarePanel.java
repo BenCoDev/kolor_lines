@@ -1,13 +1,15 @@
 package src.view;
 
+import src.controller.SquareController;
 import src.model.Square;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class SquarePanel extends JPanel {
 
-    public SquarePanel(Square square) {
+    public SquarePanel(KolorLinesFrame frame, Square square) {
         this.square = square;
         this.setPreferredSize(new Dimension(this.SQUARE_WIDTH, this.SQUARE_WIDTH));
 
@@ -17,6 +19,10 @@ public class SquarePanel extends JPanel {
         else {
             this.setBackground(square.getColor().getAwtColor());
         }
+
+        SquareController listener = new SquareController(frame, square);
+
+        this.addMouseListener(listener);
     }
 
     public void draw(){
@@ -26,6 +32,17 @@ public class SquarePanel extends JPanel {
         else {
             this.setBackground(square.getColor().getAwtColor());
         }
+
+        if (this.isSelected){
+            this.setBorder(selectedBorder);
+        }
+        else {
+            this.setBorder(null);
+        }
+    }
+
+    public void toggleSelect(){
+        this.isSelected = !this.isSelected;
     }
 
     @Override
@@ -39,6 +56,12 @@ public class SquarePanel extends JPanel {
     }
 
     private Square square;
+
+    private boolean isSelected = false;
+
     private static int SQUARE_WIDTH = 100;
     private static java.awt.Color DEFAUlT_COLOR = Color.DARK_GRAY;
+
+
+    private static Border selectedBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5);
 }

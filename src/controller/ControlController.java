@@ -38,8 +38,5 @@ public class ControlController implements ActionListener{
         catch (Exception e){
             // should not happen
         }
-
-
-//        frame.updateScorePanel();
     }
 }

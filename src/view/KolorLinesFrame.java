@@ -18,7 +18,7 @@ public class KolorLinesFrame {
     }
 
     private void createMainFrame(){
-        boardPanel = new BoardPanel(this.board);
+        boardPanel = new BoardPanel(this, this.board);
         scorePanel = new ScorePanel(this.board, this.user);
         controlPanel = new ControlPanel(this, this.board);
 

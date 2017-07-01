@@ -1,5 +1,6 @@
 package src.view;
 
+import src.controller.KolorLines;
 import src.model.Board;
 import src.model.Position;
 import src.model.PositionException;
@@ -10,19 +11,19 @@ import java.awt.*;
 
 public class BoardPanel extends JPanel {
 
-    public BoardPanel(Board board) {
+    public BoardPanel(KolorLinesFrame frame, Board board) {
+        this.frame = frame;
         this.board = board;
         this.squarePanels = new SquarePanel[this.board.getSize().width][this.board.getSize().width];
         this.setPreferredSize(this.getPreferredSize());
+        this.setMinimumSize(this.getPreferredSize());
+        this.setMaximumSize(this.getPreferredSize());
         this.setLayout(new GridLayout(this.board.getSize().width, this.board.getSize().width, this.GUTTER, this.GUTTER));
 
-    }
-
-    private void draw(){
         for (int x = 0; x < board.getSize().width; x++) {
             for (int y = 0; y < board.getSize().width; y++) {
                 try {
-                    this.squarePanels[x][y] = new SquarePanel(board.getSquare(new Position(x, y)));
+                    this.squarePanels[x][y] = new SquarePanel(this.frame, board.getSquare(new Position(x, y)));
                     this.add(this.squarePanels[x][y]);
                 }
                 catch (PositionException e){
@@ -30,6 +31,16 @@ public class BoardPanel extends JPanel {
                 }
             }
         }
+
+    }
+
+    private void draw(){
+        for (int x = 0; x < board.getSize().width; x++) {
+            for (int y = 0; y < board.getSize().width; y++) {
+                this.squarePanels[x][y].repaint();
+            }
+        }
+
     }
 
     @Override
@@ -51,7 +62,9 @@ public class BoardPanel extends JPanel {
         return new Dimension(width, width);
     }
 
+
     private Board board;
+    private KolorLinesFrame frame;
     private SquarePanel[][] squarePanels;
     private static int GUTTER = 5;
 }
