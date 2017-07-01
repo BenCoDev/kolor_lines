@@ -1,5 +1,6 @@
 package src.controller;
 
+import src.model.Board;
 import src.model.Square;
 import src.view.KolorLinesFrame;
 import src.view.SquarePanel;
@@ -17,8 +18,18 @@ public class SquareController implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         SquarePanel curSquarePanel = (SquarePanel) e.getComponent();
-        curSquarePanel.toggleSelect();
-        e.getComponent().repaint();
+
+        // How to delegate to BoardController ?  this.frame ==> BoardPanel ==> Board
+        // By using main object frame
+        this.frame.getBoardPanel();
+
+        BoardController boardController = new BoardController(this.frame, this.frame.getBoard());
+
+        try {
+            boardController.run(curSquarePanel);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
     }
 
     @Override

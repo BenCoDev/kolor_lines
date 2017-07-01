@@ -3,6 +3,7 @@ package src.controller;
 import src.model.BoardException;
 import src.model.HumanUser;
 import src.model.Board;
+import src.model.SystemUser;
 import src.view.KolorLinesFrame;
 
 import javax.swing.*;
@@ -15,7 +16,9 @@ public class KolorLinesRunnable implements Runnable {
 
         // TODO: implement prompt for Board size
         try {
-            new KolorLinesFrame(new Board(new Dimension(3, 3)), new HumanUser());
+            HumanUser user = new HumanUser();
+            SystemUser systemUser = new SystemUser();
+            new KolorLinesFrame(new Board(new Dimension(5, 5)), user, systemUser);
         } catch (BoardException e) {
             e.printStackTrace();
         }

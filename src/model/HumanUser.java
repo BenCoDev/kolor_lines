@@ -7,14 +7,38 @@ public class HumanUser extends User {
         // Aggregation ?? src.model.User has a board, or a board has a src.model.User ==> more src.model.User has a board
         Position[] lastPositions = new Position[1];
 
-        Square originalSquare = this.getBoard().promptSquare();
-        Color originalColor = originalSquare.getColor();
-        this.getBoard().unsetSquare(originalSquare.getPosition());
+        // Prompt position first
 
-        Position targetPosition = this.getBoard().promptPosition();
-        this.getBoard().setSquare(targetPosition, originalColor);
+        Square originSquare = null;
+        do {
+            try {
+                Position originPosition = Position.prompt("Source");
+                originSquare = this.getBoard().selectSquare(originPosition, "origin");
+            }
+            catch (Exception e){
+                System.out.print(e);
+            }
 
-        lastPositions[0] = targetPosition;
+        } while (originSquare == null);
+
+        Color originColor = originSquare.getColor();
+        originSquare.unsetColor();
+
+        Square targetSquare = null;
+        do {
+            try {
+                Position targetPosition = Position.prompt("Target");
+                targetSquare = this.getBoard().selectSquare(targetPosition, "target");
+            }
+            catch (Exception e){  // TODO: specify which exception
+                System.out.print(e);
+            }
+
+        } while (targetSquare == null);
+
+        targetSquare.setColor(originColor);
+
+        lastPositions[0] = targetSquare.getPosition();
 
         return lastPositions;
     }

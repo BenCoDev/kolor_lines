@@ -25,6 +25,7 @@ public class Board {
 
         this.squares = new Square[size.width][size.height];
         // composition
+        // TODO: update decision
         // Lazy, instance square if nothing
         // means that a square can be
         // colored, or null ==> a square here must be colored
@@ -225,34 +226,27 @@ public class Board {
     /**
      * @return
      */
-    public Square promptSquare(){
+    public Square selectSquare(Position position, String type) throws Exception {
+        Square selectedSquare = this.getSquare(position);
 
-        Position pos = Position.prompt("Original");
-
-        if (this.getSquare(pos).getColor() != null){
-            return this.getSquare(pos);
+        switch (type){
+            case "origin":
+                if (selectedSquare.getColor() != null) {
+                    return this.getSquare(position);
+                }
+                else {
+                    throw new Exception("You can't select an empty square");
+                }
+            case "target":
+                if (selectedSquare.getColor() == null) {
+                    return this.getSquare(position);
+                }
+                else {
+                    throw new Exception("You can't select a colored square");
+                }
+            default:
+                throw new Exception("Type not valid");
         }
-
-        System.out.println("You can't prompt for an empty square on this board");
-
-        return promptSquare();
-    }
-
-    /**
-        Explain why here
-        Why not on user ?
-     */
-    public Position promptPosition(){
-        Position pos = Position.prompt("Target");
-
-        if (this.getSquare(pos).getColor() == null){
-            return pos;
-        }
-
-        System.out.println("You can't prompt for a filled position on this board");
-
-        return promptPosition();
-
     }
 
     /**

@@ -120,7 +120,7 @@ public class Position {
 
     // Only call here
     public static Position prompt(String positionName){
-        System.out.println("src.model.Position: " + positionName);
+        System.out.println("Position: " + positionName);
 
         int abs = promptCoord("Abscisse");
         int ord = promptCoord("Ordinate");

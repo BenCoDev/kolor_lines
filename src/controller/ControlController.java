@@ -25,14 +25,11 @@ public class ControlController implements ActionListener{
         board.resetSquares();
         frame.repaintBoardPanel();
 
-        SystemUser systemUser = new SystemUser();
-        HumanUser humanUser = new HumanUser();
-
-        systemUser.setBoard(board);
-        humanUser.setBoard(board);
+        this.frame.getSystemUser().setBoard(board);
+        this.frame.getUser().setBoard(board);
 
         try {
-            Position[] lastSystemPositions = systemUser.play();
+            Position[] lastSystemPositions = this.frame.getSystemUser().play();
             frame.updateBoardPanel(lastSystemPositions);
         }
         catch (Exception e){
