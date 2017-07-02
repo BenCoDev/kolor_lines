@@ -5,6 +5,7 @@ import src.model.HumanUser;
 import src.model.Position;
 import src.model.SystemUser;
 import src.view.KolorLinesFrame;
+import src.view.MessagePanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,9 @@ public class ControlController implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent event) {
         board.resetSquares();
+        frame.getUser().setScore(0);
         frame.repaintBoardPanel();
+        frame.updateMessagePanel(MessagePanel.DEFAULT_MESSAGE);
 
         this.frame.getSystemUser().setBoard(board);
         this.frame.getUser().setBoard(board);

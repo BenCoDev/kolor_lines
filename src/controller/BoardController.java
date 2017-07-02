@@ -3,12 +3,12 @@ package src.controller;
 import src.model.*;
 import src.view.BoardPanel;
 import src.view.KolorLinesFrame;
+import src.view.MessagePanel;
 import src.view.SquarePanel;
 
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Objects;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
 
 import static src.controller.Utils.flatten;
 
@@ -23,7 +23,7 @@ public class BoardController {
      * TODO Describe
      * @param squarePanel
      */
-    public void run(SquarePanel squarePanel){  // Find better name
+    public void run(SquarePanel squarePanel) throws InterruptedException {  // Find better name
         BoardPanel boardPanel = this.frame.getBoardPanel();
         ArrayList<SquarePanel> selectedSquarePanels = boardPanel.getSelectedSquarePanels();
 
@@ -32,38 +32,44 @@ public class BoardController {
         // If 2 selected, swap
         if (selectedSquarePanels.size() == 2) {
 
+            board.display();
+
             this.swap();
+
+            board.display();
 
             boardPanel.emptySelectedSquarePanels();
 
             // Check if alignment
             LinkedList<LinkedList<Square>> validUserAlignments = board.processPositions(lastUserPositions);
 
-            KolorLines.processValidAlignments(board, validUserAlignments, this.frame.getUser());
-            frame.updateBoardPanel(flatten(validUserAlignments));  // pass lastUserPositions
+            double addedValue = board.processValidAlignments(validUserAlignments);
+            if (addedValue > 0){
+                frame.popNotification("Youhou! You just got " + (int) addedValue + " points", MessagePanel.NotificationType.SUCCESS);
+            }
+
+            frame.getUser().updateScore(addedValue);
+
             // TODO: highlight alignment
+            // TODO: add time before removing
+            frame.updateBoardPanel(flatten(validUserAlignments));  // pass lastUserPositions
 
+            board.display();
 
-            // TODO: add some delay
             // System user to play
-            this.frame.updateMessagePanel("System user is playing");
+            frame.updateMessagePanel("System user is playing...");
+            frame.getBoardPanel().setIsListening(false);
+
+            frame.getMessagePanel().showLoading();
             Position[] lastSystemPositions = this.frame.getSystemUser().play();
 
-            // TODO: add some delay
-            frame.updateBoardPanel(lastSystemPositions);  // pass lastSystemPositions
+            board.display();
 
-            LinkedList<LinkedList<Square>> validSystemAlignments = board.processPositions(lastSystemPositions);
+            javax.swing.Timer displayTimer = new javax.swing.Timer(SystemUser.getSpeed(), new DelayedActionListener(lastSystemPositions));
 
-            KolorLines.processValidAlignments(board, validSystemAlignments, this.frame.getUser());
-            frame.updateBoardPanel(flatten(validSystemAlignments));
+            displayTimer.setRepeats(false);
+            displayTimer.start();
 
-            // TODO Check if board is full / if yes display gameover
-
-            // TODO increment score
-
-
-
-            this.frame.updateMessagePanel("Your turn !");
         }
     }
 
@@ -96,7 +102,7 @@ public class BoardController {
             this.frame.updateMessagePanel("Square selected");
         }
         catch (Exception e){
-            this.frame.popWarning(e.getMessage());
+            this.frame.popNotification(e.getMessage(), MessagePanel.NotificationType.WARNING);
         }
 
         lastPositions[0] = squarePanel.getSquare().getPosition();
@@ -112,6 +118,42 @@ public class BoardController {
         selectedSquarePanels.get(1).getSquare().setColor(originColor);
         selectedSquarePanels.forEach(SquarePanel::toggleSelect);  // Unselect both
     }
+
+    private class DelayedActionListener implements ActionListener {
+        private Position[] lastSystemPositions;
+
+        public DelayedActionListener(Position[] lastSystemPositions) {
+            this.lastSystemPositions = lastSystemPositions;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            frame.updateMessagePanel("Wait");
+
+            frame.updateBoardPanel(lastSystemPositions);  // pass lastSystemPositions
+
+            LinkedList<LinkedList<Square>> validSystemAlignments = board.processPositions(lastSystemPositions);
+
+            double addedValue = board.processValidAlignments(validSystemAlignments);
+            if (addedValue > 0){
+                frame.popNotification("Youhou! You just got " + (int) addedValue + " points", MessagePanel.NotificationType.SUCCESS);
+            }
+            frame.getUser().updateScore(addedValue);
+
+            frame.updateBoardPanel(flatten(validSystemAlignments));
+
+            if (board.isFull()){
+                frame.updateMessagePanel("Game Over");
+            }
+            else {
+                frame.getBoardPanel().setIsListening(true);
+                frame.updateMessagePanel("Your turn !");
+            }
+
+            frame.getMessagePanel().hideLoading();
+            board.display();
+        }
+    }
+
 
     private KolorLinesFrame frame;
     private Board board;

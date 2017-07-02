@@ -59,8 +59,6 @@ public class KolorLinesFrame extends JFrame {
         mainPanel.add(boardPanel, BorderLayout.CENTER);
         mainPanel.add(sidePanel, BorderLayout.EAST);
 
-        this.updateMessagePanel("Start playing");
-
         this.add(mainPanel);
         this.setLocationByPlatform(true);
         this.pack();
@@ -98,8 +96,8 @@ public class KolorLinesFrame extends JFrame {
     }
 
 
-    public void popWarning(String warning){
-        this.messagePanel.popWarning(warning);
+    public void popNotification(String notification, MessagePanel.NotificationType type){
+        this.messagePanel.popNotification(notification, type);
         this.messagePanel.repaint();
     }
 
@@ -115,6 +113,10 @@ public class KolorLinesFrame extends JFrame {
 
     public BoardPanel getBoardPanel() {
         return boardPanel;
+    }
+
+    public MessagePanel getMessagePanel() {
+        return messagePanel;
     }
 
     public Board getBoard() {

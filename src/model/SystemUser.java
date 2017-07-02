@@ -29,5 +29,10 @@ public class SystemUser extends User {
         return lastPositions;
     }
 
+    public static int getSpeed() {
+        return SPEED;
+    }
+
     private static int CONSECUTIVE_MOVES = 3;
+    private static int SPEED = 5000;
 }

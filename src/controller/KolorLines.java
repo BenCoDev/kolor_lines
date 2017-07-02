@@ -31,7 +31,13 @@ public class KolorLines {
 
                 LinkedList<LinkedList<Square>> validSystemAlignments = board.processPositions(lastSystemPositions);
 
-                processValidAlignments(board, validSystemAlignments, humanUser);
+                double addedValue = board.processValidAlignments(validSystemAlignments);
+                humanUser.updateScore(addedValue);
+                if (addedValue > 0){
+                    System.out.println("Youhou! You just got " + (int) addedValue + " points");
+                }
+
+                System.out.println("Score is " + (int) humanUser.getScore());
 
             } while (board.isEmpty());  // If board is empty, continue playing
 
@@ -48,37 +54,18 @@ public class KolorLines {
 
             board.display();
 
-            processValidAlignments(board, validUserAlignments, humanUser);
+            double addedValue = board.processValidAlignments(validUserAlignments);
+            humanUser.updateScore(addedValue);
+            if (addedValue > 0){
+                System.out.println("Youhou! You just got " + (int) addedValue + " points");
+            }
+
+            System.out.println("Score is " + (int) humanUser.getScore());
 
             System.out.println("End of turn");
         }
 
         // Display score
         System.out.println(humanUser.getScore());
-    }
-
-    /**
-     *  Wrapper over refactored code
-     * @param board
-     * @param validAlignments
-     * @param humanUser
-     */
-    protected static void processValidAlignments(Board board, LinkedList<LinkedList<Square>> validAlignments, HumanUser humanUser){
-
-        for (LinkedList<Square> validAlignment : validAlignments) {
-            for (Square validAlignmentSquare : validAlignment) {
-                validAlignmentSquare.unsetColor();
-            }
-        }
-
-        if (validAlignments.size() > 0) {
-
-            double addedValue = HumanUser.computeValue(validAlignments);
-            humanUser.updateScore(addedValue);
-
-            board.display();
-            System.out.println("Youhou! You just got " + (int) addedValue + " points");
-            System.out.println("Score is " + (int) humanUser.getScore());
-        }
     }
 }

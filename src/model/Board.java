@@ -478,6 +478,27 @@ public class Board {
         return validAlignments;
     }
 
+
+    /**
+     *  Wrapper over refactored code
+     * @param validAlignments
+     */
+    public static double processValidAlignments(LinkedList<LinkedList<Square>> validAlignments){
+        double addedValue = 0;
+
+        for (LinkedList<Square> validAlignment : validAlignments) {
+            for (Square validAlignmentSquare : validAlignment) {
+                validAlignmentSquare.unsetColor();
+            }
+        }
+
+        if (validAlignments.size() > 0) {
+            addedValue = HumanUser.computeValue(validAlignments);
+        }
+
+        return addedValue;
+    }
+
     public Dimension getSize() {
         return size;
     }
@@ -486,5 +507,5 @@ public class Board {
     public static int DEFAULT_SIZE = 6;
     private Square[][] squares;  // TODO: describe
     public enum Direction { N, NE, E, SE, S, SW, W, NW };
-    private static int MIN_CONSECUTIVE_ALIGNMENT = 5;
+    private static int MIN_CONSECUTIVE_ALIGNMENT = 3;
 }

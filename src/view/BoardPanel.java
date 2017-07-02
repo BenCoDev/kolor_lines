@@ -52,8 +52,6 @@ public class BoardPanel extends JPanel {
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         draw();
-
-        // TODO: if game is over
     }
 
     public void update(Position[] positions){
@@ -78,6 +76,17 @@ public class BoardPanel extends JPanel {
     public ArrayList<SquarePanel> getSelectedSquarePanels() {
         return selectedSquarePanels;
     }
+
+    public void setIsListening(boolean isListening){
+        this.isListening = isListening;
+    }
+
+    public boolean getIsListening(){
+        return this.isListening;
+    }
+
+    private boolean isListening = true;
+
 
     private Board board;
     private KolorLinesFrame frame;
