@@ -18,7 +18,9 @@ public class KolorLinesRunnable implements Runnable {
         try {
             HumanUser user = new HumanUser();
             SystemUser systemUser = new SystemUser();
+
             new KolorLinesFrame(new Board(new Dimension(5, 5)), user, systemUser);
+
         } catch (BoardException e) {
             e.printStackTrace();
         }
