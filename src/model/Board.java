@@ -485,5 +485,5 @@ public class Board {
     private Dimension size;
     private Square[][] squares;  // TODO: describe
     public enum Direction { N, NE, E, SE, S, SW, W, NW };
-    private static int MIN_CONSECUTIVE_ALIGNMENT = 3;
+    private static int MIN_CONSECUTIVE_ALIGNMENT = 5;
 }

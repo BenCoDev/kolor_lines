@@ -1,9 +1,6 @@
 package src.view;
 
-import src.model.Board;
-import src.model.HumanUser;
-import src.model.Position;
-import src.model.SystemUser;
+import src.model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,8 +9,8 @@ import java.awt.event.WindowEvent;
 
 public class KolorLinesFrame extends JFrame {
 
-    public KolorLinesFrame(Board board, HumanUser user, SystemUser systemUser) {
-        this.board = board;
+    public KolorLinesFrame(HumanUser user, SystemUser systemUser) {
+
         this.user = user;
         this.systemUser = systemUser;
 
@@ -26,7 +23,17 @@ public class KolorLinesFrame extends JFrame {
             }
         });
 
+        try {
+            int boardSize = promptBoardSize();
+            this.board = new Board(new Dimension(boardSize, boardSize));
+        } catch (BoardException e) {
+            e.printStackTrace();
+        }
+
         this.createMainFrame();
+
+
+
     }
 
     private void createMainFrame(){
@@ -53,6 +60,27 @@ public class KolorLinesFrame extends JFrame {
         this.setLocationByPlatform(true);
         this.pack();
         this.setVisible(true);
+    }
+
+    private int promptBoardSize(){
+        int boardSize;
+        try {
+            String inputSize = JOptionPane.showInputDialog(this, "Choose a Board size", 5);
+            if (inputSize == null){
+                this.exitProcedure();
+            }
+
+            boardSize = Integer.parseInt(inputSize);
+
+        } catch (java.lang.NumberFormatException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Board size error",
+                    JOptionPane.ERROR_MESSAGE);
+
+            return promptBoardSize();
+        }
+
+
+        return boardSize;
     }
 
     public void repaintBoardPanel() {

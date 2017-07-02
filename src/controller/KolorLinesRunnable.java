@@ -15,15 +15,12 @@ public class KolorLinesRunnable implements Runnable {
     public void run(){
 
         // TODO: implement prompt for Board size
-        try {
+
+
+
             HumanUser user = new HumanUser();
             SystemUser systemUser = new SystemUser();
-
-            new KolorLinesFrame(new Board(new Dimension(5, 5)), user, systemUser);
-
-        } catch (BoardException e) {
-            e.printStackTrace();
-        }
+            new KolorLinesFrame(user, systemUser);
     }
 
     public static void main(String[] args) {
