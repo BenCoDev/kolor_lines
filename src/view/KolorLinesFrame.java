@@ -56,7 +56,7 @@ public class KolorLinesFrame {
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.PAGE_AXIS));
         sidePanel.add(this.scorePanel);
         sidePanel.add(Box.createVerticalStrut(30));
-        sidePanel.add(controlPanel.getPanel());
+        sidePanel.add(this.controlPanel);
         sidePanel.add(Box.createVerticalStrut(30));
         return sidePanel;
     }
