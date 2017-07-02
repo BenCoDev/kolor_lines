@@ -1,8 +1,8 @@
 package src.view;
 
-import src.controller.BoardController;
 import src.controller.SquareController;
 import src.model.Square;
+import src.model.Color;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -14,24 +14,24 @@ public class SquarePanel extends JPanel {
         this.square = square;
         this.setPreferredSize(new Dimension(this.SQUARE_WIDTH, this.SQUARE_WIDTH));
 
-        if (square.getColor() == null){
-            this.setBackground(this.DEFAUlT_COLOR);
-        }
-        else {
-            this.setBackground(square.getColor().getAwtColor());
-        }
-
         SquareController squareController = new SquareController(frame, square);
 
         this.addMouseListener(squareController);
     }
 
-    public void draw(){
-        if (square.getColor() == null){
-            this.setBackground(Color.DARK_GRAY);
+    public void draw(Graphics g){
+
+        if (this.getSquare().getColor() == null){
+            this.setBackground(java.awt.Color.DARK_GRAY);
         }
         else {
-            this.setBackground(square.getColor().getAwtColor());
+            Dimension d = getPreferredSize();
+            java.awt.Color[] dipslayColors = this.square.getColor().getAwtColors();
+
+            for (int i = 0; i < dipslayColors.length; i++){
+                g.setColor(dipslayColors[i]);
+                g.fillRect(0, i * (d.width / dipslayColors.length), d.width, d.width / dipslayColors.length);
+            }
         }
 
         if (this.isSelected){
@@ -50,7 +50,7 @@ public class SquarePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
-        draw();
+        draw(g);
     }
 
     public static int getSquareWidth() {
@@ -66,9 +66,9 @@ public class SquarePanel extends JPanel {
     private boolean isSelected = false;
 
     private static int SQUARE_WIDTH = 100;
-    private static java.awt.Color DEFAUlT_COLOR = Color.DARK_GRAY;
+    private static java.awt.Color DEFAUlT_COLOR = java.awt.Color.DARK_GRAY;
 
 
-    private static Border selectedBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5);
+    private static Border selectedBorder = BorderFactory.createLineBorder(java.awt.Color.LIGHT_GRAY, 5);
 
 }

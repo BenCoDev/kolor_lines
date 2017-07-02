@@ -29,18 +29,33 @@ public enum Color {
     public static Color randomColor()  {
         return VALUES.get(RANDOM.nextInt(SIZE));
     }
-    public java.awt.Color getAwtColor() {
+
+    public java.awt.Color[] getAwtColors() {
         return map.get(this);
     }
 
-    private static final Map<Color, java.awt.Color> map;
+    private static final Map<Color, java.awt.Color[]> map;
     static {
-        Map<Color, java.awt.Color> initMap = new HashMap<Color, java.awt.Color>();
-        initMap.put(Color.BLUE, java.awt.Color.BLUE);
-        initMap.put(Color.RED, java.awt.Color.RED);
-        initMap.put(Color.GREEN, java.awt.Color.GREEN);
-        initMap.put(Color.RAINBOW, java.awt.Color.CYAN);
-        initMap.put(null, java.awt.Color.DARK_GRAY);
+        Map<Color, java.awt.Color[]> initMap = new HashMap<Color, java.awt.Color[]>();
+        initMap.put(Color.BLUE, new java.awt.Color[]{
+            java.awt.Color.BLUE
+        });
+        initMap.put(Color.RED, new java.awt.Color[]{
+            java.awt.Color.RED
+        });
+        initMap.put(Color.GREEN, new java.awt.Color[]{
+            java.awt.Color.GREEN
+        });
+        initMap.put(Color.RAINBOW, new java.awt.Color[]{
+            java.awt.Color.RED,
+            java.awt.Color.YELLOW,
+            java.awt.Color.GREEN,
+            java.awt.Color.BLUE,
+            java.awt.Color.MAGENTA
+        });
+        initMap.put(null, new java.awt.Color[]{
+            java.awt.Color.DARK_GRAY
+        });
         map = Collections.unmodifiableMap(initMap);
     }
 
