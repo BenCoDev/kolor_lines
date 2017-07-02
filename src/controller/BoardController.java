@@ -63,11 +63,8 @@ public class BoardController {
             frame.getBoardPanel().setIsListening(false);
 
             frame.getMessagePanel().showLoading();
-            Position[] lastSystemPositions = this.frame.getSystemUser().play();  // TODO: can be null ! be careful
 
-            board.display();
-
-            javax.swing.Timer displayTimer = new javax.swing.Timer(SystemUser.getSpeed(), new DelayedActionListener(lastSystemPositions));
+            javax.swing.Timer displayTimer = new javax.swing.Timer(SystemUser.getSpeed(), new DelayedActionListener());
 
             displayTimer.setRepeats(false);
             displayTimer.start();
@@ -122,13 +119,12 @@ public class BoardController {
     }
 
     private class DelayedActionListener implements ActionListener {
-        private Position[] lastSystemPositions;
-
-        public DelayedActionListener(Position[] lastSystemPositions) {
-            this.lastSystemPositions = lastSystemPositions;
-        }
 
         public void actionPerformed(ActionEvent e) {
+            Position[] lastSystemPositions = frame.getSystemUser().play();  // TODO: can be null ! be careful
+
+            board.display();
+
             frame.updateBoardPanel(lastSystemPositions);  // pass lastSystemPositions
 
             LinkedList<LinkedList<Square>> validSystemAlignments = board.processPositions(lastSystemPositions);
