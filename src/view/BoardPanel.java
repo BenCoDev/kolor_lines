@@ -22,6 +22,8 @@ public class BoardPanel extends JPanel {
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
         this.setLayout(new GridLayout(this.board.getSize().width, this.board.getSize().width, this.GUTTER, this.GUTTER));
+        this.setBorder(BorderFactory.createEmptyBorder(this.GUTTER, this.GUTTER, this.GUTTER, this.GUTTER));
+
 
         for (int ord = 0; ord < board.getSize().width; ord++) {
             for (int abs = 0; abs < board.getSize().width; abs++) {

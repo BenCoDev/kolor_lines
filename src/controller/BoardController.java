@@ -72,7 +72,8 @@ public class BoardController {
             this.frame.updateMessagePanel("Square selected");
         }
         catch (Exception e){
-            this.frame.updateMessagePanel(e.getMessage());
+            this.frame.popWarning(e.getMessage());
+//            this.frame.updateMessagePanel(e.getMessage());
         }
     }
 

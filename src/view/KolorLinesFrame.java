@@ -6,6 +6,7 @@ import src.model.Position;
 import src.model.SystemUser;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -36,11 +37,13 @@ public class KolorLinesFrame {
         });
 
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
+        mainPanel.setLayout(new BorderLayout());
 
-        mainPanel.add(messagePanel);
-        mainPanel.add(boardPanel);
-        mainPanel.add(createSidePanel());
+        mainPanel.add(messagePanel, BorderLayout.NORTH);
+        mainPanel.add(boardPanel, BorderLayout.CENTER);
+        mainPanel.add(createSidePanel(), BorderLayout.EAST);
+
+        this.updateMessagePanel("Start playing");
 
         frame.add(mainPanel);
         frame.setLocationByPlatform(true);
@@ -65,6 +68,12 @@ public class KolorLinesFrame {
 
     public void updateBoardPanel(Position[] positions){
         this.boardPanel.update(positions);
+    }
+
+
+    public void popWarning(String warning){
+        this.messagePanel.popWarning(warning);
+        this.messagePanel.repaint();
     }
 
     public void updateMessagePanel(String message){
