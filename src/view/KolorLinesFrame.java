@@ -10,9 +10,10 @@ import java.awt.event.WindowEvent;
 public class KolorLinesFrame extends JFrame {
 
     public KolorLinesFrame(HumanUser user, SystemUser systemUser) {
-
         this.user = user;
         this.systemUser = systemUser;
+        this.board = this.createBoard();
+        this.createMainFrame();  // create Frame
 
         this.setTitle("Kolor Lines");
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -22,18 +23,22 @@ public class KolorLinesFrame extends JFrame {
                 exitProcedure();
             }
         });
+    }
+
+    private Board createBoard(){
+        Board board;
 
         try {
             int boardSize = promptBoardSize();
-            this.board = new Board(new Dimension(boardSize, boardSize));
-        } catch (BoardException e) {
-            e.printStackTrace();
+            board = new Board(new Dimension(boardSize, boardSize));
+        }
+        catch (BoardException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Board size error",
+                    JOptionPane.ERROR_MESSAGE);
+            return createBoard();
         }
 
-        this.createMainFrame();
-
-
-
+        return board;
     }
 
     private void createMainFrame(){
@@ -65,14 +70,15 @@ public class KolorLinesFrame extends JFrame {
     private int promptBoardSize(){
         int boardSize;
         try {
-            String inputSize = JOptionPane.showInputDialog(this, "Choose a Board size", 5);
-            if (inputSize == null){
+            String inputSize = JOptionPane.showInputDialog(this, "Choose a Board size", Board.DEFAULT_SIZE);
+
+            if (inputSize == null){  // If click on cancel or close, should exit
                 this.exitProcedure();
             }
 
             boardSize = Integer.parseInt(inputSize);
-
-        } catch (java.lang.NumberFormatException e){
+        }
+        catch (java.lang.NumberFormatException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Board size error",
                     JOptionPane.ERROR_MESSAGE);
 

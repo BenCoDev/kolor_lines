@@ -483,6 +483,7 @@ public class Board {
     }
 
     private Dimension size;
+    public static int DEFAULT_SIZE = 6;
     private Square[][] squares;  // TODO: describe
     public enum Direction { N, NE, E, SE, S, SW, W, NW };
     private static int MIN_CONSECUTIVE_ALIGNMENT = 5;
