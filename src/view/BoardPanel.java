@@ -1,10 +1,8 @@
 package src.view;
 
-import src.controller.KolorLines;
 import src.model.Board;
 import src.model.Position;
 import src.model.PositionException;
-import src.model.Square;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,7 +54,9 @@ public class BoardPanel extends JPanel {
 
     public void update(Position[] positions){
         for (Position position : positions) {
-            this.squarePanels[position.getAbs()][position.getOrd()].repaint();
+            if (position!= null){
+                this.squarePanels[position.getAbs()][position.getOrd()].repaint();
+            }
         }
     }
 

@@ -72,7 +72,9 @@ public class MessagePanel extends JPanel {
             }
         };
 
-        new Timer(STICKY_DELAY, displayNotification).start();
+        Timer displayTimer = new Timer(STICKY_DELAY, displayNotification);
+        displayTimer.setRepeats(false);
+        displayTimer.start();
     }
 
     public void showLoading(){

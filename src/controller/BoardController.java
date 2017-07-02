@@ -57,11 +57,13 @@ public class BoardController {
             board.display();
 
             // System user to play
+            //  TODO: handle while (board.isEmpty()); case
+
             frame.updateMessagePanel("System user is playing...");
             frame.getBoardPanel().setIsListening(false);
 
             frame.getMessagePanel().showLoading();
-            Position[] lastSystemPositions = this.frame.getSystemUser().play();
+            Position[] lastSystemPositions = this.frame.getSystemUser().play();  // TODO: can be null ! be careful
 
             board.display();
 
@@ -127,8 +129,6 @@ public class BoardController {
         }
 
         public void actionPerformed(ActionEvent e) {
-            frame.updateMessagePanel("Wait");
-
             frame.updateBoardPanel(lastSystemPositions);  // pass lastSystemPositions
 
             LinkedList<LinkedList<Square>> validSystemAlignments = board.processPositions(lastSystemPositions);
