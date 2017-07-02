@@ -1,7 +1,7 @@
-package src.controller;
+package controller;
 
-import src.model.Position;
-import src.model.Square;
+import model.Position;
+import model.Square;
 
 import java.util.LinkedList;
 import java.util.Scanner;

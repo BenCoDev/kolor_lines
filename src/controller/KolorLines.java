@@ -1,13 +1,13 @@
-package src.controller;
+package controller;
 
-import src.model.*;
+import model.*;
 
 import java.util.LinkedList;
 
 public class KolorLines {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args){
 
-        // Prompt to get src.model.Board size
+        // Prompt to get .model.Board size
         Board board = Board.prompt();
 
         SystemUser systemUser = new SystemUser();

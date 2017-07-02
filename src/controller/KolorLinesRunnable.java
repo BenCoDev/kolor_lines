@@ -1,8 +1,8 @@
-package src.controller;
+package controller;
 
-import src.model.HumanUser;
-import src.model.SystemUser;
-import src.view.KolorLinesFrame;
+import model.HumanUser;
+import model.SystemUser;
+import view.KolorLinesFrame;
 
 import javax.swing.*;
 

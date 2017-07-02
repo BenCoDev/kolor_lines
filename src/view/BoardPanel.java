@@ -1,8 +1,8 @@
-package src.view;
+package view;
 
-import src.model.Board;
-import src.model.Position;
-import src.model.PositionException;
+import model.Board;
+import model.Position;
+import model.PositionException;
 
 import javax.swing.*;
 import java.awt.*;

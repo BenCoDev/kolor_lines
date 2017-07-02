@@ -1,16 +1,16 @@
-package src.controller;
+package controller;
 
-import src.model.*;
-import src.view.BoardPanel;
-import src.view.KolorLinesFrame;
-import src.view.MessagePanel;
-import src.view.SquarePanel;
+import model.*;
+import view.BoardPanel;
+import view.KolorLinesFrame;
+import view.MessagePanel;
+import view.SquarePanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
-import static src.controller.Utils.flatten;
+import static controller.Utils.flatten;
 
 public class BoardController {
 

@@ -1,16 +1,16 @@
-package src.model;
+package model;
 
-import src.controller.Utils;
+import controller.Utils;
 
 public class Position {
     /**
-     * a src.model.Position object represents the coordinates in a cartesian plane.
+     * a .model.Position object represents the coordinates in a cartesian plane.
      *
-     * The origin src.model.Position(0, 0) of the plane is the top left corner.
+     * The origin .model.Position(0, 0) of the plane is the top left corner.
      *
      * Validate data according maxLength and maxWidth if have been set
-     * If normal flow, should be set at the src.model.Board instantiation (Aggregation)
-     * Otherwise, enable to instantiate a src.model.Position free of any context.
+     * If normal flow, should be set at the .model.Board instantiation (Aggregation)
+     * Otherwise, enable to instantiate a .model.Position free of any context.
      *
      * @param abs   int     Abscise of the position
      * @param ord   int     Ordinate of the position
@@ -142,8 +142,8 @@ public class Position {
     private static int minWidth = 0;
     private static int minHeight = 0;
 
-    private static int maxWidth;  // Will be set at src.model.Board instantiation
-    private static int maxHeight; // Will be set at src.model.Board instantiation
+    private static int maxWidth;  // Will be set at .model.Board instantiation
+    private static int maxHeight; // Will be set at .model.Board instantiation
 
     private int abs;
     private int ord;

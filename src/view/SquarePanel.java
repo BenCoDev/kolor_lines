@@ -1,8 +1,7 @@
-package src.view;
+package view;
 
-import src.controller.SquareController;
-import src.model.Square;
-import src.model.Color;
+import controller.SquareController;
+import model.Square;
 
 import javax.swing.*;
 import javax.swing.border.Border;

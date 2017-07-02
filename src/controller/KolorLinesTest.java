@@ -1,9 +1,9 @@
-package src.controller;
+package controller;
 
 import org.junit.Test;
-import src.model.Board;
-import src.model.Position;
-import src.model.Square;
+import model.Board;
+import model.Position;
+import model.Square;
 
 import java.awt.*;
 import java.util.LinkedList;

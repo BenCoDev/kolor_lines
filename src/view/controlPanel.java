@@ -1,7 +1,7 @@
-package src.view;
+package view;
 
-import src.controller.ControlController;
-import src.model.Board;
+import controller.ControlController;
+import model.Board;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

@@ -1,4 +1,4 @@
-package src.model;
+package model;
 
 /**
  * Created by benoitcotte on 19/06/2017.

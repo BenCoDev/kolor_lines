@@ -1,11 +1,11 @@
-package src.controller;
+package controller;
 
-import src.model.Board;
-import src.model.HumanUser;
-import src.model.Position;
-import src.model.SystemUser;
-import src.view.KolorLinesFrame;
-import src.view.MessagePanel;
+import model.Board;
+import model.HumanUser;
+import model.Position;
+import model.SystemUser;
+import view.KolorLinesFrame;
+import view.MessagePanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

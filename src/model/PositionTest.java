@@ -1,4 +1,4 @@
-package src.model;
+package model;
 
 import org.junit.Test;
 
@@ -10,7 +10,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 public class PositionTest {
     /**
-     * src: https://www.mkyong.com/unittest/junit-4-tutorial-2-expected-exception-test/
+     * : https://www.mkyong.com/unittest/junit-4-tutorial-2-expected-exception-test/
      */
     @Rule
     public ExpectedException thrown = ExpectedException.none();

@@ -1,8 +1,8 @@
-package src.controller;
+package controller;
 
-import src.model.Square;
-import src.view.KolorLinesFrame;
-import src.view.SquarePanel;
+import model.Square;
+import view.KolorLinesFrame;
+import view.SquarePanel;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

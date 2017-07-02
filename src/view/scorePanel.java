@@ -1,7 +1,7 @@
-package src.view;
+package view;
 
-import src.model.Board;
-import src.model.HumanUser;
+import model.Board;
+import model.HumanUser;
 
 import javax.swing.*;
 import java.awt.*;

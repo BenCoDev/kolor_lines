@@ -1,10 +1,10 @@
-package src.model;
+package model;
 
 import java.util.LinkedList;
 
 abstract public class User {
 
-//    public src.model.User() {
+//    public .model.User() {
 //    }
 
     // Play
