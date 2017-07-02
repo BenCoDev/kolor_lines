@@ -9,10 +9,10 @@ public class SystemUser extends User {
      * @return
      * @throws Exception
      */
-    public Position[] play() throws PositionException {
-        int i = 0;
+    public Position[] play() {  // should not raise exception
         Position[] lastPositions = new Position[CONSECUTIVE_MOVES];
 
+        int i = 0;
         while(i < SystemUser.CONSECUTIVE_MOVES && ! this.getBoard().isFull()){
 
             Position position = Position.randomPosition();

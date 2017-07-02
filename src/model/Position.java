@@ -97,12 +97,18 @@ public class Position {
         return null;
     }
 
-    public static Position randomPosition() throws PositionException {
+    public static Position randomPosition() {
 //        TODO: distribute over open positions
         int abs = (int) (Math.random() * Position.maxWidth);  // If not set: will be 0
         int ord = (int) (Math.random() * Position.maxHeight);  // If not set: will be 0
 
-        return new Position(abs, ord);
+        try {
+            Position pos = new Position(abs, ord);
+            return pos;
+        }
+        catch (Exception e){
+            return randomPosition();  // should never happen
+        }
     }
 
     public static int promptCoord(String coordName){

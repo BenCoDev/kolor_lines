@@ -23,7 +23,7 @@ public class KolorLinesFrame {
     private void createMainFrame(){
         boardPanel = new BoardPanel(this, this.board);
         messagePanel = new MessagePanel(this);
-        scorePanel = new ScorePanel(this.board, this.user);
+        scorePanel = new ScorePanel(this.user);
         controlPanel = new ControlPanel(this, this.board);
 
         frame = new JFrame();
@@ -51,11 +51,10 @@ public class KolorLinesFrame {
         frame.setVisible(true);
     }
 
-
     private JPanel createSidePanel(){
         JPanel sidePanel = new JPanel();
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.PAGE_AXIS));
-        sidePanel.add(scorePanel.getPanel());
+        sidePanel.add(this.scorePanel);
         sidePanel.add(Box.createVerticalStrut(30));
         sidePanel.add(controlPanel.getPanel());
         sidePanel.add(Box.createVerticalStrut(30));

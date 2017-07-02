@@ -1,15 +1,16 @@
 package src.controller;
 
-import src.model.Board;
-import src.model.Color;
-import src.model.Position;
-import src.model.Square;
+import src.model.*;
 import src.view.BoardPanel;
 import src.view.KolorLinesFrame;
 import src.view.SquarePanel;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Objects;
+
+import static src.controller.Utils.flatten;
 
 public class BoardController {
 
@@ -18,11 +19,15 @@ public class BoardController {
         this.board = board;
     }
 
+    /**
+     * TODO Describe
+     * @param squarePanel
+     */
     public void run(SquarePanel squarePanel){  // Find better name
         BoardPanel boardPanel = this.frame.getBoardPanel();
         ArrayList<SquarePanel> selectedSquarePanels = boardPanel.getSelectedSquarePanels();
 
-        this.selectSquare(squarePanel);
+        Position[] lastUserPositions = this.selectSquare(squarePanel);
 
         // If 2 selected, swap
         if (selectedSquarePanels.size() == 2) {
@@ -32,19 +37,38 @@ public class BoardController {
             boardPanel.emptySelectedSquarePanels();
 
             // Check if alignment
+            LinkedList<LinkedList<Square>> validUserAlignments = board.processPositions(lastUserPositions);
+
+            KolorLines.processValidAlignments(board, validUserAlignments, this.frame.getUser());
+            frame.updateBoardPanel(flatten(validUserAlignments));  // pass lastUserPositions
+            // TODO: highlight alignment
 
 
+            // TODO: add some delay
             // System user to play
-            try {
-                Position[] lastSystemPositions = this.frame.getSystemUser().play();
-                frame.updateBoardPanel(lastSystemPositions);
-            } catch (Exception e) {
-                // should not happen
-            }
+            this.frame.updateMessagePanel("System user is playing");
+            Position[] lastSystemPositions = this.frame.getSystemUser().play();
+
+            // TODO: add some delay
+            frame.updateBoardPanel(lastSystemPositions);  // pass lastSystemPositions
+
+            LinkedList<LinkedList<Square>> validSystemAlignments = board.processPositions(lastSystemPositions);
+
+            KolorLines.processValidAlignments(board, validSystemAlignments, this.frame.getUser());
+            frame.updateBoardPanel(flatten(validSystemAlignments));
+
+            // TODO Check if board is full / if yes display gameover
+
+            // TODO increment score
+
+
+
+            this.frame.updateMessagePanel("Your turn !");
         }
     }
 
-    public void selectSquare(SquarePanel squarePanel) {
+    public Position[] selectSquare(SquarePanel squarePanel) {
+        Position[] lastPositions = new Position[1];
         String type;
         BoardPanel boardPanel = this.frame.getBoardPanel();
         ArrayList<SquarePanel> selectedSquarePanels = boardPanel.getSelectedSquarePanels();
@@ -59,7 +83,7 @@ public class BoardController {
                     if (squarePanel == selectedSquarePanels.get(0)){  // Is sel same as origin ? If so untoggle and return
                         squarePanel.toggleSelect();
                         selectedSquarePanels.remove(0);
-                        return;
+                        return null;
                     }
                     break;
                 default:
@@ -73,8 +97,11 @@ public class BoardController {
         }
         catch (Exception e){
             this.frame.popWarning(e.getMessage());
-//            this.frame.updateMessagePanel(e.getMessage());
         }
+
+        lastPositions[0] = squarePanel.getSquare().getPosition();
+
+        return lastPositions;
     }
 
     private void swap(){

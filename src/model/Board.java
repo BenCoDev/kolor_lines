@@ -409,7 +409,7 @@ public class Board {
      */
     protected static boolean isColorValid(LinkedList<Square> curSquares, Square nextSquare){
 
-        if (curSquares.size() == 0){
+        if (curSquares.size() == 0){  // FIXME
             // base case where has been going up while color was rainbow
             return true;
         }
@@ -421,7 +421,7 @@ public class Board {
         }
 
         switch (curSquare.getColor()) {
-            case RAINBOW:
+            case RAINBOW: // FIXME
                 return isColorValid(new LinkedList<Square>(curSquares.subList(0, curSquares.size() - 1)), nextSquare);
             default:
                 return nextSquare.getColor() == RAINBOW || curSquare.getColor() == nextSquare.getColor();
@@ -447,6 +447,37 @@ public class Board {
         return null;
     }
 
+    /**
+     * Check if positions triggered a valid alignments
+     *
+     *
+     * @param positions
+     * @return validAlignments
+     */
+    public LinkedList<LinkedList<Square>> processPositions(Position[] positions){
+        LinkedList<LinkedList<Square>> validAlignments = new LinkedList();
+
+        // Iterate over positions
+        for (Position position : positions) {
+
+            if (position != null){  // Can be null (System positions for example)
+
+                // For each position, get valid alignments as a list of lists
+                LinkedList<LinkedList<Square>> alignments = this.getAlignments(position, MIN_CONSECUTIVE_ALIGNMENT);  // FIXME: CHECK can it be null
+
+                for (LinkedList<Square> alignment : alignments) {  // For each alignment, check not already as alignment of a position
+
+                    if (!validAlignments.contains(alignment)) {
+                        validAlignments.add(alignment);
+                    }
+                }
+
+            }
+        }
+
+        return validAlignments;
+    }
+
     public Dimension getSize() {
         return size;
     }
@@ -454,4 +485,5 @@ public class Board {
     private Dimension size;
     private Square[][] squares;  // TODO: describe
     public enum Direction { N, NE, E, SE, S, SW, W, NW };
+    private static int MIN_CONSECUTIVE_ALIGNMENT = 3;
 }

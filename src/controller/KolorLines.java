@@ -29,7 +29,7 @@ public class KolorLines {
 
                 board.display();
 
-                LinkedList<LinkedList<Square>> validSystemAlignments = processPositions(board, lastSystemPositions);
+                LinkedList<LinkedList<Square>> validSystemAlignments = board.processPositions(lastSystemPositions);
 
                 processValidAlignments(board, validSystemAlignments, humanUser);
 
@@ -39,11 +39,12 @@ public class KolorLines {
                 break;
             }
 
-            // src.model.User plays
-            System.out.println("src.model.User is playing");
+            // User plays
+            System.out.println("User is playing");
 
             Position[] lastUserPositions = humanUser.play();
-            LinkedList<LinkedList<Square>> validUserAlignments = processPositions(board, lastUserPositions);
+
+            LinkedList<LinkedList<Square>> validUserAlignments = board.processPositions(lastUserPositions);
 
             board.display();
 
@@ -57,40 +58,6 @@ public class KolorLines {
     }
 
     /**
-     * Check if positions triggered a valid alignments
-     *
-     *
-     * Includes business logic here
-     *
-     * @param board
-     * @param positions
-     * @return validAlignments
-     */
-    protected static LinkedList<LinkedList<Square>> processPositions(Board board, Position[] positions){
-        LinkedList<LinkedList<Square>> validAlignments = new LinkedList();
-
-        // Iterate over positions
-        for (Position position : positions) {
-
-            if (position != null){  // Can be null (System positions for example)
-
-                // For each position, get valid alignments as a list of lists
-                LinkedList<LinkedList<Square>> alignments = board.getAlignments(position, MIN_CONSECUTIVE_ALIGNMENT);  // FIXME: CHECK can it be null
-
-                for (LinkedList<Square> alignment : alignments) {  // For each alignment, check not already as alignment of a position
-
-                    if (!validAlignments.contains(alignment)) {
-                        validAlignments.add(alignment);
-                    }
-                }
-
-            }
-        }
-
-        return validAlignments;
-    }
-
-    /**
      *  Wrapper over refactored code
      * @param board
      * @param validAlignments
@@ -100,7 +67,7 @@ public class KolorLines {
 
         for (LinkedList<Square> validAlignment : validAlignments) {
             for (Square validAlignmentSquare : validAlignment) {
-                board.unsetSquare(validAlignmentSquare.getPosition());
+                validAlignmentSquare.unsetColor();
             }
         }
 
@@ -114,6 +81,4 @@ public class KolorLines {
             System.out.println("Score is " + (int) humanUser.getScore());
         }
     }
-
-    private static int MIN_CONSECUTIVE_ALIGNMENT = 3;
 }
