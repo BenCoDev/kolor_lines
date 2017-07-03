@@ -99,7 +99,7 @@ public class MessagePanel extends JPanel {
 
     private JLabel messageLabel = new JLabel(this.message);
 
-    private java.net.URL imgURL = getClass().getResource("./assets/loader.gif");
+    private java.net.URL imgURL = getClass().getResource("assets/loader.gif");
     private ImageIcon loaderIcon = new ImageIcon(imgURL);
     private JLabel loaderLabel = new JLabel("Loading ", loaderIcon, JLabel.LEFT);
 
