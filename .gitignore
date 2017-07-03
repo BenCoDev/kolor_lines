@@ -1,3 +1,5 @@
 test/
 production/
+out/
+src/META-INF
 .idea/
