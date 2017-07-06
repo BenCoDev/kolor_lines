@@ -104,9 +104,12 @@ public class MessagePanel extends JPanel {
         this.messageLabel.setText(this.message);
     }
 
-    private String message = DEFAULT_MESSAGE;
+    public static String USER_TURN_TEXT = "Your turn";
+    public static String SYSTEM_TURN_TEXT = "The computer is playing...";
+    public static String GAMEOVER_TEXT = "Game Over !";
+    public static String SELECTION_TEXT = "Square selected";
+
     private static int STICKY_DELAY = 4000;  // Delay of a notification
-    private JLabel messageLabel = new JLabel(this.message);
     private java.net.URL imgURL = getClass().getResource("assets/loader.gif");  // Image of the loader icon
     private ImageIcon loaderIcon = new ImageIcon(imgURL);
     private JLabel loaderLabel = new JLabel("Loading ", loaderIcon, JLabel.LEFT);  // Label of the loader
@@ -117,7 +120,10 @@ public class MessagePanel extends JPanel {
         WARNING,
         SUCCESS
     };
-    public static String DEFAULT_MESSAGE = "<html>" +
+
+    private JLabel messageLabel = new JLabel(this.message);
+    private String message = DEFAULT_MESSAGE;
+    private static String DEFAULT_MESSAGE = "<html>" +
             "Align 5 squares to increment your score" +
             "<br>Get the highest score" +
             "<br>Click on <em>Start Game</em> to <font color='green'>BEGIN</font>" +

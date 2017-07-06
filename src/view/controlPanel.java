@@ -24,7 +24,7 @@ public class ControlPanel extends JPanel {
 
         this.setLayout(new GridBagLayout());
 
-        JButton startGameButton = new JButton("Start Game");
+        JButton startGameButton = new JButton(this.buttonText);
         startGameButton.addActionListener(listener);
 
         GridBagConstraints gbc = new GridBagConstraints(0, 1,
@@ -33,5 +33,6 @@ public class ControlPanel extends JPanel {
         this.add(startGameButton, gbc);
     }
 
+    private static String buttonText = "Start Game";
     private static final Insets regularInsets = new Insets(10, 10, 0, 10);
 }

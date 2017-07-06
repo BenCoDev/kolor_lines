@@ -67,7 +67,7 @@ public class BoardController {
             // System user to play
             //  TODO: handle while (board.isEmpty()); case
 
-            frame.updateMessagePanel("System user is playing...");
+            frame.updateMessagePanel(MessagePanel.SYSTEM_TURN_TEXT);
             frame.getBoardPanel().setIsListening(false);  // Lock the BoardPanel until the SystemUser finished playing
 
             frame.getMessagePanel().showLoading();
@@ -121,7 +121,7 @@ public class BoardController {
             squarePanel.toggleSelect();
             boardPanel.addToSelectedSquarePanels(squarePanel);  // OK, so add to selected
 
-            this.frame.updateMessagePanel("Square selected");
+            this.frame.updateMessagePanel(MessagePanel.SELECTION_TEXT);
         }
         catch (BoardException e){
             this.frame.popNotification(e.getMessage(), MessagePanel.NotificationType.WARNING);
@@ -180,11 +180,11 @@ public class BoardController {
             frame.updateBoardPanel(Square.flatten(validSystemAlignments));
 
             if (board.isFull()){
-                frame.updateMessagePanel("Game Over");
+                frame.updateMessagePanel(MessagePanel.GAMEOVER_TEXT);
             }
             else {
                 frame.getBoardPanel().setIsListening(true);  // Release the lock on the BoardPanel
-                frame.updateMessagePanel("Your turn !");
+                frame.updateMessagePanel(MessagePanel.USER_TURN_TEXT);
             }
 
             frame.getMessagePanel().hideLoading();

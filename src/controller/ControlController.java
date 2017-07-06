@@ -30,7 +30,7 @@ public class ControlController implements ActionListener{
         board.resetSquares();
         frame.getUser().setScore(0);
         frame.repaintBoardPanel();
-        frame.updateMessagePanel(MessagePanel.DEFAULT_MESSAGE);
+        frame.updateMessagePanel(MessagePanel.USER_TURN_TEXT);
 
         this.frame.getSystemUser().setBoard(board);
         this.frame.getUser().setBoard(board);
