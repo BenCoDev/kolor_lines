@@ -107,7 +107,10 @@ public class MessagePanel extends JPanel {
     public static String USER_TURN_TEXT = "Your turn";
     public static String SYSTEM_TURN_TEXT = "The computer is playing...";
     public static String GAMEOVER_TEXT = "Game Over !";
-    public static String SELECTION_TEXT = "Square selected";
+    public static String SELECTION_TEXT = "<html>" +
+            "Square selected" +
+            "<br>You can unselect on clicking on the same square" +
+            "</html>";
 
     private static int STICKY_DELAY = 4000;  // Delay of a notification
     private java.net.URL imgURL = getClass().getResource("assets/loader.gif");  // Image of the loader icon

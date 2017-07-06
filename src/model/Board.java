@@ -34,36 +34,9 @@ public class Board {
     }
 
     /**
-     * Get Alignments bigger than given minimumLength which includes given position
-     *
-     * Will first compute all the alignments from given position according 8 directions
-     * Will then merge found alignments according 4 directions and including the square at given position
-     * Finally check length
-     *
-     * @param pos - Position - .model.Position of the original point from where alignments are computed
-     * @param minimumLength - int - Minimum length needed for an alignment to be returned
-     * @return LinkedList - List of Lists of the squares in returned alignments
-     */
-    public LinkedList getAlignments(Position pos, int minimumLength){
-        LinkedList<Square>[] alignmentsByDirection = this.fetchAlignments(pos);
-        LinkedList<Square>[] mergedDirectionAlignments = Board.mergeAlignments(alignmentsByDirection);
-        LinkedList<LinkedList<Square>> minimumLengthAlignments = new LinkedList<LinkedList<Square>>();
-
-        for (LinkedList<Square> mergedDirectionAlignment : mergedDirectionAlignments) {
-            if (mergedDirectionAlignment != null){
-                if (Board.isAlignmentValid(mergedDirectionAlignment, minimumLength)) {
-                    minimumLengthAlignments.add(mergedDirectionAlignment);
-                }
-            }
-        }
-
-        return minimumLengthAlignments;
-    }
-
-    /**
      * Check if positions triggered a valid alignments
      *
-     * @param positions
+     * @param positions - Position[]
      * @return validAlignments
      */
     public LinkedList<LinkedList<Square>> processPositions(Position[] positions){
@@ -75,7 +48,7 @@ public class Board {
             if (position != null){  // Can be null (System positions for example)
 
                 // For each position, get valid alignments as a list of lists
-                LinkedList<LinkedList<Square>> alignments = this.getAlignments(position, MIN_CONSECUTIVE_ALIGNMENT);  // FIXME: CHECK can it be null
+                LinkedList<LinkedList<Square>> alignments = this.getAlignments(position, MIN_CONSECUTIVE_ALIGNMENT);
 
                 for (LinkedList<Square> alignment : alignments) {  // For each alignment, check not already as alignment of a position
 
@@ -400,7 +373,6 @@ public class Board {
     protected static LinkedList<Square>[] mergeAlignments(LinkedList<Square>[] alignmentsByDirection){
         LinkedList<Square>[] mergedAlignmentsByDirection = new LinkedList[4];
 
-
         int outputArrayIndex;
 
         // Decrement from 7 to 4 included
@@ -442,6 +414,33 @@ public class Board {
 
         }
         return mergedAlignmentsByDirection;
+    }
+
+    /**
+     * Get Alignments bigger than given minimumLength which includes given position
+     *
+     * Will first compute all the alignments from given position according 8 directions
+     * Will then merge found alignments according 4 directions and including the square at given position
+     * Finally check length
+     *
+     * @param pos - Position - .model.Position of the original point from where alignments are computed
+     * @param minimumLength - int - Minimum length needed for an alignment to be returned
+     * @return LinkedList - List of Lists of the squares in returned alignments
+     */
+    protected LinkedList getAlignments(Position pos, int minimumLength){
+        LinkedList<Square>[] alignmentsByDirection = this.fetchAlignments(pos);
+        LinkedList<Square>[] mergedDirectionAlignments = Board.mergeAlignments(alignmentsByDirection);
+        LinkedList<LinkedList<Square>> minimumLengthAlignments = new LinkedList<LinkedList<Square>>();
+
+        for (LinkedList<Square> mergedDirectionAlignment : mergedDirectionAlignments) {
+            if (mergedDirectionAlignment != null){
+                if (Board.isAlignmentValid(mergedDirectionAlignment, minimumLength)) {
+                    minimumLengthAlignments.add(mergedDirectionAlignment);
+                }
+            }
+        }
+
+        return minimumLengthAlignments;
     }
 
     /**

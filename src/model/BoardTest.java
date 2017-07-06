@@ -27,6 +27,99 @@ public class BoardTest {
         System.setErr(null);
     }
 
+    /**
+     * Case: Get an alignment of 3 squares from a given position
+     * with 1 rainbow square in the alignment
+     *
+     * Expected: 1 alignment
+     * @throws Exception
+     */
+    @Test
+    public void getAlignments_AlignmentWithRainbow_ReturnsAlignment() throws Exception {
+        int SIZE = 3;
+        Board board = new Board(new Dimension(SIZE, SIZE));
+
+        String[] boardSerialized = {
+                "BLUE", "RED", "RAINBOW",
+                "RED", "BLUE", "BLUE",
+                "BLUE", "RED", "GREEN"
+        };
+
+        board.load(boardSerialized);
+
+        // From position 0, 2
+        Position position1 = new Position(0, 2);
+        LinkedList alignments = board.getAlignments(position1, 3);
+        assertTrue(alignments.size() == 1);
+    }
+
+    /**
+     * Case: Get an alignment of 3 squares from a given position
+     *
+     * Expected: 0 alignment
+     * @throws Exception
+     */
+    @Test
+    public void getAlignments_AlignmentWithRainbow_ReturnsNoAlignment() throws Exception {
+        int SIZE = 3;
+        Board board = new Board(new Dimension(SIZE, SIZE));
+
+        String[] boardSerialized = {
+                null, "BLUE", null,
+                "RED", "RAINBOW", "GREEN",
+                "GREEN", null, "BLUE"
+        };
+
+        board.load(boardSerialized);
+
+        // From position (1, 1)
+        Position position1 = new Position(1, 1);
+        LinkedList alignments1 = board.getAlignments(position1, 3);
+        assertTrue(alignments1.size() == 0);
+
+        // From position (0, 1)
+        Position position2 = new Position(0, 1);
+        LinkedList alignments2 = board.getAlignments(position2, 3);
+        assertTrue(alignments2.size() == 0);
+    }
+
+    /**
+     * Case: Get an alignment of 3 squares from a given position and test the
+     * 'combo' alignments
+     *
+     * Expected: 1 at one position
+     * Expected: multiple at one position (combo)
+     * @throws Exception
+     */
+    @Test
+    public void getAlignments_RandomAlignment_ReturnAlignments() throws Exception {
+        int SIZE = 10;
+        Board board = new Board(new Dimension(SIZE, SIZE));
+
+        String[] boardSerialized = {
+                null, "RED", null, null, null, null, "GREEN", null, null, "GREEN",
+                "BLUE", "RED", null, null, null, "RAINBOW", "RED", null, "BLUE", "RAINBOW",
+                "BLUE", null, null, "GREEN", null, null, null, "GREEN", null, "RED",
+                null, "GREEN", null, "RED", "RED", null, null, null, "RED", null,
+                "BLUE", null, "RAINBOW", null, "GREEN", null, "RED", "BLUE", "RED", "GREEN",
+                null, null, "GREEN", null, null, null, "RED", null, "GREEN", "GREEN",
+                "BLUE", "RAINBOW", "BLUE", "GREEN", null, null, null, "RED", "GREEN", "GREEN",
+                "BLUE", "RED", "GREEN", null, null, null, "RED", null, "GREEN", "GREEN",
+                "RED", null, "RAINBOW", "BLUE", "RAINBOW", "GREEN", null, "RED", null, "BLUE",
+                "RAINBOW", null, null, "RED", "GREEN", null, "RED", "RAINBOW", null, "GREEN",
+        };
+
+        board.load(boardSerialized);
+
+        Position position1 = new Position(8, 5);
+        LinkedList alignments1 = board.getAlignments(position1, 3);
+        assertTrue(alignments1.size() == 1);
+
+        Position position2 = new Position(2, 8);
+        LinkedList alignments2 = board.getAlignments(position2, 3);
+        assertTrue(alignments2.size() == 2);
+    }
+
     @Test
     public void isFull_FullCase() throws Exception {
         Board b = new Board(new Dimension(1, 1));
@@ -223,78 +316,6 @@ public class BoardTest {
         assertTrue(Board.isColorValid(curSquaresStartingRainbow, new Square(new Position(1, 1), Color.RAINBOW)));
         assertFalse(Board.isColorValid(curSquaresStartingRainbow, new Square(new Position(1, 1), Color.RED)));
     }
-
-    @Test
-    public void getAlignments_AlignmentWithRainbow_ReturnsAlignment() throws Exception {
-        int SIZE = 3;
-        Board board = new Board(new Dimension(SIZE, SIZE));
-
-        String[] boardSerialized = {
-                "BLUE", "RED", "RAINBOW",
-                "RED", "BLUE", "BLUE",
-                "BLUE", "RED", "GREEN"
-        };
-
-        board.load(boardSerialized);
-
-        // From position 0,2
-        Position position1 = new Position(0, 2);
-        LinkedList alignments = board.getAlignments(position1, 3);
-        assertTrue(alignments.size() == 1);
-    }
-
-    @Test
-    public void getAlignments_AlignmentWithRainbow_ReturnsNoAlignment() throws Exception {
-        int SIZE = 3;
-        Board board = new Board(new Dimension(SIZE, SIZE));
-
-        String[] boardSerialized = {
-                null, "BLUE", null,
-                "RED", "RAINBOW", "GREEN",
-                "GREEN", null, "BLUE"
-        };
-
-        board.load(boardSerialized);
-
-        // From position (1, 1)
-        Position position1 = new Position(1, 1);
-        LinkedList alignments1 = board.getAlignments(position1, 3);
-        assertTrue(alignments1.size() == 0);
-
-        // From position (0, 1)
-        Position position2 = new Position(0, 1);
-        LinkedList alignments2 = board.getAlignments(position2, 3);
-        assertTrue(alignments2.size() == 0);
-    }
-
-    @Test
-    public void getAlignments_RandomAlignment_ReturnAlignments() throws Exception {
-        int SIZE = 10;
-        Board board = new Board(new Dimension(SIZE, SIZE));
-
-        String[] boardSerialized = {
-                null, "RED", null, null, null, null, "GREEN", null, null, "GREEN",
-                "BLUE", "RED", null, null, null, "RAINBOW", "RED", null, "BLUE", "RAINBOW",
-                "BLUE", null, null, "GREEN", null, null, null, "GREEN", null, "RED",
-                null, "GREEN", null, "RED", "RED", null, null, null, "RED", null,
-                "BLUE", null, "RAINBOW", null, "GREEN", null, "RED", "BLUE", "RED", "GREEN",
-                null, null, "GREEN", null, null, null, "RED", null, "GREEN", "GREEN",
-                "BLUE", "RAINBOW", "BLUE", "GREEN", null, null, null, "RED", "GREEN", "GREEN",
-                "BLUE", "RED", "GREEN", null, null, null, "RED", null, "GREEN", "GREEN",
-                "RED", null, "RAINBOW", "BLUE", "RAINBOW", "GREEN", null, "RED", null, "BLUE",
-                "RAINBOW", null, null, "RED", "GREEN", null, "RED", "RAINBOW", null, "GREEN",
-        };
-
-        board.load(boardSerialized);
-
-        Position position1 = new Position(8, 5);
-        LinkedList alignments1 = board.getAlignments(position1, 3);
-        assertTrue(alignments1.size() == 1);
-
-        Position position2 = new Position(2, 8);
-        LinkedList alignments2 = board.getAlignments(position2, 3);
-        assertTrue(alignments2.size() == 2);
-    }
 }
 //######################################################################
 //        /         0         1         2         3         4         5
@@ -340,4 +361,22 @@ public class BoardTest {
 //        3   RAINBOW   RAINBOW     GREEN     GREEN     GREEN     GREEN
 //        4     GREEN                BLUE   RAINBOW      BLUE     GREEN
 //        5      BLUE   RAINBOW      BLUE   RAINBOW     GREEN      BLUE
+//        ######################################################################
+//######################################################################
+//        /         0         1         2         3         4         5
+//        0                                                       GREEN
+//        1                                                       GREEN
+//        2     GREEN     GREEN   RAINBOW   RAINBOW
+//        3             RAINBOW             RAINBOW
+//        4                 RED             RAINBOW
+//        5       RED                           RED
+//        ######################################################################
+//        ######################################################################
+//        /         0         1         2         3         4         5
+//        0                                                       GREEN
+//        1                                                       GREEN
+//        2
+//        3             RAINBOW             RAINBOW
+//        4                 RED             RAINBOW
+//        5       RED                           RED
 //        ######################################################################
