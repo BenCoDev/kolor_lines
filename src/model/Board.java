@@ -35,6 +35,7 @@ public class Board {
 
     /**
      * Check if positions triggered a valid alignments
+     * For each position get the alignments
      *
      * @param positions - Position[]
      * @return validAlignments
@@ -56,7 +57,6 @@ public class Board {
                         validAlignments.add(alignment);
                     }
                 }
-
             }
         }
 
@@ -64,8 +64,10 @@ public class Board {
     }
 
     /**
-     *  Wrapper over refactored code
+     *  Unselect squares of an alignment
+     *  Compute added value from the alignment
      * @param validAlignments
+     * @return addedValue - int
      */
     public static int processValidAlignments(LinkedList<LinkedList<Square>> validAlignments){
         int addedValue = 0;
@@ -267,35 +269,99 @@ public class Board {
     }
 
     /**
-     * List the squares surrounding a position
-     * Set as protected to be able to test it
+     * Get Alignments bigger than given minimumLength which includes given position
      *
-     * @param pos - Position - .model.Position at which we want to list the neighbours
-     * @return - Square[] - List of squares for every direction listed
-     *         Given in the order defined by the Direction enum
-     *         null if empty
+     * Will first compute all the alignments from given position according 8 directions
+     * Will then merge found alignments according 4 directions and including the square at given position
+     * Finally check length
+     *
+     * @param pos - Position - .model.Position of the original point from where alignments are computed
+     * @param minimumLength - int - Minimum length needed for an alignment to be returned
+     * @return LinkedList - List of Lists of the squares in returned alignments
      */
-    protected Square[] listNeighbours(Position pos){
-        Square[] neighbours = new Square[Board.Direction.values().length];
+    protected LinkedList getAlignments(Position pos, int minimumLength){
+        LinkedList<Square>[] alignmentsByDirection = this.fetchAlignments(pos);
+        LinkedList<Square>[] mergedDirectionAlignments = Board.mergeAlignments(alignmentsByDirection);
+        LinkedList<LinkedList<Square>> minimumLengthAlignments = new LinkedList<LinkedList<Square>>();
 
-        // Get N, NE, E, SE , S, SW, W, NW and append in this order; null if empty
-        for (int i = 0; i < Board.Direction.values().length; i ++){
-            Direction curDirection = Board.Direction.values()[i];
-            try {
-                neighbours[i] = this.getSquare(pos.getNextPosition(curDirection));
-            }
-            catch (PositionException e) {
-                neighbours[i] = null;
+        for (LinkedList<Square> mergedDirectionAlignment : mergedDirectionAlignments) {
+            if (mergedDirectionAlignment != null){
+                if (Board.isAlignmentValid(mergedDirectionAlignment, minimumLength)) {
+                    minimumLengthAlignments.add(mergedDirectionAlignment);
+                }
             }
         }
 
-        return neighbours;
+        return minimumLengthAlignments;
+    }
+
+    /**
+     * Merge alignments from a given Square by merging opposite directions 2 by 2
+     *
+     * Note: Case V V Rb B B, with Rainbow being the given Square ==> Rainbow will only count for leftSide
+     * Controlled by shouldMergeRightSide boolean
+     *
+     * Also includes the current square
+     *
+     * Set as protected to be able to test it
+     * @param alignmentsByDirection: LinkedList[8] - Alignments surrounding a Square by direction
+     * @return LinkedList[4] - { alignments on NWSE, alignments on WE, alignments on SWNE, alignments on SN }
+     */
+    protected static LinkedList<Square>[] mergeAlignments(LinkedList<Square>[] alignmentsByDirection){
+        LinkedList<Square>[] mergedAlignmentsByDirection = new LinkedList[4];
+
+        int outputArrayIndex;
+
+        // Decrement from 7 to 4 included
+        for (int i = alignmentsByDirection.length - 1; i >= mergedAlignmentsByDirection.length; i--){
+            outputArrayIndex = -(i - (alignmentsByDirection.length - 1));
+            LinkedList<Square> leftSideList = alignmentsByDirection[i];
+            Collections.reverse(leftSideList); // Will reverse in place to get a left to right square alignment
+            LinkedList<Square> rightSideList = alignmentsByDirection[i - mergedAlignmentsByDirection.length];
+            boolean shouldMergeRightSide = true;
+
+            mergedAlignmentsByDirection[outputArrayIndex] = new LinkedList<Square>(leftSideList);
+
+            // Case V V Rb B B ==> Rb will only count for leftSide
+            // Check the last of left (original square since list has been reversed)
+            if (leftSideList.getLast().getColor() == RAINBOW){
+                Color leftColor = null;
+                Color rightColor = null;
+
+                if (leftSideList.size() > 0){
+                    // Starts with first element of the LinkedList
+                    leftColor = fetchStandardColor(leftSideList.listIterator(0));
+                }
+
+                if (rightSideList != null && rightSideList.size() > 0){
+                    // Starts with first element of the LinkedList
+                    rightColor = fetchStandardColor(rightSideList.listIterator(0));
+                }
+
+                if (rightColor != null && leftColor != null && rightColor != leftColor){
+                    shouldMergeRightSide = false;
+                }
+            }
+
+            if (shouldMergeRightSide){
+                // Remove first of the list to avoid duplicates when merging
+                // Won't raise error since every alignmentsByDirection has at least one element
+                mergedAlignmentsByDirection[outputArrayIndex].addAll(rightSideList.subList(1, rightSideList.size()));
+            }
+
+        }
+        return mergedAlignmentsByDirection;
     }
 
     /**
      * Fetch alignments given a position by listing all the neighbours of a given position
      * includes curSquare and will extend alignments for each direction
      * Set as protected to be able to test it
+     *
+     * with s being the square at the given position
+     * 7 0 1
+     * 6 s 2
+     * 5 4 3
      *
      * @param pos - Position - Position of the original point from where alignments are computed
      * @return LinkedList - List of lists of aligned squares by direction
@@ -359,88 +425,29 @@ public class Board {
     }
 
     /**
-     * Merge alignments from a given Square by merging opposite directions 2 by 2
-     *
-     * Note: Case V V Rb B B, with Rainbow being the given Square ==> Rainbow will only count for leftSide
-     * Controlled by shouldMergeRightSide boolean
-     *
-     * Also includes the current square
-     *
+     * List the squares surrounding a position
      * Set as protected to be able to test it
-     * @param alignmentsByDirection: LinkedList[8] - Alignments surrounding a Square by direction
-     * @return LinkedList[4] - { alignments on NWSE, alignments on WE, alignments on SWNE, alignments on SN }
-     */
-    protected static LinkedList<Square>[] mergeAlignments(LinkedList<Square>[] alignmentsByDirection){
-        LinkedList<Square>[] mergedAlignmentsByDirection = new LinkedList[4];
-
-        int outputArrayIndex;
-
-        // Decrement from 7 to 4 included
-        for (int i = alignmentsByDirection.length - 1; i >= mergedAlignmentsByDirection.length; i--){
-            outputArrayIndex = -(i - (alignmentsByDirection.length - 1));
-            LinkedList<Square> leftSideList = alignmentsByDirection[i];
-            Collections.reverse(leftSideList); // Will reverse in place to get a left to right square alignment
-            LinkedList<Square> rightSideList = alignmentsByDirection[i - mergedAlignmentsByDirection.length];
-            boolean shouldMergeRightSide = true;
-
-            mergedAlignmentsByDirection[outputArrayIndex] = new LinkedList<Square>(leftSideList);
-
-            // Case V V Rb B B ==> Rb will only count for leftSide
-            // Check the last of left (original square since list has been reversed)
-            if (leftSideList.getLast().getColor() == RAINBOW){
-                Color leftColor = null;
-                Color rightColor = null;
-
-                if (leftSideList.size() > 0){
-                    // Starts with first element of the LinkedList
-                    leftColor = fetchStandardColor(leftSideList.listIterator(0));
-                }
-
-                if (rightSideList != null && rightSideList.size() > 0){
-                    // Starts with first element of the LinkedList
-                    rightColor = fetchStandardColor(rightSideList.listIterator(0));
-                }
-
-                if (rightColor != null && leftColor != null && rightColor != leftColor){
-                    shouldMergeRightSide = false;
-                }
-            }
-
-            if (shouldMergeRightSide){
-                // Remove first of the list to avoid duplicates when merging
-                // Won't raise error since every alignmentsByDirection has at least one element
-                mergedAlignmentsByDirection[outputArrayIndex].addAll(rightSideList.subList(1, rightSideList.size()));
-            }
-
-        }
-        return mergedAlignmentsByDirection;
-    }
-
-    /**
-     * Get Alignments bigger than given minimumLength which includes given position
      *
-     * Will first compute all the alignments from given position according 8 directions
-     * Will then merge found alignments according 4 directions and including the square at given position
-     * Finally check length
-     *
-     * @param pos - Position - .model.Position of the original point from where alignments are computed
-     * @param minimumLength - int - Minimum length needed for an alignment to be returned
-     * @return LinkedList - List of Lists of the squares in returned alignments
+     * @param pos - Position - .model.Position at which we want to list the neighbours
+     * @return - Square[] - List of squares for every direction listed
+     *         Given in the order defined by the Direction enum
+     *         null if empty
      */
-    protected LinkedList getAlignments(Position pos, int minimumLength){
-        LinkedList<Square>[] alignmentsByDirection = this.fetchAlignments(pos);
-        LinkedList<Square>[] mergedDirectionAlignments = Board.mergeAlignments(alignmentsByDirection);
-        LinkedList<LinkedList<Square>> minimumLengthAlignments = new LinkedList<LinkedList<Square>>();
+    protected Square[] listNeighbours(Position pos){
+        Square[] neighbours = new Square[Board.Direction.values().length];
 
-        for (LinkedList<Square> mergedDirectionAlignment : mergedDirectionAlignments) {
-            if (mergedDirectionAlignment != null){
-                if (Board.isAlignmentValid(mergedDirectionAlignment, minimumLength)) {
-                    minimumLengthAlignments.add(mergedDirectionAlignment);
-                }
+        // Get N, NE, E, SE , S, SW, W, NW and append in this order; null if empty
+        for (int i = 0; i < Board.Direction.values().length; i ++){
+            Direction curDirection = Board.Direction.values()[i];
+            try {
+                neighbours[i] = this.getSquare(pos.getNextPosition(curDirection));
+            }
+            catch (PositionException e) {
+                neighbours[i] = null;
             }
         }
 
-        return minimumLengthAlignments;
+        return neighbours;
     }
 
     /**
@@ -463,12 +470,11 @@ public class Board {
         }
 
         switch (curSquare.getColor()) {
-            case RAINBOW: // FIXME
+            case RAINBOW:
                 return isColorValid(new LinkedList<Square>(curSquares.subList(0, curSquares.size() - 1)), nextSquare);
             default:
                 return nextSquare.getColor() == RAINBOW || curSquare.getColor() == nextSquare.getColor();
         }
-
     }
 
     /**
