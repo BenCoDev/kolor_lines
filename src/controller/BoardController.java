@@ -64,19 +64,26 @@ public class BoardController {
 
             board.display();
 
-            // System user to play
-            //  TODO: handle while (board.isEmpty()); case
+            this.runSystemUserTurn();
 
-            frame.updateMessagePanel(MessagePanel.SYSTEM_TURN_TEXT);
-            frame.getBoardPanel().setIsListening(false);  // Lock the BoardPanel until the SystemUser finished playing
-
-            frame.getMessagePanel().showLoading();
-
-            javax.swing.Timer displayTimer = new javax.swing.Timer(SystemUser.getSpeed(), new DelayedActionListener());
-
-            displayTimer.setRepeats(false);
-            displayTimer.start();
         }
+    }
+
+    /**
+     * Wrapper around actions defining a System turn
+     *
+     */
+    public void runSystemUserTurn(){
+        // System user to play
+        frame.updateMessagePanel(MessagePanel.SYSTEM_TURN_TEXT);
+        frame.getBoardPanel().setIsListening(false);  // Lock the BoardPanel until the SystemUser finished playing
+
+        frame.getMessagePanel().showLoading();
+
+        javax.swing.Timer displayTimer = new javax.swing.Timer(SystemUser.getSpeed(), new DelayedActionListener());
+
+        displayTimer.setRepeats(false);
+        displayTimer.start();
     }
 
     /**
@@ -152,8 +159,6 @@ public class BoardController {
      * Wrapper to simulate delay
      */
     private class DelayedActionListener implements ActionListener {
-
-
         /**
          * Represents the action performed by the System user
          *
@@ -190,6 +195,11 @@ public class BoardController {
             frame.getMessagePanel().hideLoading();
 
             board.display();
+
+            if (board.isEmpty()){
+                runSystemUserTurn();
+            }
+
         }
     }
 

@@ -1,7 +1,6 @@
 package controller;
 
 import model.Board;
-import model.Position;
 import view.KolorLinesFrame;
 import view.MessagePanel;
 
@@ -35,8 +34,9 @@ public class ControlController implements ActionListener{
         this.frame.getSystemUser().setBoard(board);
         this.frame.getUser().setBoard(board);
 
-        Position[] lastSystemPositions = SystemUserController.play(board);
-        frame.updateBoardPanel(lastSystemPositions);
+        BoardController boardController = new BoardController(frame, frame.getBoard());
+
+        boardController.runSystemUserTurn();
     }
 
     private KolorLinesFrame frame;
