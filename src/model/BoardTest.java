@@ -53,7 +53,7 @@ public class BoardTest {
         b.display();
         assertEquals("Should have displayed empty board", outContent.toString(),
                 "         /         0\n" +
-                "         0          \n"
+                        "         0          \n"
         );
     }
 
@@ -67,7 +67,7 @@ public class BoardTest {
 
         assertEquals("Should have displayed board with one filled value", outContent.toString(),
                 "         /         0\n" +
-                "         0" + String.format("%10s", b.getSquare(position).getColor()) + "\n"
+                        "         0" + String.format("%10s", b.getSquare(position).getColor()) + "\n"
         );
     }
 
@@ -295,5 +295,49 @@ public class BoardTest {
         LinkedList alignments2 = board.getAlignments(position2, 3);
         assertTrue(alignments2.size() == 2);
     }
-
 }
+//######################################################################
+//        /         0         1         2         3         4         5
+//        0      BLUE   RAINBOW     GREEN      BLUE                BLUE
+//         1     GREEN             RAINBOW       RED      BLUE       RED
+//         2                                    BLUE     GREEN     GREEN
+//         3   RAINBOW             RAINBOW               GREEN     GREEN
+//         4     GREEN                BLUE   RAINBOW      BLUE     GREEN
+//         5      BLUE   RAINBOW      BLUE   RAINBOW     GREEN      BLUE
+//######################################################################
+//        ######################################################################
+//        /         0         1         2         3         4         5
+//        0      BLUE   RAINBOW     GREEN      BLUE                BLUE
+//         1     GREEN      BLUE   RAINBOW       RED      BLUE       RED
+//         2             RAINBOW                BLUE     GREEN     GREEN
+//         3   RAINBOW   RAINBOW   RAINBOW               GREEN     GREEN
+//         4     GREEN                BLUE   RAINBOW      BLUE     GREEN
+//         5      BLUE   RAINBOW      BLUE   RAINBOW     GREEN      BLUE
+//######################################################################
+//        ######################################################################
+//        /         0         1         2         3         4         5
+//        0      BLUE               GREEN      BLUE                BLUE
+//         1                       RAINBOW       RED      BLUE       RED
+//         2                                    BLUE     GREEN     GREEN
+//         3   RAINBOW                                   GREEN     GREEN
+//         4     GREEN                BLUE                BLUE     GREEN
+//         5      BLUE   RAINBOW      BLUE   RAINBOW                BLUE
+//######################################################################
+//}######################################################################
+//        /         0         1         2         3         4         5
+//        0      BLUE               GREEN      BLUE                BLUE
+//        1   RAINBOW               GREEN       RED      BLUE       RED
+//        2   RAINBOW      BLUE      BLUE      BLUE     GREEN     GREEN
+//        3   RAINBOW   RAINBOW     GREEN               GREEN     GREEN
+//        4     GREEN     GREEN      BLUE   RAINBOW      BLUE     GREEN
+//        5      BLUE   RAINBOW      BLUE   RAINBOW     GREEN      BLUE
+//        ######################################################################
+//        ######################################################################
+//        /         0         1         2         3         4         5
+//        0      BLUE               GREEN      BLUE                BLUE
+//        1   RAINBOW               GREEN       RED      BLUE       RED
+//        2   RAINBOW      BLUE      BLUE      BLUE     GREEN     GREEN
+//        3   RAINBOW   RAINBOW     GREEN     GREEN     GREEN     GREEN
+//        4     GREEN                BLUE   RAINBOW      BLUE     GREEN
+//        5      BLUE   RAINBOW      BLUE   RAINBOW     GREEN      BLUE
+//        ######################################################################

@@ -6,7 +6,7 @@ import view.KolorLinesFrame;
 
 import javax.swing.*;
 
-public class KolorLinesRunnable implements Runnable {
+public class KolorLinesGUI implements Runnable {
 
     @Override
     public void run(){
@@ -16,6 +16,6 @@ public class KolorLinesRunnable implements Runnable {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new KolorLinesRunnable());
+        SwingUtilities.invokeLater(new KolorLinesGUI());
     }
 }

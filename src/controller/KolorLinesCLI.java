@@ -4,11 +4,14 @@ import model.*;
 
 import java.util.LinkedList;
 
-public class KolorLines {
+/**
+ * KolorLinesCLI represents the controller which wrap the interactions of the user via CLI
+ * and the model
+ */
+public class KolorLinesCLI {
     public static void main(String[] args){
 
-        // Prompt to get .model.Board size
-        Board board = Board.prompt();
+        Board board = Board.prompt();  // Prompt to get Board size
 
         SystemUser systemUser = new SystemUser();
         HumanUser humanUser = new HumanUser();
@@ -25,42 +28,44 @@ public class KolorLines {
 
                 System.out.println("System is playing");
 
-                Position[] lastSystemPositions = systemUser.play();
+                Position[] lastSystemPositions = SystemUserController.play(board);
 
                 board.display();
 
                 LinkedList<LinkedList<Square>> validSystemAlignments = board.processPositions(lastSystemPositions);
 
-                double addedValue = board.processValidAlignments(validSystemAlignments);
+                int addedValue = Board.processValidAlignments(validSystemAlignments);
                 humanUser.updateScore(addedValue);
+
                 if (addedValue > 0){
-                    System.out.println("Youhou! You just got " + (int) addedValue + " points");
+                    System.out.println("Youhou! You just got " + addedValue + " points");
                 }
 
                 System.out.println("Score is " + (int) humanUser.getScore());
 
             } while (board.isEmpty());  // If board is empty, continue playing
 
-            if  (board.isFull()) {
+            if  (board.isFull()) {  // If the board is full, exit the while loop
+                System.out.println("Game Over");
                 break;
             }
 
             // User plays
             System.out.println("User is playing");
 
-            Position[] lastUserPositions = humanUser.play();
+            Position[] lastUserPositions = HumanUserController.play(board);
 
             LinkedList<LinkedList<Square>> validUserAlignments = board.processPositions(lastUserPositions);
 
             board.display();
 
-            double addedValue = board.processValidAlignments(validUserAlignments);
+            int addedValue = Board.processValidAlignments(validUserAlignments);
             humanUser.updateScore(addedValue);
             if (addedValue > 0){
-                System.out.println("Youhou! You just got " + (int) addedValue + " points");
+                System.out.println("Youhou! You just got " + addedValue + " points");
             }
 
-            System.out.println("Score is " + (int) humanUser.getScore());
+            System.out.println("Score is " + humanUser.getScore());
 
             System.out.println("End of turn");
         }

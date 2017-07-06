@@ -1,6 +1,5 @@
 package controller;
 
-import model.Square;
 import view.KolorLinesFrame;
 import view.SquarePanel;
 
@@ -9,30 +8,35 @@ import java.awt.event.MouseListener;
 
 public class SquareController implements MouseListener {
 
-    public SquareController(KolorLinesFrame frame, Square square) {
+
+    /**
+     * Square controller glues together interactions with the SquarePanel and the model
+     *
+     * @param frame: KolorlinesFrame - represents centralized access to other part of the view
+     */
+    public SquareController(KolorLinesFrame frame) {
         this.frame = frame;
-        this.square = square;
     }
 
+    /**
+     * From a MouseEvent on a SquarePanel,
+     * delegates action to the BoardController
+     *
+     * @param e MouseEvent
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         SquarePanel curSquarePanel = (SquarePanel) e.getComponent();
 
-        if (! this.frame.getBoardPanel().getIsListening()){
+        if (! this.frame.getBoardPanel().getIsListening()){  // If the BoardPanel is locked, early return
             return;
         }
 
-        // How to delegate to BoardController ?  this.frame ==> BoardPanel ==> Board
-        // By using main object frame
         this.frame.getBoardPanel();
 
         BoardController boardController = new BoardController(this.frame, this.frame.getBoard());
 
-        try {
-            boardController.run(curSquarePanel);
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
+        boardController.run(curSquarePanel);
     }
 
     @Override
@@ -56,5 +60,4 @@ public class SquareController implements MouseListener {
     }
 
     private KolorLinesFrame frame;
-    private Square square;
 }

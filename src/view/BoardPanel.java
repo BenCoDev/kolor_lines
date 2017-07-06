@@ -10,6 +10,13 @@ import java.util.ArrayList;
 
 public class BoardPanel extends JPanel {
 
+    /**
+     * Represents a BoardPanel responsible for displaying the board
+     * placed into the frame given a board instance
+     *
+     * @param frame KolorLinesFrame
+     * @param board Board
+     */
     public BoardPanel(KolorLinesFrame frame, Board board) {
         this.frame = frame;
         this.board = board;
@@ -17,12 +24,14 @@ public class BoardPanel extends JPanel {
         this.selectedSquarePanels = new ArrayList<SquarePanel>(2);  // Reinit when BoardPanel init == composition
 
         this.setPreferredSize(this.getPreferredSize());
-        this.setMinimumSize(this.getPreferredSize());
-        this.setMaximumSize(this.getPreferredSize());
         this.setLayout(new GridLayout(this.board.getSize().width, this.board.getSize().width, this.GUTTER, this.GUTTER));
         this.setBorder(BorderFactory.createEmptyBorder(this.GUTTER, this.GUTTER, this.GUTTER, this.GUTTER));
+    }
 
-
+    /**
+     * Initialize the grid of square panels
+     */
+    public void initGrid(){
         for (int ord = 0; ord < board.getSize().width; ord++) {
             for (int abs = 0; abs < board.getSize().width; abs++) {
                 try {
@@ -30,28 +39,16 @@ public class BoardPanel extends JPanel {
                     this.add(this.squarePanels[abs][ord]);
                 }
                 catch (PositionException e){
-                    // not likely to happen
+                    e.printStackTrace();  // not likely to happen
                 }
             }
         }
-
     }
 
-    private void draw(){
-        for (int x = 0; x < board.getSize().width; x++) {
-            for (int y = 0; y < board.getSize().width; y++) {
-                this.squarePanels[x][y].repaint();
-            }
-        }
-
-    }
-
-    @Override
-    protected void paintComponent(Graphics g){
-        super.paintComponent(g);
-        draw();
-    }
-
+    /**
+     * Update the JPanel by only repainting the positions given
+     * @param positions Position[]
+     */
     public void update(Position[] positions){
         for (Position position : positions) {
             if (position!= null){
@@ -61,8 +58,7 @@ public class BoardPanel extends JPanel {
     }
 
     public Dimension getPreferredSize() {
-        int width = this.board.getSize().width * SquarePanel.getSquareWidth();
-        return new Dimension(width, width);
+        return new Dimension(DEFAULT_WIDTH, DEFAULT_WIDTH);
     }
 
     public void addToSelectedSquarePanels(SquarePanel squarePanel){
@@ -85,12 +81,26 @@ public class BoardPanel extends JPanel {
         return this.isListening;
     }
 
-    private boolean isListening = true;
+    @Override
+    protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+        draw();
+    }
 
+    private void draw(){
+        for (int x = 0; x < board.getSize().width; x++) {
+            for (int y = 0; y < board.getSize().width; y++) {
+                this.squarePanels[x][y].repaint();
+            }
+        }
 
+    }
+
+    private boolean isListening = true;  // If false, lock the BoardPanel from listening to events
     private Board board;
-    private KolorLinesFrame frame;
-    private SquarePanel[][] squarePanels;
-    private ArrayList<SquarePanel> selectedSquarePanels;
-    private static int GUTTER = 5;
+    private KolorLinesFrame frame;  // Main frame
+    private SquarePanel[][] squarePanels;  // Represents the squarePanels which makes the BoardPanel
+    private ArrayList<SquarePanel> selectedSquarePanels;  // Currently selected SquarePanels
+    private static int GUTTER = 5;  // Space between SquarePanel
+    private static int DEFAULT_WIDTH = 635;
 }

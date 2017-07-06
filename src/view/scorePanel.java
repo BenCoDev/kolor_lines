@@ -1,14 +1,17 @@
 package view;
 
-import model.Board;
 import model.HumanUser;
 
 import javax.swing.*;
 import java.awt.*;
-import java.text.NumberFormat;
 
 public class ScorePanel extends JPanel {
 
+    /**
+     * Represents a ScorePanel responsible for displaying the score of a user to the user
+     * given this user
+     * @param user - HumanUser
+     */
     public ScorePanel(HumanUser user) {
         this.user = user;
 
@@ -24,19 +27,16 @@ public class ScorePanel extends JPanel {
 
     }
 
-    private void draw(){
-
-        this.currentScoreField.setText(String.valueOf(this.user.getScore()));
-
-    }
-
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         draw();
     }
 
-    private HumanUser user;
+    private void draw(){
+        this.currentScoreField.setText(String.valueOf(this.user.getScore()));
+    }
 
+    private HumanUser user;
     private JTextField currentScoreField;
 }

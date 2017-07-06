@@ -7,6 +7,12 @@ import java.awt.event.ActionListener;
 
 public class MessagePanel extends JPanel {
 
+    /**
+     * Represents a MessagePanel responsible for displaying messages to the user
+     * placed into the frame
+     *
+     * @param frame KolorLinesFrame
+     */
     public MessagePanel(KolorLinesFrame frame) {
         this.frame = frame;
 
@@ -33,16 +39,11 @@ public class MessagePanel extends JPanel {
         this.add(loaderLabel, BorderLayout.EAST);
     }
 
-    private void draw(){
-        this.messageLabel.setText(this.message);
-    }
-
-    @Override
-    protected void paintComponent(Graphics g){
-        super.paintComponent(g);
-        draw();
-    }
-
+    /**
+     * Pop a notification on the messagePanel for a short amount of time (STICKY_DELAY)
+     * @param notification
+     * @param type
+     */
     public void popNotification(String notification, NotificationType type){  // Modify to popNotification
 
         this.notificationLabel.setVisible(true);
@@ -93,25 +94,32 @@ public class MessagePanel extends JPanel {
         return message;
     }
 
+    @Override
+    protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+        draw();
+    }
+
+    private void draw(){
+        this.messageLabel.setText(this.message);
+    }
+
     private String message = DEFAULT_MESSAGE;
-
-    private static int STICKY_DELAY = 4000;
-
+    private static int STICKY_DELAY = 4000;  // Delay of a notification
     private JLabel messageLabel = new JLabel(this.message);
-
-    private java.net.URL imgURL = getClass().getResource("assets/loader.gif");
+    private java.net.URL imgURL = getClass().getResource("assets/loader.gif");  // Image of the loader icon
     private ImageIcon loaderIcon = new ImageIcon(imgURL);
-    private JLabel loaderLabel = new JLabel("Loading ", loaderIcon, JLabel.LEFT);
-
+    private JLabel loaderLabel = new JLabel("Loading ", loaderIcon, JLabel.LEFT);  // Label of the loader
     private JLabel notificationLabel = new JLabel();
-
     private static final Font font = new Font("Monospaced", Font.BOLD, 12);
-
     private KolorLinesFrame frame;
-    public static enum NotificationType {
+    public static enum NotificationType {  // Type of notification
         WARNING,
         SUCCESS
     };
-
-    public static String DEFAULT_MESSAGE = "Start playing";
+    public static String DEFAULT_MESSAGE = "<html>" +
+            "Align 5 squares to increment your score" +
+            "<br>Get the highest score" +
+            "<br>Click on <em>Start Game</em> to <font color='green'>BEGIN</font>" +
+            "</html>";
 }

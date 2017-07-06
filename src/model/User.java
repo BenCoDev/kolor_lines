@@ -2,12 +2,14 @@ package model;
 
 import java.util.LinkedList;
 
+/**
+ * Abstract class representing a User
+ */
 abstract public class User {
 
-//    public .model.User() {
-//    }
-
-    // Play
+    /**
+     * Set a Board to a User
+     */
     public void setBoard(Board board){
         this.board = board;
     }
@@ -16,33 +18,38 @@ abstract public class User {
         return this.board;
     }
 
-    public double getScore() {
+    public int getScore() {
         return score;
     }
 
-    public void setScore(double score) {
+    public void setScore(int score) {
         this.score = score;
     }
 
-    public double updateScore(double addedValue) {
+    public double updateScore(int addedValue) {
         this.score += addedValue;
         return this.score;
     }
 
-    public static double computeValue(LinkedList<LinkedList<Square>> alignments) {
-        double value = 0;
+    /**
+     * Compute the added value to the score given alignments
+     * @param alignments: LinkedList<LinkedList<Square>>
+     * @return
+     */
+    public static int computeValue(LinkedList<LinkedList<Square>> alignments) {
+        int value = 0;
 
         for (LinkedList<Square> alignment : alignments) {
             value += alignment.size();
         }
 
         if (alignments.size() > 0) {
-            value = Math.pow(value, Math.sqrt(alignments.size()));
+            value = (int) Math.pow(value, Math.sqrt(alignments.size()));
         }
 
         return value;
     }
 
-    private double score = 0;
+    private int score = 0;
     private Board board; // aggregation
 }

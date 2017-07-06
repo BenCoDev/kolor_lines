@@ -34,9 +34,6 @@ public class KolorLinesTest {
 
         LinkedList<LinkedList<Square>> validAlignments = board.processPositions(positions);
         assertEquals("Size should be 2 - avoid duplicate counting", validAlignments.size(), 2);
-
-
-
     }
 
 }

@@ -12,6 +12,13 @@ import javax.swing.JPanel;
 
 public class ControlPanel extends JPanel {
 
+    /**
+     * Represents a ControlPanel responsible for starting the game
+     * placed into the frame given a board instance
+     *
+     * @param frame KolorLinesFrame
+     * @param board Board
+     */
     public ControlPanel(KolorLinesFrame frame, Board board) {
         ControlController listener = new ControlController(frame, board);
 

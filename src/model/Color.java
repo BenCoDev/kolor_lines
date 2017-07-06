@@ -3,7 +3,7 @@ package model;
 import java.util.*;
 
 /**
- * .model.Color enum represents different colors which can be use in the game by a .model.Square
+ * Color enum represents different colors which can be use in the game by a Square
  *
  * Following list can be extended with other colors
  *
@@ -17,12 +17,8 @@ public enum Color {
     GREEN,
     RAINBOW;
 
-    private static final List<Color> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
-    private static final int SIZE = VALUES.size();
-    private static final Random RANDOM = new Random();
-
     /**
-     * Returns a random .model.Color object with value from the enum.
+     * Returns a random Color object with value from the enum.
      *
      * @return  the color randomly created
      */
@@ -59,6 +55,9 @@ public enum Color {
         map = Collections.unmodifiableMap(initMap);
     }
 
+    private static final List<Color> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+    private static final int SIZE = VALUES.size();
+    private static final Random RANDOM = new Random();
 }
 
 
