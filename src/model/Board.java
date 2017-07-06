@@ -35,7 +35,7 @@ public class Board {
 
     /**
      * Check if positions triggered a valid alignments
-     * For each position get the alignments
+     * For each position get the alignments by using private getValidAlignments method
      *
      * @param positions - Position[]
      * @return validAlignments
@@ -49,7 +49,7 @@ public class Board {
             if (position != null){  // Can be null (System positions for example)
 
                 // For each position, get valid alignments as a list of lists
-                LinkedList<LinkedList<Square>> alignments = this.getAlignments(position, MIN_CONSECUTIVE_ALIGNMENT);
+                LinkedList<LinkedList<Square>> alignments = this.getValidAlignments(position, MIN_CONSECUTIVE_ALIGNMENT);
 
                 for (LinkedList<Square> alignment : alignments) {  // For each alignment, check not already as alignment of a position
 
@@ -271,15 +271,15 @@ public class Board {
     /**
      * Get Alignments bigger than given minimumLength which includes given position
      *
-     * Will first compute all the alignments from given position according 8 directions
-     * Will then merge found alignments according 4 directions and including the square at given position
-     * Finally check length
+     * Will first compute all the alignments from given position according 8 directions with fetchAlignments
+     * Will then merge found alignments according 4 directions and including the square at given position with mergeAlignments
+     * Finally add in a LinkedList if the size of the alignment is valid
      *
-     * @param pos - Position - .model.Position of the original point from where alignments are computed
+     * @param pos - Position - Position of the original point from where alignments are computed
      * @param minimumLength - int - Minimum length needed for an alignment to be returned
      * @return LinkedList - List of Lists of the squares in returned alignments
      */
-    protected LinkedList getAlignments(Position pos, int minimumLength){
+    protected LinkedList getValidAlignments(Position pos, int minimumLength){
         LinkedList<Square>[] alignmentsByDirection = this.fetchAlignments(pos);
         LinkedList<Square>[] mergedDirectionAlignments = Board.mergeAlignments(alignmentsByDirection);
         LinkedList<LinkedList<Square>> minimumLengthAlignments = new LinkedList<LinkedList<Square>>();

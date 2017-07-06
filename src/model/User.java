@@ -26,13 +26,18 @@ abstract public class User {
         this.score = score;
     }
 
-    public double updateScore(int addedValue) {
+    public int updateScore(int addedValue) {
         this.score += addedValue;
         return this.score;
     }
 
     /**
      * Compute the added value to the score given alignments
+     *
+     * Add the size of each alignment
+     * If more than one alignment (COMBO)
+     * Will raise the computed value to the power of square root of the alignments
+     *
      * @param alignments: LinkedList<LinkedList<Square>>
      * @return
      */
