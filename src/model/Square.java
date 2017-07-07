@@ -5,7 +5,7 @@ import java.util.LinkedList;
 /**
  * Represents a square of the .model.Board (composition)
  *
- * a Square object has a position on the .model.Board
+ * a Square object has a position on the Board
  * and a color if the square is filled (i.e. if there is a pawn of the corresponding color at the position)
  */
 public class Square {

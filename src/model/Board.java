@@ -174,9 +174,6 @@ public class Board {
     }
 
     public void setSquare(Position pos){
-        // FIXME: is it more addSquare to board and should take square object?
-        // If not (because composition: be sure that no other place instantiate .model.Square)
-        // TODO: add tests
         this.squares[pos.getOrd()][pos.getAbs()] = new Square(pos, Color.randomColor());
     }
 
@@ -428,7 +425,7 @@ public class Board {
      * List the squares surrounding a position
      * Set as protected to be able to test it
      *
-     * @param pos - Position - .model.Position at which we want to list the neighbours
+     * @param pos - Position - Position at which we want to list the neighbours
      * @return - Square[] - List of squares for every direction listed
      *         Given in the order defined by the Direction enum
      *         null if empty
@@ -489,7 +486,7 @@ public class Board {
 
     /**
      * Fetch a standard color (not equal to RAINBOW) given a linked list of Square
-     * @param curSquare - ListIterator<.model.Square> - current square
+     * @param curSquare - ListIterator<Square> - current square
      * @return Color - standard color, otherwise returns None
      */
     protected static Color fetchStandardColor(ListIterator<Square> curSquare){
