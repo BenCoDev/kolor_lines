@@ -1,5 +1,7 @@
 # README
 
+Project Management explained @ https://quip.com/Bjn9AVMI4sb3 [FR]
+
 ## How to install ?
 
 Clone the repo
