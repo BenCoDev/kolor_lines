@@ -460,21 +460,33 @@ public class Board {
     }
 
     /**
-     * Determines if the color of the square is valid to be included in a given alignment
+     * Determines if the color of the square is valid to be included in a given alignment (curSquares)
+     *
+     * Compare with the last square color in the alignment
+     *
+     * If this last square color is RAINBOW, recursively run the method with a new LinkedList
+     * with the last square popped out
+     *
+     * Ex: curSquares = [BLUE, RAINBOW], nextSquare = BLUE
+     * RAINBOW is compared to BLUE in the first run with curSquares being [BLUE, RAINBOW]
+     * BLUE is compared to BLUE in the second run with curSquares being [BLUE]
+     *
+     * Base case of the recursivity is curSquares of size 1 and color RAINBOW
+     *
      * @param curSquares: LinkedList<Square>
      * @param nextSquare: Square
      * @return
      */
-    protected static boolean isColorValid(LinkedList<Square> curSquares, Square nextSquare){
-
-        if (curSquares.size() == 0){  // FIXME
-            // base case where has been going up while color was rainbow
-            return true;
-        }
+    private static boolean isColorValid(LinkedList<Square> curSquares, Square nextSquare){
 
         Square curSquare = curSquares.getLast();
 
-        if (curSquare.getColor() == null){
+        if (curSquares.size() == 1 && curSquare.getColor() == RAINBOW){
+            return true;  // Base case for recursion on RAINBOW colors
+        }
+
+
+        if (nextSquare.getColor() == null){
             return false;
         }
 
@@ -501,7 +513,7 @@ public class Board {
      * @param curSquare - ListIterator<Square> - current square
      * @return Color - standard color, otherwise returns None
      */
-    protected static Color fetchStandardColor(ListIterator<Square> curSquare){
+    private static Color fetchStandardColor(ListIterator<Square> curSquare){
         if (curSquare.hasNext()) {
             Color curColor = curSquare.next().getColor();
             if (curColor != RAINBOW) {
