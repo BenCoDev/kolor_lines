@@ -38,7 +38,7 @@ public class Board {
      * For each position get the alignments by using private getValidAlignments method
      *
      * @param positions - Position[]
-     * @return validAlignments
+     * @return validAlignments - LinkedList<LinkedList<Square>> - one outer linked list per position
      */
     public LinkedList<LinkedList<Square>> processPositions(Position[] positions){
         LinkedList<LinkedList<Square>> validAlignments = new LinkedList();
@@ -178,7 +178,6 @@ public class Board {
     }
 
     public void setSquare(Position pos, Color color){
-//        TODO: add tests
         this.squares[pos.getOrd()][pos.getAbs()] = new Square(pos, color);
     }
 
@@ -276,7 +275,7 @@ public class Board {
      * @param minimumLength - int - Minimum length needed for an alignment to be returned
      * @return LinkedList - List of Lists of the squares in returned alignments
      */
-    protected LinkedList getValidAlignments(Position pos, int minimumLength){
+    private LinkedList getValidAlignments(Position pos, int minimumLength){
         LinkedList<Square>[] alignmentsByDirection = this.fetchAlignments(pos);
         LinkedList<Square>[] mergedDirectionAlignments = Board.mergeAlignments(alignmentsByDirection);
         LinkedList<LinkedList<Square>> minimumLengthAlignments = new LinkedList<LinkedList<Square>>();
@@ -295,16 +294,19 @@ public class Board {
     /**
      * Merge alignments from a given Square by merging opposite directions 2 by 2
      *
-     * Note: Case V V Rb B B, with Rainbow being the given Square ==> Rainbow will only count for leftSide
+     * Corner case 1: Case V V Rb B B, with Rainbow being the given Square ==> Rainbow will only count for leftSide
      * Controlled by shouldMergeRightSide boolean
+     *
+     * Corner case 2: Case V V Rb B B B B, with Rainbow being the given Square ==> Rainbow will count the rightSide
+     * Controlled by shouldUseRightSide boolean
      *
      * Also includes the current square
      *
-     * Set as protected to be able to test it
+     * Set as public to be able to test it
      * @param alignmentsByDirection: LinkedList[8] - Alignments surrounding a Square by direction
      * @return LinkedList[4] - { alignments on NWSE, alignments on WE, alignments on SWNE, alignments on SN }
      */
-    protected static LinkedList<Square>[] mergeAlignments(LinkedList<Square>[] alignmentsByDirection){
+    private static LinkedList<Square>[] mergeAlignments(LinkedList<Square>[] alignmentsByDirection){
         LinkedList<Square>[] mergedAlignmentsByDirection = new LinkedList[4];
 
         int outputArrayIndex;
@@ -316,6 +318,8 @@ public class Board {
             Collections.reverse(leftSideList); // Will reverse in place to get a left to right square alignment
             LinkedList<Square> rightSideList = alignmentsByDirection[i - mergedAlignmentsByDirection.length];
             boolean shouldMergeRightSide = true;
+            boolean shouldUseRightSide = false;  // In case of one square (Rainbow) cornering 2 alignment, select the right one
+
 
             mergedAlignmentsByDirection[outputArrayIndex] = new LinkedList<Square>(leftSideList);
 
@@ -337,6 +341,9 @@ public class Board {
 
                 if (rightColor != null && leftColor != null && rightColor != leftColor){
                     shouldMergeRightSide = false;
+                    if (rightSideList.size() > leftSideList.size()){
+                        shouldUseRightSide = true;
+                    }
                 }
             }
 
@@ -346,14 +353,19 @@ public class Board {
                 mergedAlignmentsByDirection[outputArrayIndex].addAll(rightSideList.subList(1, rightSideList.size()));
             }
 
+            if (shouldUseRightSide){  // Corner case 2 described in docstrings
+                mergedAlignmentsByDirection[outputArrayIndex].clear();
+                mergedAlignmentsByDirection[outputArrayIndex].addAll(rightSideList);
+            }
         }
+
         return mergedAlignmentsByDirection;
     }
 
     /**
      * Fetch alignments given a position by listing all the neighbours of a given position
      * includes curSquare and will extend alignments for each direction
-     * Set as protected to be able to test it
+     * Set as public to be able to test it
      *
      * with s being the square at the given position
      * 7 0 1
@@ -365,7 +377,7 @@ public class Board {
      *                      Given in the order of the Direction enum
      *                      Min size of 1 since it includes the curSquare
      */
-    protected LinkedList<Square>[] fetchAlignments(Position pos){
+    private LinkedList<Square>[] fetchAlignments(Position pos){
         LinkedList<Square>[] alignmentsByDirection = new LinkedList[Direction.values().length];
         Square curSquare = getSquare(pos);
         Square[] neighbours;
@@ -392,7 +404,7 @@ public class Board {
      * Extend alignments given a position, an existing array of alignments by directions, and a given direction
      *
      * Square in the alignments are added in the order relative to the direction
-     * Set as protected to be able to test it
+     * Set as public to be able to test it
      *
      * @param pos - Position - Position of the original point from where alignments are computed
      * @param alignmentsByDirection - Array of LinkedList of Squares - Array of alignments by directions -
@@ -400,7 +412,7 @@ public class Board {
      * @param direction - Direction
      * @return alignmentsByDirection
      */
-    protected LinkedList<Square>[] extendAlignments(Position pos, LinkedList<Square>[] alignmentsByDirection, Direction direction){
+    private LinkedList<Square>[] extendAlignments(Position pos, LinkedList<Square>[] alignmentsByDirection, Direction direction){
         Square nextSquare;
 
         try {
@@ -423,14 +435,14 @@ public class Board {
 
     /**
      * List the squares surrounding a position
-     * Set as protected to be able to test it
+     * Set as public to be able to test it
      *
      * @param pos - Position - Position at which we want to list the neighbours
      * @return - Square[] - List of squares for every direction listed
      *         Given in the order defined by the Direction enum
      *         null if empty
      */
-    protected Square[] listNeighbours(Position pos){
+    private Square[] listNeighbours(Position pos){
         Square[] neighbours = new Square[Board.Direction.values().length];
 
         // Get N, NE, E, SE , S, SW, W, NW and append in this order; null if empty
